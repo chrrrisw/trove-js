@@ -52,15 +52,73 @@
         NP_QUERY : 'http://api.trove.nla.gov.au/newspaper/title/',
         NL_QUERY : 'http://api.trove.nla.gov.au/newspaper/titles',
         // http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=book&q=tangled
+        ZONE_QUERY: 'http://api.trove.nla.gov.au/result'
     };
 
+    exports.Zone = Zone;
     function Zone (options) {
-
+        console.log('Creating Zone');
+        $.extend(this, options);
     }
 
-    Zone.prototype.query = function (query, options) {
+    exports.Zone.prototype.query = function (options) {
+        console.log('Querying Zone');
+        //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
+        var url = API.ZONE_QUERY + key_str + ENC + '&zone='
+        if (options.zone != undefined) {
+            url = url + options.zone + '&q=' + options.search
+        } else if (this.zone != undefined) {
+            url = url + this.zone + '&q=' + options.search
+        } else {
+            // Query all zones
+            url = url + ZONE.ALL + '&q=' + options.search
+        }
+
+        if (options.start != undefined) {
+            url = url + '&s=' + options.start;
+        }
+
+        $.ajax({
+            dataType : "jsonp",
+            url : url,
+            context : this
+        }).done(function (data) {
+            console.log('Got Zone Query');
+            this.response = data.response;
+            if (options.done != undefined) options.done(this);
+        });
 
     };
+
+    exports.Zone.prototype.next = function(options) {
+        if (this.response != undefined) {
+            var zone = '&zone=' + this.response.zone[0].name;
+            var search = '&q=' + this.response.query;
+            var start = parseInt(this.response.zone[0].records.s) + parseInt(this.response.zone[0].records.n);
+            var url = API.ZONE_QUERY + key_str + ENC + zone + search + '&s=' + start;
+            console.log(url);
+            $.ajax({
+                dataType : "jsonp",
+                url : url,
+                context : this
+            }).done(function (data) {
+                console.log('Got Zone Next Query');
+                this.response = data.response;
+                if ((options != undefined) && (options.done != undefined)) {
+                    options.done(this);
+                } else if (this.done_callback != undefined) {
+                    this.done_callback(this);
+                }
+            });
+        }
+    };
+
+    exports.Zone.prototype.previous = function(options) {
+        if (this.response != undefined) {
+            var start = zone[0].records.s - zone[0].records.n;
+        }
+    };
+
 
     /**
      * An object to hold a newspaper article
