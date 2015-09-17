@@ -1,20 +1,41 @@
 # trove-js
 A JavaScript library to access the National Library of Australia's Trove API
 
+## Getting an API key
 You'll need to get an API key first, by signing up and requesting one. Instructions for doing so are found at [Trove Help](http://help.nla.gov.au/trove/building-with-trove/api).
 
-Then you'll need to include the trove-api.js in your HTML.
+Please comply with the conditions of use, an put "powered by trove" somewhere on your site.
 
+## Library initialisation
 In your JavaScript, initialise the library first giving it your key:
 
     Trove.init( *your_key* );
 
-Getting a list of newpapers:
+## Asynchrony
+Remember that each time you make a call for data, the data will not be available until the Trove servers respond. For example, if you were to write:
 
-    var newspaper_list  = new Trove.NewspaperList();
-    nl.get();
+    var article = new Trove.NewspaperArticle({identifier :18342701});
+    console.log(article.heading);
 
-    or
+you would, more than likely, see 'undefined' at the console.  For this reason, the API provides a second parameter for a function to be called when the request completes:
 
-    nl.get("vic");
-    
+    var article = new Trove.NewspaperArticle(
+        {identifier :18342701},
+        function (a) {
+            console.log(a.heading);
+        });
+
+You could also write:
+
+    function done(a) {
+        console.log(a.heading);
+    }
+
+    var article = new Trove.NewspaperArticle(
+        {identifier :18342701},
+        done
+        );
+
+to get the same result. The parameter to the called function is the object that has been updated by the request.
+
+## Examples
