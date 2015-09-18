@@ -40,6 +40,21 @@
         LIST: 'list',
         ALL: 'all'
     };
+    exports.ZONE = ZONE;
+
+    var LIMITS = {
+        DECADE: 'l-decade',
+        YEAR: 'l-year',
+        MONTH: 'l-month',
+        TITLE: 'l-title',
+        CATEGORY: 'l-category'
+    }
+
+    var CATEGORIES = {
+        Article: 'Article',
+        Advertising: 'Advertising',
+        Family_Notices: 'Family+Notices'
+    }
 
     var RECORD_TYPE = {
             WORK: 'work',
@@ -55,27 +70,55 @@
         ZONE_QUERY: 'http://api.trove.nla.gov.au/result'
     };
 
-    exports.Zone = Zone;
-    function Zone (options) {
-        console.log('Creating Zone');
+    /**
+     * @class
+     *
+     */
+    exports.Search = Search;
+    function Search (options) {
+        console.log('Creating Search');
         $.extend(this, options);
-    }
 
-    exports.Zone.prototype.query = function (options) {
-        console.log('Querying Zone');
-        //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
-        var url = API.ZONE_QUERY + key_str + ENC + '&zone='
-        if (options.zone != undefined) {
-            url = url + options.zone + '&q=' + options.search
-        } else if (this.zone != undefined) {
-            url = url + this.zone + '&q=' + options.search
-        } else {
-            // Query all zones
-            url = url + ZONE.ALL + '&q=' + options.search
+        this._last_search = {
+            query: undefined,
+            start: undefined,
+            number: undefined
         }
 
+        // options.zones is a string or list of strings
+    }
+
+    /**
+     * @class
+     *
+     */
+    exports.Search.prototype.query = function (options) {
+        console.log('Querying Search');
+        //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
+
+        // Get the zone or zones for the query.
+        // Preference is given to the zone(s) in the options passed.
+        var zones = ZONE.ALL;
+        if (typeof options.zones == 'string') {
+            zones = options.zones;
+        } else if (Array.isArray(options.zones)) {
+            zones = options.zones.join(',');
+        } else if (typeof this.zones == 'string') {
+            zones = this.zones;
+        } else if (Array.isArray(this.zones)) {
+            zones = this.zones.join(',');
+        }
+
+        var url = API.ZONE_QUERY + key_str + ENC + '&zone=' + zones + '&q=' + options.terms
+        this._last_search.query = url;
         if (options.start != undefined) {
+            this._last_search.start = options.start;
             url = url + '&s=' + options.start;
+        }
+
+        if (options.number != undefined) {
+            this._last_search.number = options.number;
+            url = url + '&n=' + options.number;
         }
 
         $.ajax({
@@ -83,18 +126,22 @@
             url : url,
             context : this
         }).done(function (data) {
-            console.log('Got Zone Query');
+            console.log('Got Search Query');
             this.response = data.response;
-            if (options.done != undefined) options.done(this);
+            if ((options != undefined) && (options.done != undefined)) {
+                options.done(this);
+            } else if (this.done_callback != undefined) {
+                this.done_callback(this);
+            }
         });
 
     };
 
-    exports.Zone.prototype.next = function(options) {
+    Search.prototype.requery = function(options, delta) {
         if (this.response != undefined) {
             var zone = '&zone=' + this.response.zone[0].name;
             var search = '&q=' + this.response.query;
-            var start = parseInt(this.response.zone[0].records.s) + parseInt(this.response.zone[0].records.n);
+            var start = parseInt(this.response.zone[0].records.s) + delta;
             var url = API.ZONE_QUERY + key_str + ENC + zone + search + '&s=' + start;
             console.log(url);
             $.ajax({
@@ -102,7 +149,7 @@
                 url : url,
                 context : this
             }).done(function (data) {
-                console.log('Got Zone Next Query');
+                console.log('Got Search Next Query');
                 this.response = data.response;
                 if ((options != undefined) && (options.done != undefined)) {
                     options.done(this);
@@ -113,9 +160,41 @@
         }
     };
 
-    exports.Zone.prototype.previous = function(options) {
+    /**
+     * @class
+     *
+     */
+    exports.Search.prototype.next = function(options) {
         if (this.response != undefined) {
-            var start = zone[0].records.s - zone[0].records.n;
+            this.requery(options, parseInt(this.response.zone[0].records.n));
+            // var zone = '&zone=' + this.response.zone[0].name;
+            // var search = '&q=' + this.response.query;
+            // var start = parseInt(this.response.zone[0].records.s) + parseInt(this.response.zone[0].records.n);
+            // var url = API.ZONE_QUERY + key_str + ENC + zone + search + '&s=' + start;
+            // console.log(url);
+            // $.ajax({
+            //     dataType : "jsonp",
+            //     url : url,
+            //     context : this
+            // }).done(function (data) {
+            //     console.log('Got Search Next Query');
+            //     this.response = data.response;
+            //     if ((options != undefined) && (options.done != undefined)) {
+            //         options.done(this);
+            //     } else if (this.done_callback != undefined) {
+            //         this.done_callback(this);
+            //     }
+            // });
+        }
+    };
+
+    /**
+     * @class
+     *
+     */
+    exports.Search.prototype.previous = function(options) {
+        if (this.response != undefined) {
+            this.requery(options, -parseInt(this.response.zone[0].records.n));
         }
     };
 
