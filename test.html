@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+
+        <title>Test Trove API</title>
+        <meta name="description" content="" />
+        <meta name="author" content="Chris Willoughby" />
+
+        <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+
+        <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css'>
+        <style type="text/css">
+            body {
+                background-color: #FFFFFF;
+            }
+            .ui.menu .item img.logo {
+                margin-right: 1.5em;
+            }
+            .ui.menu .item label {
+                padding-right: 0.3em;
+            }
+            .sidebar-form {
+                margin-top: 5em;
+            }
+            .main.container {
+                margin-top: 5em;
+            }
+            .wireframe {
+                margin-top: 2em;
+            }
+            .ui.footer.segment {
+                margin: 5em 0em 0em;
+                padding: 5em 0em;
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="ui fixed inverted menu">
+
+            <div class='header item'>Test Trove</div>
+            <a class='searchlimits item'>Search Limits</a>
+            <div class="right menu">
+
+                <div class='ui item'>
+                    <label>Zone</label>
+                    <select multiple="" class="ui zone dropdown" maxlength="10">
+                        <option value="book">Book</option>
+                        <option value="picture">Picture</option>
+                        <option value="article">Article</option>
+                        <option value="newspaper">Newspaper</option>
+                    </select>
+                </div>
+
+<!--
+                <div class="ui right aligned normal dropdown item">
+
+                    <input name="zone" type="hidden">
+                    <div class="default text">Zone</div>
+                    <div class="menu">
+                        <div class="item" data-value="book">Book</div>
+                        <div class="item" data-value="picture">Picture</div>
+                        <div class="item" data-value="article">Article</div>
+                        <div class="item" data-value="newspaper">Newspapers</div>
+                    </div>
+                    <i class="dropdown icon"></i>
+
+                </div>
+ -->
+
+                <div class="ui right aligned search item">
+                    <div class="ui icon input">
+                        <input class="prompt" placeholder="Search trove..." type="text">
+                        <i class="search link icon"></i>
+                    </div>
+                    <div class="results"></div>
+                </div>
+
+                <a class="item">
+                    <i class='left arrow icon'></i>
+                </a>
+
+                <a class="item">
+                    <i class='right arrow icon'></i>
+                </a>
+            </div>
+        </div>
+
+        <div class='ui left sidebar'>
+            <div class="ui inverted form sidebar-form">
+
+                <div class='three wide field' id='l-decade'>
+                    <label>Date</label>
+                    <input class='ui input' maxlength="3" name='decade' type='text'>
+                </div>
+
+                <div class="field" id='l-year'>
+                </div>
+
+                <div class="field" id='l-month'></div>
+
+                <div class='field' id='l-category'>
+                    <label>Category</label>
+                    <select multiple="" class="ui normal dropdown">
+                        <option value="Article">Article</option>
+                        <option value="Advertising">Advertising</option>
+                        <option value="Family+Notices">Family Notices</option>
+                    </select>
+                </div>
+
+                <div class='field'>
+                    <label>Title</label>
+                </div>
+
+                <div class="ui submit button">Update</div>
+            </div>
+        </div>
+        <div class='pusher'>
+            <div class='ui main text container'>
+                <table class='ui celled table'>
+                    <thead>
+                        <tr><th>Name</th><th>Value</th></tr>
+                    </thead>
+                    <tbody id='newspaper'>
+                    </tbody>
+                </table>
+                <div id='article'>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+        <script type="text/javascript" src='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.js'></script>
+        <script type="text/javascript" src="src/trove-api.js"></script>
+        <script type="text/javascript" src='test.js'></script>
+    </body>
+
+</html>
