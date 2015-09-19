@@ -104,6 +104,12 @@
         // options.done
 
         console.log('Querying Search');
+
+        if (options == undefined) {
+            console.error('options is undefined');
+            return
+        }
+
         //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
 
         // Get the zone or zones for the query.
@@ -379,7 +385,7 @@
             encoding: 'json'
         };
 
-        if (options.state != undefined) {
+        if ((options != undefined) && (options.state != undefined)) {
             query_data.state = options.state;
         }
 
