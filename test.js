@@ -10,32 +10,36 @@ function test_trove (key) {
 
     Trove.init(key);
 
-    // var n = new Trove.Newspaper();
+    var n = new Trove.Newspaper({
+        identifier: 35,
+        done: function(np) {
+            console.dir(np);
+        }
+    });
     // n.get(35);
 
-    // var a = new Trove.NewspaperArticle(
-    //     {identifier :18342701},
-    //     function (article) {
-    //         var n = article.get_newspaper(
-    //             function (newspaper) {
-    //                 for (k in newspaper) {
-    //                     if (typeof(newspaper[k]) != 'function') {
-    //                         newspaper_table.append(
-    //                             '<tr>' +
-    //                             '<td>' + k + '</td>' +
-    //                             '<td>' + newspaper[k] + '</td>' +
-    //                             '</tr>');
-    //                     }
-    //                 }
-    //                 // newspaper_div.append('<p>' + newspaper.title + '</p>');
-    //                 article_div.append('<p>' + article.heading + '</p>');
-    //                 // console.dir(newspaper);
-    //                 // console.dir(article);
-    //             });
-    //         console.log('Article retrieved');
-    //     });
+    var a = new Trove.NewspaperArticle({
+        identifier :18342701,
+        done : function (article) {
+            var n = article.get_newspaper({
+                done: function (newspaper) {
+                    for (k in newspaper) {
+                        if (typeof(newspaper[k]) != 'function') {
+                            newspaper_table.append(
+                                '<tr>' +
+                                '<td>' + k + '</td>' +
+                                '<td>' + newspaper[k] + '</td>' +
+                                '</tr>');
+                        }
+                    }
+                    article_div.append('<p>' + article.heading + '</p>');
+                }
+            })
+        }
+    });
 
-    // var nl = new Trove.NewspaperList().get('act');
+
+    // var act_newspapers = new Trove.NewspaperList({state: 'act'});
 
     var search = new Trove.Search({
         zones: [Trove.ZONE.NEWS, Trove.ZONE.PIC],

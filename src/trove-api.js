@@ -17,14 +17,16 @@
     "use strict";
 
     // Store the key here
-    var key_str = "";
+    var trove_key = '';
 
     /**
      * @function init
      * @param {string} key The Trove API key given to you by the National Library of Australia.
+     *
+     * This function should be called before any queries are made to the Trove servers.
      */
     exports.init = function init (key) {
-        key_str = "?key=" + key;
+        trove_key = key;
     }
 
     var ENC = '&encoding=json';
@@ -48,13 +50,15 @@
         MONTH: 'l-month',
         TITLE: 'l-title',
         CATEGORY: 'l-category'
-    }
+    };
+    exports.LIMITS = LIMITS;
 
     var CATEGORIES = {
         Article: 'Article',
         Advertising: 'Advertising',
         Family_Notices: 'Family+Notices'
-    }
+    };
+    exports.CATEGORIES = CATEGORIES;
 
     var RECORD_TYPE = {
             WORK: 'work',
@@ -66,7 +70,6 @@
         NP_BASE : 'http://api.trove.nla.gov.au/newspaper/',
         NP_QUERY : 'http://api.trove.nla.gov.au/newspaper/title/',
         NL_QUERY : 'http://api.trove.nla.gov.au/newspaper/titles',
-        // http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=book&q=tangled
         ZONE_QUERY: 'http://api.trove.nla.gov.au/result'
     };
 
@@ -77,15 +80,16 @@
     exports.Search = Search;
     function Search (options) {
         console.log('Creating Search');
+        // options.zones is a string or list of strings
+        // options.done_callback
+        // options.terms
+
+        // copy everything from options to this object
         $.extend(this, options);
 
-        this._last_search = {
-            query: undefined,
-            start: undefined,
-            number: undefined
-        }
+        this.response = undefined;
+        this._last_search =  undefined;
 
-        // options.zones is a string or list of strings
     }
 
     /**
@@ -93,6 +97,12 @@
      *
      */
     exports.Search.prototype.query = function (options) {
+        // options.start
+        // options.terms
+        // options.zones
+        // options.number
+        // options.done
+
         console.log('Querying Search');
         //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
 
@@ -109,22 +119,30 @@
             zones = this.zones.join(',');
         }
 
-        var url = API.ZONE_QUERY + key_str + ENC + '&zone=' + zones + '&q=' + options.terms
-        this._last_search.query = url;
+        var query_data = {
+                key: trove_key,
+                encoding: 'json',
+                zone: zones,
+                q: options.terms,
+                s: 0,
+                n: 20
+        };
+
         if (options.start != undefined) {
-            this._last_search.start = options.start;
-            url = url + '&s=' + options.start;
+            query_data.s = options.start;
         }
 
         if (options.number != undefined) {
-            this._last_search.number = options.number;
-            url = url + '&n=' + options.number;
+            query_data.n = options.number;
         }
+
+        this._last_search = query_data;
 
         $.ajax({
             dataType : "jsonp",
-            url : url,
-            context : this
+            url      : API.ZONE_QUERY,
+            data     : query_data,
+            context  : this
         }).done(function (data) {
             console.log('Got Search Query');
             this.response = data.response;
@@ -139,15 +157,14 @@
 
     Search.prototype.requery = function(options, delta) {
         if (this.response != undefined) {
-            var zone = '&zone=' + this.response.zone[0].name;
-            var search = '&q=' + this.response.query;
-            var start = parseInt(this.response.zone[0].records.s) + delta;
-            var url = API.ZONE_QUERY + key_str + ENC + zone + search + '&s=' + start;
-            console.log(url);
+
+            this._last_search.s = this._last_search.s + delta;
+
             $.ajax({
                 dataType : "jsonp",
-                url : url,
-                context : this
+                url      : API.ZONE_QUERY,
+                data     : this._last_search,
+                context  : this
             }).done(function (data) {
                 console.log('Got Search Next Query');
                 this.response = data.response;
@@ -161,77 +178,81 @@
     };
 
     /**
-     * @class
+     * Request the next search results
      *
      */
     exports.Search.prototype.next = function(options) {
-        if (this.response != undefined) {
-            this.requery(options, parseInt(this.response.zone[0].records.n));
-            // var zone = '&zone=' + this.response.zone[0].name;
-            // var search = '&q=' + this.response.query;
-            // var start = parseInt(this.response.zone[0].records.s) + parseInt(this.response.zone[0].records.n);
-            // var url = API.ZONE_QUERY + key_str + ENC + zone + search + '&s=' + start;
-            // console.log(url);
-            // $.ajax({
-            //     dataType : "jsonp",
-            //     url : url,
-            //     context : this
-            // }).done(function (data) {
-            //     console.log('Got Search Next Query');
-            //     this.response = data.response;
-            //     if ((options != undefined) && (options.done != undefined)) {
-            //         options.done(this);
-            //     } else if (this.done_callback != undefined) {
-            //         this.done_callback(this);
-            //     }
-            // });
+        if (this._last_search != undefined) {
+            this.requery(options, this._last_search.n);
         }
     };
 
     /**
-     * @class
+     * Request the previous search results
      *
      */
     exports.Search.prototype.previous = function(options) {
-        if (this.response != undefined) {
-            this.requery(options, -parseInt(this.response.zone[0].records.n));
+        if (this._last_search != undefined) {
+            this.requery(options, -this._last_search.n);
         }
     };
 
 
     /**
-     * An object to hold a newspaper article
-     * @constructor
+     * An Class to hold newspaper articles
+     * @class
      * @param {Object} options
      *      identifier : the article identifier
      */
     exports.NewspaperArticle = NewspaperArticle;
-    function NewspaperArticle (options, done) {
+    function NewspaperArticle (options) {
         console.log('Creating NewspaperArticle');
+
+        // options.identifier
+        // options.done_callback
+
+        var done = undefined;
+        if (options.done != undefined) {
+            done = options.done;
+            delete options.done;
+        };
         $.extend(this, options);
+
+        // If we know the identifier, get the data
         if (this.identifier != undefined) {
-            this.get(this.identifier, done);
+            this.get({
+                identifier: this.identifier,
+                done: done
+            });
         }
     }
 
     /**
      * Retrieve article information based on identifier
-     * @param {Number} identifier
-     * @param {function} done
+     * @param {Object} options
      */
-    exports.NewspaperArticle.prototype.get = function (identifier, done) {
+    exports.NewspaperArticle.prototype.get = function (options) {
         console.log('Getting NewspaperArticle');
         // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
-        var url = API.NP_BASE + identifier + key_str + ENC;
+
+        var query_data = {
+            key: trove_key,
+            encoding: 'json'
+        };
+
         $.ajax({
             dataType : "jsonp",
-            url : url,
-            context : this
+            url      : API.NP_BASE + options.identifier,
+            data     : query_data,
+            context  : this
         }).done(function (data) {
             console.log('Got NewspaperArticle');
             $.extend(this, data.article);
-            if (done != undefined) done(this);
-            // console.dir(this);
+            if (options.done != undefined) {
+                options.done(this);
+            } else if (this.done_callback != undefined) {
+                this.done_callback(this);
+            }
         });
     };
 
@@ -240,13 +261,14 @@
      * @param {function} done
      * @returns {Newspaper} the Newspaper object
      */
-    exports.NewspaperArticle.prototype.get_newspaper = function(done) {
+    exports.NewspaperArticle.prototype.get_newspaper = function(options) {
         console.log('Get Newspaper for Article');
         if (this.title != undefined) {
             if (this.title.id != undefined) {
-                return new Newspaper(
-                    {identifier: this.title.id},
-                    done);
+                return new Newspaper({
+                    identifier: this.title.id,
+                    done: options.done
+                });
             }
         }
     };
@@ -264,11 +286,20 @@
      * endDate
      */
     exports.Newspaper = Newspaper;
-    function Newspaper (options, done) {
+    function Newspaper (options) {
         console.log('Creating Newspaper');
+
+        var done = undefined;
+        if (options.done != undefined) {
+            done = options.done;
+            delete options.done;
+        };
         $.extend(this, options);
         if (this.identifier != undefined) {
-            this.get(this.identifier, done);
+            this.get({
+                identifier: this.identifier,
+                done: done
+            });
         }
     }
 
@@ -276,19 +307,28 @@
      * Get information about the specified newspaper
      * @param (Number) identifier
      */
-    Newspaper.prototype.get = function (identifier, done) {
+    Newspaper.prototype.get = function (options) {
         console.log('Getting Newspaper');
         // http://api.trove.nla.gov.au/newspaper/title/35?encoding=json
-        var url = API.NP_QUERY + identifier + key_str + ENC;
+
+        var query_data = {
+            key: trove_key,
+            encoding: 'json'
+        };
 
         $.ajax({
             dataType : "jsonp",
-            url : url,
-            context : this
+            url      : API.NP_QUERY + options.identifier,
+            data     : query_data,
+            context  : this
         }).done(function (data) {
             console.log('Got Newspaper');
             $.extend(this, data.newspaper);
-            if (done != undefined) done(this);
+            if (options.done != undefined) {
+                options.done(this);
+            } else if (this.done_callback != undefined) {
+                this.done_callback(this);
+            }
         });
     };
 
@@ -304,9 +344,13 @@
         console.log('Creating NewspaperList');
         // http://api.trove.nla.gov.au/newspaper/titles?state=vic
         $.extend(this, options);
+
         this.newspapers = [];
+
         if (this.state != undefined) {
-            this.get(this.state);
+            this.get({
+                state: this.state
+            });
         }
     }
 
@@ -316,28 +360,34 @@
     NewspaperList.prototype.processGet = function (data) {
 
         for (var index in data.response.records.newspaper) {
-            console.log(data.response.records.newspaper[index].title);
-            this.newspapers.push(new Newspaper(data.response.records.newspaper[index]))
+            console.dir(data.response.records.newspaper[index]);
+            this.newspapers.push(new Newspaper(
+                data.response.records.newspaper[index]
+            ));
         }
 
         console.log("total = " + data.response.records.total);
-        console.dir(this.newspapers[5]);
     };
 
     /**
      *
      */
-    NewspaperList.prototype.get = function (state) {
+    NewspaperList.prototype.get = function (options) {
         console.log('Getting NewspaperList');
-        var url = API.NL_QUERY + key_str + ENC;
-        if (state != undefined) {
-            url = url + "&state=" + state;
+        var query_data = {
+            key: trove_key,
+            encoding: 'json'
+        };
+
+        if (options.state != undefined) {
+            query_data.state = options.state;
         }
 
         $.ajax({
             dataType : "jsonp",
-            url : url,
-            context : this
+            url      : API.NL_QUERY,
+            data     : query_data,
+            context  : this
         }).done(this.processGet);
     };
 
