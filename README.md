@@ -19,22 +19,21 @@ Remember that each time you make a call for data, the data will not be available
 
 you would, more than likely, see 'undefined' at the console.  For this reason, the API provides a second parameter for a function to be called when the request completes:
 
-    var article = new Trove.NewspaperArticle(
-        {identifier :18342701},
-        function (a) {
-            console.log(a.heading);
-        });
+    var article = new Trove.NewspaperArticle({
+        identifier :18342701,
+        done: function (a) {console.log(a.heading)};
+    });
 
 You could also write:
 
-    function done(a) {
+    function done_callback(a) {
         console.log(a.heading);
     }
 
-    var article = new Trove.NewspaperArticle(
-        {identifier :18342701},
-        done
-        );
+    var article = new Trove.NewspaperArticle({
+        identifier :18342701,
+        done : done_callback
+    });
 
 to get the same result. The parameter to the called function is the object that has been updated by the request.
 
