@@ -14,13 +14,15 @@ In your JavaScript, initialise the library first giving it your key:
 ## Asynchrony
 Remember that each time you make a call for data, the data will not be available until the Trove servers respond. For example, if you were to write:
 
-    var article = new Trove.NewspaperArticle({identifier :18342701});
+    var article = new Trove.NewspaperArticle({
+        init :18342701
+    });
     console.log(article.heading);
 
 you would, more than likely, see 'undefined' at the console.  For this reason, the API provides a second parameter for a function to be called when the request completes:
 
     var article = new Trove.NewspaperArticle({
-        identifier :18342701,
+        init :18342701,
         done: function (a) {console.log(a.heading)};
     });
 
@@ -31,10 +33,12 @@ You could also write:
     }
 
     var article = new Trove.NewspaperArticle({
-        identifier :18342701,
+        init :18342701,
         done : done_callback
     });
 
 to get the same result. The parameter to the called function is the object that has been updated by the request.
 
 ## Examples
+
+Please see the [wiki](https://github.com/chrrrisw/trove-js/wiki) for examples

@@ -43,7 +43,7 @@ function test_trove (key) {
 
     var search = new Trove.Search({
         zones: [Trove.ZONE.NEWS, Trove.ZONE.PIC],
-        done_callback: function(s) {
+        done: function(s) {
             console.dir(s.response);
         }
     });
@@ -60,6 +60,10 @@ function start(evt) {
 }
 
 function documentReady(jQuery) {
+
+    if (typeof Symbol() === 'symbol') {
+        console.log('your browser has symbol');
+    }
 
     $('.ui.sidebar').sidebar('attach events', '.searchlimits');
 

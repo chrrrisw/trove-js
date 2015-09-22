@@ -31,6 +31,7 @@
 
     var ENC = '&encoding=json';
 
+    // can include multiple as a list
     var ZONE = {
         BOOK: 'book',
         PIC: 'picture',
@@ -79,6 +80,8 @@
     };
     exports.RECLEVEL = RECLEVEL;
 
+    // can include multiple as a list
+    // used for QUERY, WORK, LIST and NP_ARTICLE
     var INCLUDE = {
         TAGS            : 'tags',
         COMMENTS        : 'comments',
@@ -123,7 +126,9 @@
      * An object to perform searches
      * @class
      * @param {Object} options An object specifying the options for this Search
-     *
+     * @property {String|Array} zones The default zone or list of zones to search
+     * @property {Function} done The default callback called on receipt of data
+     * @property {String} terms The default search terms
      */
     exports.Search = Search;
     function Search (options) {
@@ -135,13 +140,17 @@
         // copy everything from options to this object
         $.extend(this, options);
 
+        // The raw response from the query
         this.response = undefined;
+
+        // The parameters of the last search
+        // Used to request previous and next results.
         this._last_search =  undefined;
 
     }
 
     /**
-     * @class
+     * Query the Trove database.
      * @param {Object} options An object containing, at least, the terms to search for.
      *
      */
@@ -178,7 +187,7 @@
                 key: trove_key,
                 encoding: 'json',
                 zone: zones,
-                q: options.terms,
+                q: options.terms || this.terms,
                 s: 0,
                 n: 20
         };
@@ -189,6 +198,16 @@
 
         if (options.number != undefined) {
             query_data.n = options.number;
+        }
+
+        if (typeof options.includes == 'string') {
+            query_data.include = options.includes;
+        } else if (Array.isArray(options.includes)) {
+            query_data.include = options.includes.join(',');
+        } else if (typeof this.includes == 'string') {
+            query_data.include = this.includes;
+        } else if (Array.isArray(this.includes)) {
+            query_data.include = this.includes.join(',');
         }
 
         this._last_search = query_data;
@@ -211,7 +230,7 @@
     };
 
     Search.prototype.requery = function(options, delta) {
-        if (this.response != undefined) {
+        if (this._last_search != undefined) {
 
             this._last_search.s = this._last_search.s + delta;
 
@@ -221,7 +240,7 @@
                 data     : this._last_search,
                 context  : this
             }).done(function (data) {
-                console.log('Got Search Next Query');
+                console.log('Got Search Requery');
                 this.response = data.response;
                 if ((options != undefined) && (options.done != undefined)) {
                     options.done(this);
@@ -252,32 +271,35 @@
         }
     };
 
+    exports.Search.prototype.newspaper_articles = function() {
+        // The Search object just
+        return [];
+    }
+
 
     /**
      * An Class to hold newspaper articles
      * @class
-     * @param {Object} options
-     *      identifier : the article identifier
+     * @param {Object} options An object specifying the default options
+     * @property {number} options.init The article identifier for which to retrieve data on construction.
+     * @property {function} options.done The default callback called when data has been returned from the Trove servers.
      */
     exports.NewspaperArticle = NewspaperArticle;
     function NewspaperArticle (options) {
         console.log('Creating NewspaperArticle');
 
-        // options.identifier
-        // options.done
-
-        var done = undefined;
-        if (options.done != undefined) {
-            done = options.done;
-            delete options.done;
+        var init = undefined;
+        if (options.init != undefined) {
+            init = options.init;
+            delete options.init;
         };
         $.extend(this, options);
 
         // If we know the identifier, get the data
-        if (this.identifier != undefined) {
+        if (init != undefined) {
             this.get({
-                identifier: this.identifier,
-                done: done
+                identifier: init,
+                done: this.done
             });
         }
     }
@@ -285,6 +307,8 @@
     /**
      * Retrieve article information based on identifier
      * @param {Object} options
+     * @property {number} options.identifier The article identifier for which to retrieve data.
+     * @property {function} options.done The callback called when data has been returned from the Trove servers. This overrides the default calback.
      */
     exports.NewspaperArticle.prototype.get = function (options) {
         console.log('Getting NewspaperArticle');
@@ -321,8 +345,8 @@
         if (this.title != undefined) {
             if (this.title.id != undefined) {
                 return new Newspaper({
-                    identifier: this.title.id,
-                    done: options.done
+                    init: this.title.id,
+                    done: options.done || this.done
                 });
             }
         }
@@ -344,16 +368,17 @@
     function Newspaper (options) {
         console.log('Creating Newspaper');
 
-        var done = undefined;
-        if (options.done != undefined) {
-            done = options.done;
-            delete options.done;
+        var init = undefined;
+        if (options.init != undefined) {
+            init = options.init;
+            delete options.init;
         };
+
         $.extend(this, options);
-        if (this.identifier != undefined) {
+        if (init != undefined) {
             this.get({
-                identifier: this.identifier,
-                done: done
+                identifier: init,
+                done: this.done
             });
         }
     }
