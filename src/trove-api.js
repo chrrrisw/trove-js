@@ -45,13 +45,54 @@
     exports.ZONE = ZONE;
 
     var LIMITS = {
+        FORMAT: 'l-format',
         DECADE: 'l-decade',
         YEAR: 'l-year',
         MONTH: 'l-month',
+        LANGUAGE: 'l-language',
+        AVAILABILITY: 'l-availability',
+        AUSTRALIAN: 'l-australian',
+        OCCUPATION: 'l-occupation',
+        ZOOM: 'l-zoom',
+        VENDORDB: 'l-vendordb',
+        VENDOR: 'l-vendor',
+        AUDIENCE: 'l-audience',
         TITLE: 'l-title',
-        CATEGORY: 'l-category'
+        CATEGORY: 'l-category',
+        ILLUSTRATED: 'l-illustrated',
+        ILLTYPE: 'l-illtype',
+        WORD: 'l-word',
+        ALL: 'l-all'
     };
     exports.LIMITS = LIMITS;
+
+    var SORTBY = {
+        DATEDESC: 'datedesc',
+        DATEASC: 'dateasc',
+        RELEVANCE: 'relevance'
+    };
+    exports.SORTBY = SORTBY;
+
+    var RECLEVEL = {
+        FULL: 'full',
+        BRIEF: 'brief'
+    };
+    exports.RECLEVEL = RECLEVEL;
+
+    var INCLUDE = {
+        TAGS            : 'tags',
+        COMMENTS        : 'comments',
+        LISTS           : 'lists',
+        HOLDINGS        : 'holdings',
+        LINKS           : 'links',
+        SUBSCRIBINGLIBS : 'subscribinglibs',
+        WORKVERSIONS    : 'workversions',
+        ARTICLETEXT     : 'articletext',
+        YEARS           : 'years',
+        LISTITEMS       : 'listitems',
+        ALL             : 'all'
+    };
+    exports.INCLUDE = INCLUDE;
 
     var CATEGORIES = {
         Article: 'Article',
@@ -60,28 +101,35 @@
     };
     exports.CATEGORIES = CATEGORIES;
 
+    var API_ADDRESS = 'http://api.trove.nla.gov.au/'
+
     var RECORD_TYPE = {
-            WORK: 'work',
-            NEWS: 'newspaper',
-            LIST: 'list'
+            WORK: 'work/',
+            NEWS: 'newspaper/',
+            LIST: 'list/'
     };
+    exports.RECORD_TYPE = RECORD_TYPE;
 
     var API = {
-        NP_BASE : 'http://api.trove.nla.gov.au/newspaper/',
-        NP_QUERY : 'http://api.trove.nla.gov.au/newspaper/title/',
-        NL_QUERY : 'http://api.trove.nla.gov.au/newspaper/titles',
-        ZONE_QUERY: 'http://api.trove.nla.gov.au/result'
+        WORK       : API_ADDRESS + RECORD_TYPE.WORK,
+        LIST       : API_ADDRESS + RECORD_TYPE.LIST,
+        NP_ARTICLE : API_ADDRESS + RECORD_TYPE.NEWS,
+        NP_TITLE   : API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
+        NP_TITLES  : API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
+        QUERY      : API_ADDRESS + 'result'
     };
 
     /**
+     * An object to perform searches
      * @class
+     * @param {Object} options An object specifying the options for this Search
      *
      */
     exports.Search = Search;
     function Search (options) {
         console.log('Creating Search');
         // options.zones is a string or list of strings
-        // options.done_callback
+        // options.done
         // options.terms
 
         // copy everything from options to this object
@@ -94,6 +142,7 @@
 
     /**
      * @class
+     * @param {Object} options An object containing, at least, the terms to search for.
      *
      */
     exports.Search.prototype.query = function (options) {
@@ -113,7 +162,7 @@
         //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
 
         // Get the zone or zones for the query.
-        // Preference is given to the zone(s) in the options passed.
+        // Preference is given to the zone(s) in the options passed but will fallback to the options specified in the construction of the Search object. The default is ZONE.ALL.
         var zones = ZONE.ALL;
         if (typeof options.zones == 'string') {
             zones = options.zones;
@@ -146,7 +195,7 @@
 
         $.ajax({
             dataType : "jsonp",
-            url      : API.ZONE_QUERY,
+            url      : API.QUERY,
             data     : query_data,
             context  : this
         }).done(function (data) {
@@ -154,8 +203,8 @@
             this.response = data.response;
             if ((options != undefined) && (options.done != undefined)) {
                 options.done(this);
-            } else if (this.done_callback != undefined) {
-                this.done_callback(this);
+            } else if (this.done != undefined) {
+                this.done(this);
             }
         });
 
@@ -168,7 +217,7 @@
 
             $.ajax({
                 dataType : "jsonp",
-                url      : API.ZONE_QUERY,
+                url      : API.QUERY,
                 data     : this._last_search,
                 context  : this
             }).done(function (data) {
@@ -176,8 +225,8 @@
                 this.response = data.response;
                 if ((options != undefined) && (options.done != undefined)) {
                     options.done(this);
-                } else if (this.done_callback != undefined) {
-                    this.done_callback(this);
+                } else if (this.done != undefined) {
+                    this.done(this);
                 }
             });
         }
@@ -215,7 +264,7 @@
         console.log('Creating NewspaperArticle');
 
         // options.identifier
-        // options.done_callback
+        // options.done
 
         var done = undefined;
         if (options.done != undefined) {
@@ -248,7 +297,7 @@
 
         $.ajax({
             dataType : "jsonp",
-            url      : API.NP_BASE + options.identifier,
+            url      : API.NP_ARTICLE + options.identifier,
             data     : query_data,
             context  : this
         }).done(function (data) {
@@ -256,8 +305,8 @@
             $.extend(this, data.article);
             if (options.done != undefined) {
                 options.done(this);
-            } else if (this.done_callback != undefined) {
-                this.done_callback(this);
+            } else if (this.done != undefined) {
+                this.done(this);
             }
         });
     };
@@ -324,7 +373,7 @@
 
         $.ajax({
             dataType : "jsonp",
-            url      : API.NP_QUERY + options.identifier,
+            url      : API.NP_TITLE + options.identifier,
             data     : query_data,
             context  : this
         }).done(function (data) {
@@ -332,8 +381,8 @@
             $.extend(this, data.newspaper);
             if (options.done != undefined) {
                 options.done(this);
-            } else if (this.done_callback != undefined) {
-                this.done_callback(this);
+            } else if (this.done != undefined) {
+                this.done(this);
             }
         });
     };
@@ -391,7 +440,7 @@
 
         $.ajax({
             dataType : "jsonp",
-            url      : API.NL_QUERY,
+            url      : API.NP_TITLES,
             data     : query_data,
             context  : this
         }).done(this.processGet);
