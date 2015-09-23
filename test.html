@@ -7,7 +7,7 @@
         <meta name="description" content="" />
         <meta name="author" content="Chris Willoughby" />
 
-        <meta name="viewport" content="width=device-width; initial-scale=1.0" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css'>
         <style type="text/css">
@@ -77,12 +77,12 @@
                 </div>
  -->
 
-                <div class="ui right aligned search item">
-                    <div class="ui icon input">
-                        <input class="prompt" placeholder="Search trove..." type="text">
-                        <i class="search link icon"></i>
+                <div class='ui search item'>
+                    <div class='ui icon input'>
+                        <input id='search-prompt' class='prompt' placeholder='Search trove...' type='text'>
+                        <i class='book icon'></i>
                     </div>
-                    <div class="results"></div>
+                    <div class='results'></div>
                 </div>
 
                 <a class="item">
@@ -124,6 +124,7 @@
                 <div class="ui submit button">Update</div>
             </div>
         </div>
+
         <div class='pusher'>
             <div class='ui main text container'>
                 <table class='ui celled table'>
