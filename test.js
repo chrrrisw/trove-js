@@ -41,22 +41,67 @@ function test_trove (key) {
 
     // var act_newspapers = new Trove.NewspaperList({state: 'act'});
 
-    var search = new Trove.Search({
+    test_search = new Trove.Search({
         zones: [Trove.ZONE.NEWS, Trove.ZONE.PIC],
         done: function(s) {
             console.dir(s.response);
         }
     });
 
-    search.query({
+    test_search.query({
         terms: 'willoughby',
         start: 40,
         number: 4
     });
 }
 
+var test_search;
+var zone_dropdown;
+var started = false;
+
+String.prototype.capitalize = function() {
+    return this.charAt(0).toUpperCase() + this.slice(1);
+}
+
+function search(terms) {
+    if (started) {
+        test_search.query({
+            zones: zone_dropdown.val(),
+            terms: terms
+        });
+    }
+}
+
+function search_previous() {
+    if (started) {
+        console.log('prevous');
+        test_search.previous();
+    }
+}
+
+function search_next() {
+    if (started) {
+        console.log('next');
+        test_search.next();
+    }
+}
+
+function search_done(s) {
+    console.dir(s.response);
+}
+
 function start(evt) {
-    test_trove($('#key_id').val());
+    // test_trove($('#key_id').val());
+
+    // Initialise the Trove API with the key
+    Trove.init($('#key_id').val());
+
+    // Create a search object with a default done callback
+    test_search = new Trove.Search({
+        done: search_done
+    });
+
+    started = true;
 }
 
 function documentReady(jQuery) {
@@ -69,7 +114,18 @@ function documentReady(jQuery) {
 
     $('.ui.normal.dropdown').dropdown();
 
-    var zone_dropdown = $('.ui.zone.dropdown');
+    $('#search-prompt').on('keyup', function (evt) {
+        if(evt.keyCode == 13)
+            search( $(this).val() );
+    });
+
+    $('#search-previous').on('click', search_previous);
+    $('#search-next').on('click', search_next);
+
+    zone_dropdown = $('.ui.zone.dropdown');
+    for (z in Trove.ZONE) {
+        zone_dropdown.append('<option value="' + Trove.ZONE[z] + '">' + Trove.ZONE[z].capitalize() + '</option>')
+    }
     zone_dropdown.dropdown({
         useLabels: false
     });

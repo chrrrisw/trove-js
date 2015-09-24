@@ -10,55 +10,46 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
         <link rel="stylesheet" href='https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.1.4/semantic.min.css'>
-        <style type="text/css">
-            body {
-                background-color: #FFFFFF;
-            }
-            .ui.menu .item img.logo {
-                margin-right: 1.5em;
-            }
-            .ui.menu .item label {
-                padding-right: 0.3em;
-            }
-            .sidebar-form {
-                margin-top: 5em;
-            }
-            .main.container {
-                margin-top: 5em;
-            }
-            .wireframe {
-                margin-top: 2em;
-            }
-            .ui.footer.segment {
-                margin: 5em 0em 0em;
-                padding: 5em 0em;
-            }
-        </style>
+        <link rel="stylesheet" href='css/test.css'>
     </head>
 
     <body>
         <div class="ui fixed inverted menu">
+        <div class="ui container">
 
             <div class='header item'>Test Trove</div>
             <a class='searchlimits item'>Search Limits</a>
 
-            <div class='item'>
-                <div class="ui icon input">
-                    <input id='key_id' placeholder="Key..." type="text">
-                    <i class="key icon"></i>
+            <div class='ui search item'>
+                <div class='ui icon input'>
+                    <input id='search-prompt' class='prompt' placeholder='Search trove...' type='text'>
+                    <i class='trove icon'></i>
                 </div>
-                <div id='start' class='ui button'>Start</div>
+                <div class='results'></div>
             </div>
+
+            <a id='search-previous' class="item">
+                <i class='left arrow icon'></i>
+            </a>
+
+            <a id='search-next' class="item">
+                <i class='right arrow icon'></i>
+            </a>
+
             <div class="right menu">
 
                 <div class='ui item'>
                     <label>Zone</label>
                     <select multiple="" class="ui zone dropdown" maxlength="10">
-                        <option value="book">Book</option>
-                        <option value="picture">Picture</option>
-                        <option value="article">Article</option>
-                        <option value="newspaper">Newspaper</option>
                     </select>
+                </div>
+
+                <div class='item'>
+                    <div class="ui icon input">
+                        <input id='key_id' placeholder="Key..." type="text">
+                        <i class="key icon"></i>
+                    </div>
+                    <div id='start' class='ui button'>Start</div>
                 </div>
 
 <!--
@@ -77,22 +68,8 @@
                 </div>
  -->
 
-                <div class='ui search item'>
-                    <div class='ui icon input'>
-                        <input id='search-prompt' class='prompt' placeholder='Search trove...' type='text'>
-                        <i class='book icon'></i>
-                    </div>
-                    <div class='results'></div>
-                </div>
-
-                <a class="item">
-                    <i class='left arrow icon'></i>
-                </a>
-
-                <a class="item">
-                    <i class='right arrow icon'></i>
-                </a>
             </div>
+        </div>
         </div>
 
         <div class='ui left sidebar'>

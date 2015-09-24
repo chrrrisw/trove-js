@@ -98,9 +98,11 @@
     exports.INCLUDE = INCLUDE;
 
     var CATEGORIES = {
-        Article: 'Article',
-        Advertising: 'Advertising',
-        Family_Notices: 'Family+Notices'
+        ARTICLE: 'Article',
+        ADVERTISING: 'Advertising',
+        LISTS: 'Detailed lists, results, guides',
+        FAMILY_NOTICES: 'Family Notices',
+        LITERATURE: 'Literature'
     };
     exports.CATEGORIES = CATEGORIES;
 
