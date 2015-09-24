@@ -1,0 +1,32 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd" >
+<svg>
+<metadata>
+Created by FontForge 20120731 at Thu Sep 24 18:05:25 2015
+ By Chris Willoughby,,,
+
+</metadata>
+<defs>
+<font id="Trove" horiz-adv-x="1792" >
+  <font-face 
+    font-family="Trove"
+    font-weight="400"
+    font-stretch="normal"
+    units-per-em="1792"
+    panose-1="2 0 5 3 0 0 0 0 0 0"
+    ascent="1536"
+    descent="-256"
+    bbox="0 0 1750 1792"
+    underline-thickness="157.5"
+    underline-position="-155.75"
+    unicode-range="U+0074-0074"
+  />
+<missing-glyph 
+d="M0 0v1792h1750v-1792h-1750z" />
+    <glyph glyph-name=".notdef" 
+d="M0 0v1792h1750v-1792h-1750z" />
+    <glyph glyph-name="trove" unicode="t" horiz-adv-x="0" 
+d="M878 1384h541c25 0 50 -25 50 -58v-304c0 -34 -25 -54 -50 -54h-347v-732l255 -101v592c0 25 24 58 57 58h296h59v-110h-59h-245v-624c0 -26 -25 -51 -51 -51h-23l-365 143c-17 9 -33 34 -33 51v828c0 25 25 57 59 57h339v196h-483h-498v-196h347c25 0 50 -24 50 -57
+v-828c0 -17 -17 -42 -34 -51l-363 -143h-25c-26 0 -51 25 -51 51v624h-253h-51v110h51h304c33 0 59 -33 59 -58v-592l254 101v732h-348c-25 0 -50 28 -50 54v304c0 33 25 58 50 58h558z" />
+  </font>
+</defs></svg>

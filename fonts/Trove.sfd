@@ -1,0 +1,135 @@
+SplineFontDB: 3.0
+FontName: Trove
+FullName: Trove
+FamilyName: Trove
+Weight: Regular
+Copyright: 
+Version: 0.1
+ItalicAngle: 0
+UnderlinePosition: -155.75
+UnderlineWidth: 157.5
+Ascent: 1536
+Descent: 256
+LayerCount: 2
+Layer: 0 0 "Back"  1
+Layer: 1 0 "Fore"  0
+XUID: [1021 858 1431304891 11575927]
+OS2Version: 0
+OS2_WeightWidthSlopeOnly: 0
+OS2_UseTypoMetrics: 0
+CreationTime: 1443079469
+ModificationTime: 1443083562
+PfmFamily: 17
+TTFWeight: 400
+TTFWidth: 5
+LineGap: 161
+VLineGap: 161
+OS2TypoAscent: 0
+OS2TypoAOffset: 1
+OS2TypoDescent: 0
+OS2TypoDOffset: 1
+OS2TypoLinegap: 161
+OS2WinAscent: 0
+OS2WinAOffset: 1
+OS2WinDescent: 0
+OS2WinDOffset: 1
+HheadAscent: 0
+HheadAOffset: 1
+HheadDescent: 0
+HheadDOffset: 1
+OS2Vendor: 'PfEd'
+MarkAttachClasses: 1
+DEI: 91125
+Encoding: Original
+UnicodeInterp: none
+NameList: Adobe Glyph List
+DisplaySize: -24
+AntiAlias: 1
+FitToEm: 1
+WinInfo: 0 35 16
+BeginPrivate: 0
+EndPrivate
+BeginChars: 2 2
+
+StartChar: .notdef
+Encoding: 0 0 0
+Width: 1792
+Flags: W
+HStem: 0 1792<0 1750>
+VStem: 0 1750<0 1792>
+LayerCount: 2
+Fore
+SplineSet
+0 0 m 1
+ 0 1792 l 1
+ 1750 1792 l 1
+ 1750 0 l 1
+ 0 0 l 1
+EndSplineSet
+Validated: 1
+EndChar
+
+StartChar: trove
+Encoding: 1 116 1
+Width: 0
+VWidth: 1024
+Flags: HMWO
+HStem: 0 21G<342 430.769 1308.37 1397> 675 110<0 304 1435 1739> 968 110<380 667 1072 1359.17> 1275 110<380 1359>
+VStem: 270 110<1072 1275.23> 304 110<135 675.07> 668 110<236 968.383> 963 110<236 968.383> 1327 110<135 675.07> 1361 110<1072 1275.23>
+LayerCount: 2
+Fore
+SplineSet
+878 1384 m 2xfb
+ 1419 1384 l 2
+ 1444 1384 1469 1359 1469 1326 c 2
+ 1469 1022 l 2
+ 1469 988 1444 968 1419 968 c 2
+ 1072 968 l 1
+ 1072 236 l 1
+ 1327 135 l 1
+ 1327 727 l 2
+ 1327 752 1351 785 1384 785 c 2
+ 1680 785 l 1
+ 1739 785 l 1
+ 1739 675 l 1
+ 1680 675 l 1
+ 1435 675 l 1
+ 1435 51 l 2
+ 1435 25 1410 0 1384 0 c 0
+ 1376 0 1370 0 1361 0 c 2
+ 996 143 l 2
+ 979 152 963 177 963 194 c 2
+ 963 1022 l 2
+ 963 1047 988 1079 1022 1079 c 2
+ 1361 1079 l 1
+ 1361 1275 l 1
+ 878 1275 l 1
+ 380 1275 l 1
+ 380 1079 l 1
+ 727 1079 l 2
+ 752 1079 777 1055 777 1022 c 2
+ 777 194 l 0
+ 777 177 760 152 743 143 c 2
+ 380 0 l 2xfb
+ 372 0 363 0 355 0 c 0
+ 329 0 304 25 304 51 c 2
+ 304 675 l 1
+ 51 675 l 1
+ 0 675 l 1
+ 0 785 l 1
+ 51 785 l 1
+ 355 785 l 2
+ 388 785 414 752 414 727 c 2
+ 414 135 l 1xf7
+ 668 236 l 1
+ 668 968 l 1
+ 320 968 l 2
+ 295 968 270 996 270 1022 c 2
+ 270 1326 l 0
+ 270 1359 295 1384 320 1384 c 2
+ 878 1384 l 2xfb
+EndSplineSet
+Validated: 1
+EndChar
+EndChars
+EndSplineFont
