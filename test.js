@@ -87,7 +87,21 @@ function search_next() {
 }
 
 function search_done(s) {
+    // people -> people
+    // article -> work
+    // list -> list
+    // collection -> work
+    // book -> work
+    // picture -> work
+    // map -> work
+    // music -> work
+    // newspaper -> article
     console.dir(s.response);
+    for (zone_num in s.response.zone) {
+        var zone_name = s.response.zone[zone_num].name;
+        var zone_items = s.response.zone[zone_num].records[zone_name];
+        console.dir(zone_items);
+    }
 }
 
 function start(evt) {

@@ -106,6 +106,18 @@
     };
     exports.CATEGORIES = CATEGORIES;
 
+    var SEARCH_RECORDS = {
+        people: 'people',
+        article: 'work',
+        list: 'list',
+        collection: 'work',
+        book: 'work',
+        picture: 'work',
+        map: 'work',
+        music: 'work',
+        newspaper: 'article'
+    };
+
     var API_ADDRESS = 'http://api.trove.nla.gov.au/'
 
     var RECORD_TYPE = {
