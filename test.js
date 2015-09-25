@@ -100,7 +100,7 @@ function search_done(s) {
     for (zone_num in s.response.zone) {
         var zone_name = s.response.zone[zone_num].name;
         var zone_items = s.response.zone[zone_num].records[zone_name];
-        console.dir(zone_items);
+        // console.dir(zone_items);
     }
 }
 
@@ -115,6 +115,7 @@ function start(evt) {
         done: search_done
     });
 
+    test_search.limit_date_range('1900');
     started = true;
 }
 

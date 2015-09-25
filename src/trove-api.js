@@ -45,6 +45,28 @@
     };
     exports.ZONE = ZONE;
 
+    var FACETS = {
+        FORMAT: 'format',
+        DECADE: 'decade',  //YYY
+        YEAR: 'year',  //YYYY
+        MONTH: 'month',  //
+        LANGUAGE: 'language',
+        AVAILABILITY: 'availability',
+        AUSTRALIAN: 'australian',
+        OCCUPATION: 'occupation',
+        ZOOM: 'zoom',
+        VENDORDB: 'vendordb',
+        VENDOR: 'vendor',
+        AUDIENCE: 'audience',
+        TITLE: 'title',
+        CATEGORY: 'category',
+        ILLUSTRATED: 'illustrated',
+        ILLTYPE: 'illtype',
+        WORD: 'word',
+        ALL: 'all'
+    };
+    exports.FACETS = FACETS;
+
     var LIMITS = {
         FORMAT: 'l-format',
         DECADE: 'l-decade',
@@ -161,7 +183,58 @@
         // Used to request previous and next results.
         this._last_search =  undefined;
 
+        this.facets = [];
+        this.limits = {};
+
     }
+
+    /*
+     * Remove the named facet.
+     * @param {string} facet
+     */
+    exports.Search.prototype.remove_facet = function(facet) {
+        if (this.facets.indexOf(facet) != -1) {
+            this.facets.splice(this.facets.indexOf(facet), 1);
+        }
+    };
+
+    /*
+     * Add the named facet.
+     * @param {string} facet
+     */
+    exports.Search.prototype.add_facet = function(facet) {
+        this.facets.push(facet);
+    };
+
+    /*
+     * Clear the date range limits.
+     */
+    exports.Search.prototype.clear_date_range_limit = function() {
+        if (this.limits.decade != undefined) delete this.limits.decade;
+        if (this.limits.year != undefined) delete this.limits.year;
+        if (this.limits.month != undefined) delete this.limits.month;
+    };
+
+    /*
+     * Set the limits on the date range returned
+     */
+    exports.Search.prototype.limit_date_range = function(start) {
+        var split_start = start.split('-');
+        if (split_start.length >= 1) {
+            if (split_start[0].length == 3) {
+                this.limits.decade = split_start[0];
+            } else if (split_start[0].length == 4) {
+                this.limits.decade = split_start[0].substr(0, 3);
+                this.limits.year = split_start[0];
+            }
+        }
+
+        if (split_start.length >= 2) {
+            this.limits.month = split_start[1];
+        }
+
+    };
+
 
     /**
      * Query the Trove database.
@@ -169,10 +242,20 @@
      *
      */
     exports.Search.prototype.query = function (options) {
-        // options.start
-        // options.terms
-        // options.zones
-        // options.number
+        // Searches are composed of the following
+        //   options.zones => string or list
+        //   options.terms => string
+        //   options.start => number
+        //   options.number => number
+        //   options.sort => string
+        //   options.reclevel => string
+        //   options.includes => string or list
+        //   options.limits => string or list
+        //   options.facets => string or list
+        //     encoding => "json"
+        //     callback => string
+        //     key => string
+
         // options.done
 
         console.log('Querying Search');
@@ -206,14 +289,27 @@
                 n: 20
         };
 
+        // Where to start
         if (options.start != undefined) {
             query_data.s = options.start;
         }
 
+        // How many to return
         if (options.number != undefined) {
             query_data.n = options.number;
         }
 
+        // In what sort order
+        if (options.sort != undefined) {
+            query_data.sortby = options.sort;
+        };
+
+        // Full or brief
+        if (options.reclevel != undefined) {
+            query_data.reclevel = options.reclevel;
+        }
+
+        // What to include
         if (typeof options.includes == 'string') {
             query_data.include = options.includes;
         } else if (Array.isArray(options.includes)) {
@@ -223,6 +319,22 @@
         } else if (Array.isArray(this.includes)) {
             query_data.include = this.includes.join(',');
         }
+
+        // What facets of the data to return
+        if (this.facets.length > 0) {
+            query_data.facet = this.facets.join(',');
+        }
+
+        // What limits apply to the search
+        // var limit_url = '';
+        var limit_keys = Object.keys(this.limits);
+        if (limit_keys.length > 0) {
+            for (var index in limit_keys) {
+                query_data['l-' + limit_keys[index]] = this.limits[limit_keys[index]];
+                // limit_url = limit_url + '&l-' + limit_keys[index] + '=' + this.limits[limit_keys[index]];
+            }
+        }
+        // console.log('limits: ' + limit_url);
 
         this._last_search = query_data;
 
