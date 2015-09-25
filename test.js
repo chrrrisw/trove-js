@@ -56,15 +56,33 @@ function test_trove (key) {
 }
 
 var test_search;
+var key_field;
 var zone_dropdown;
+var categories_dropdown;
 var started = false;
+var settings_sidebar;
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 }
 
 function search(terms) {
+
+    // If we haven't initialised yet, do so
+    // Show the sidebar if the user hasn't entered a key
+    if (!started) {
+        if (key_field.val() == '') {
+            key_field.parent().addClass('error');
+            settings_sidebar.sidebar('show');
+        } else {
+            key_field.parent().removeClass('error');
+            Trove.init(key_field.val());
+            started = true;
+        }
+    }
+
     if (started) {
+        settings_sidebar.sidebar('hide');
         test_search.query({
             zones: zone_dropdown.val(),
             terms: terms
@@ -74,14 +92,12 @@ function search(terms) {
 
 function search_previous() {
     if (started) {
-        console.log('prevous');
         test_search.previous();
     }
 }
 
 function search_next() {
     if (started) {
-        console.log('next');
         test_search.next();
     }
 }
@@ -100,52 +116,50 @@ function search_done(s) {
     for (zone_num in s.response.zone) {
         var zone_name = s.response.zone[zone_num].name;
         var zone_items = s.response.zone[zone_num].records[zone_name];
-        // console.dir(zone_items);
     }
-}
-
-function start(evt) {
-    // test_trove($('#key_id').val());
-
-    // Initialise the Trove API with the key
-    Trove.init($('#key_id').val());
-
-    // Create a search object with a default done callback
-    test_search = new Trove.Search({
-        done: search_done
-    });
-
-    test_search.limit_date_range('1900');
-    started = true;
 }
 
 function documentReady(jQuery) {
 
-    if (typeof Symbol() === 'symbol') {
-        console.log('your browser has symbol');
+    // Initialise the sidebar
+    settings_sidebar = $('.ui.sidebar');
+    settings_sidebar.sidebar('attach events', '.searchlimits');
+
+    // Fill in and initiliase the categories dropdown
+    categories_dropdown = $('.ui.categories.dropdown');
+    for (z in Trove.CATEGORIES) {
+        categories_dropdown.append('<option value="' + Trove.CATEGORIES[z] + '">' + Trove.CATEGORIES[z].capitalize() + '</option>');
     }
+    categories_dropdown.dropdown();
 
-    $('.ui.sidebar').sidebar('attach events', '.searchlimits');
-
-    $('.ui.normal.dropdown').dropdown();
-
+    // Catch the enter key in the search prompt
     $('#search-prompt').on('keyup', function (evt) {
         if(evt.keyCode == 13)
             search( $(this).val() );
     });
 
+    // Connect callbacks for previous and next
     $('#search-previous').on('click', search_previous);
     $('#search-next').on('click', search_next);
 
-    zone_dropdown = $('.ui.zone.dropdown');
+    // Fill in and initialise the zones dropdown
+    zone_dropdown = $('.ui.zones.dropdown');
     for (z in Trove.ZONE) {
-        zone_dropdown.append('<option value="' + Trove.ZONE[z] + '">' + Trove.ZONE[z].capitalize() + '</option>')
+        zone_dropdown.append('<option value="' + Trove.ZONE[z] + '">' + Trove.ZONE[z].capitalize() + '</option>');
     }
-    zone_dropdown.dropdown({
-        useLabels: false
+    zone_dropdown.dropdown();
+
+    $('.sidebar-form').on('submit', function(){
+        console.log('Form submitted');
+        return false;
     });
 
-    $('#start').on('click', start);
+    // Create a Search object
+    test_search = new Trove.Search({
+        done: search_done
+    });
+
+    key_field = $('#key_id');
 }
 
 $(document).ready(documentReady);

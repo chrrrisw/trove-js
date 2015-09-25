@@ -15,82 +15,58 @@
 
     <body>
         <div class="ui fixed inverted menu">
-        <div class="ui container">
+            <div class="ui container">
 
-            <div class='header item'>Test Trove</div>
-            <a class='searchlimits item'><i class="settings icon"></i></a>
+                <div class='header item'>Test Trove</div>
+                <a class='searchlimits item'><i class="settings icon"></i></a>
 
-            <div class='ui search item'>
-                <div class='ui icon input'>
-                    <input id='search-prompt' class='prompt' placeholder='Search trove...' type='text'>
-                    <i class='trove icon'></i>
-                </div>
-                <div class='results'></div>
-            </div>
-
-            <a id='search-previous' class="item">
-                <i class='left arrow icon'></i>
-            </a>
-
-            <a id='search-next' class="item">
-                <i class='right arrow icon'></i>
-            </a>
-
-            <div class="right menu">
-
-                <div class='ui item'>
-                    <label>Zone</label>
-                    <select multiple="" class="ui zone dropdown" maxlength="10">
-                    </select>
-                </div>
-
-                <div class='item'>
-                    <div class="ui icon input">
-                        <input id='key_id' placeholder="Key..." type="text">
-                        <i class="key icon"></i>
+                <div class='ui search item'>
+                    <div class='ui icon input'>
+                        <input id='search-prompt' class='prompt' placeholder='Search trove...' type='text'>
+                        <i class='trove icon'></i>
                     </div>
-                    <div id='start' class='ui button'>Start</div>
+                    <div class='results'></div>
                 </div>
 
-<!--
-                <div class="ui right aligned normal dropdown item">
+                <a id='search-previous' class="item">
+                    <i class='left arrow icon'></i>
+                </a>
 
-                    <input name="zone" type="hidden">
-                    <div class="default text">Zone</div>
-                    <div class="menu">
-                        <div class="item" data-value="book">Book</div>
-                        <div class="item" data-value="picture">Picture</div>
-                        <div class="item" data-value="article">Article</div>
-                        <div class="item" data-value="newspaper">Newspapers</div>
-                    </div>
-                    <i class="dropdown icon"></i>
-
-                </div>
- -->
+                <a id='search-next' class="item">
+                    <i class='right arrow icon'></i>
+                </a>
 
             </div>
-        </div>
         </div>
 
         <div class='ui left sidebar'>
             <div class="ui inverted form sidebar-form">
 
-                <div class='three wide field' id='l-decade'>
-                    <label>Date</label>
-                    <input class='ui input' maxlength="3" name='decade' type='text'>
+                <div class='field'>
+                    <label>Trove Key</label>
+                    <div class="ui icon input">
+                        <input id='key_id' placeholder="Key..." type="text">
+                        <i class="key icon"></i>
+                    </div>
                 </div>
 
-                <div class="field" id='l-year'>
+                <div class='field'>
+                    <label>Zones</label>
+                    <select multiple="" class="ui zones dropdown">
+                    </select>
                 </div>
 
-                <div class="field" id='l-month'></div>
+                <div class='field'>
+                    <label>Date Range</label>
+                    <div class="ui icon input">
+                        <input id='date-range' placeholder='YYY[Y[-MM]]' name='dates' type='text'>
+                        <i class="calendar icon"></i>
+                    </div>
+                </div>
 
                 <div class='field' id='l-category'>
-                    <label>Category</label>
-                    <select multiple="" class="ui normal dropdown">
-                        <option value="Article">Article</option>
-                        <option value="Advertising">Advertising</option>
-                        <option value="Family+Notices">Family Notices</option>
+                    <label>Categories</label>
+                    <select multiple="" class="ui categories dropdown">
                     </select>
                 </div>
 
