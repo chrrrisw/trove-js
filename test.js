@@ -61,6 +61,7 @@ var zone_dropdown;
 var categories_dropdown;
 var started = false;
 var settings_sidebar;
+var results_accordion;
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -102,6 +103,35 @@ function search_next() {
     }
 }
 
+// function cvrt()
+// {
+//     return books[i].getElementsByTagName(arguments[1])[0].childNodes[0].nodeValue;
+// }
+
+var title_template = ' \
+    <div class="title"> \
+        <i class="dropdown icon"></i> \
+        %title% (%count%) \
+    </div>';
+
+var content_template = ' \
+    <div class="content"> \
+        <table class="ui celled table"> \
+            <thead> \
+                <tr><th>ID</th><th>Trove URL</th></tr> \
+            </thead> \
+            <tbody> \
+                %items% \
+            </tbody> \
+        </table> \
+    </div>';
+
+var item_template = ' \
+    <tr> \
+        <td>%identifier%</td> \
+        <td><a href="%trove_url%">See here</a></td> \
+    </tr>';
+
 function search_done(s) {
     // people -> people
     // article -> work
@@ -112,10 +142,38 @@ function search_done(s) {
     // map -> work
     // music -> work
     // newspaper -> article
-    console.dir(s.response);
-    for (zone_num in s.response.zone) {
-        var zone_name = s.response.zone[zone_num].name;
-        var zone_items = s.response.zone[zone_num].records[zone_name];
+    console.dir(s.response.zone);
+    var zone_items;
+    var zone_name;
+    var temp1, temp2;
+    for (var zone_num in s.response.zone) {
+        zone_name = s.response.zone[zone_num].name;
+        console.log(zone_name);
+        if (zone_name == 'people') {
+            zone_items = s.response.zone[zone_num].records['people'];
+        } else if (zone_name == 'list') {
+            zone_items = s.response.zone[zone_num].records['list'];
+        } else if (zone_name == 'newspaper') {
+            zone_items = s.response.zone[zone_num].records['article'];
+        } else {
+            zone_items = s.response.zone[zone_num].records['work'];
+        }
+
+        // Add a title
+        // results_accordion.append('<div class="title"><i class="dropdown icon"></i>' + zone_name + '</div>');
+        temp1 = title_template.replace('%title%', zone_name);
+        temp1 = temp1.replace('%count%', zone_items.length);
+        results_accordion.append(temp1);
+
+        // Add the contents
+        // results_accordion.append('<div class="content"><p>Stuff here</p></div>');
+        temp2 = '';
+        for (item_num in zone_items) {
+            temp1 = item_template.replace('%identifier%', zone_items[item_num].id);
+            temp1 = temp1.replace('%trove_url%', zone_items[item_num].troveUrl);
+            temp2 = temp2 + temp1;
+        }
+        results_accordion.append(content_template.replace('%items%', temp2));
     }
 }
 
@@ -124,6 +182,9 @@ function documentReady(jQuery) {
     // Initialise the sidebar
     settings_sidebar = $('.ui.sidebar');
     settings_sidebar.sidebar('attach events', '.searchlimits');
+
+    results_accordion = $('#results-accordion');
+    results_accordion.accordion();
 
     // Fill in and initiliase the categories dropdown
     categories_dropdown = $('.ui.categories.dropdown');
