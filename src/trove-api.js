@@ -32,6 +32,7 @@
     var ENC = '&encoding=json';
 
     // can include multiple as a list
+    // website and people not included
     var ZONE = {
         BOOK: 'book',
         PIC: 'picture',
@@ -140,6 +141,19 @@
         newspaper: 'article'
     };
 
+    // Mapping of search result zones to constructors
+    var SEARCH_CONSTRUCTORS = {
+        people: Person,
+        article: Article,
+        list: List,
+        collection: Collection,
+        book: Book,
+        picture: Picture,
+        map: Map,
+        music: Music,
+        newspaper: NewspaperArticle
+    };
+
     var API_ADDRESS = 'http://api.trove.nla.gov.au/'
 
     var RECORD_TYPE = {
@@ -162,22 +176,21 @@
      * An object to perform searches
      * @class
      * @param {Object} options An object specifying the options for this Search
-     * @property {String|Array} zones The default zone or list of zones to search
-     * @property {Function} done The default callback called on receipt of data
-     * @property {String} terms The default search terms
+     * @property {string|Array} options.zones The default zone or list of zones to search
+     * @property {Function} options.done The default callback called on receipt of data
+     * @property {string} options.terms The default search terms
      */
     exports.Search = Search;
     function Search (options) {
         console.log('Creating Search');
-        // options.zones is a string or list of strings
-        // options.done
-        // options.terms
 
         // copy everything from options to this object
         $.extend(this, options);
 
         // The raw response from the query
         this.response = undefined;
+
+        this.items = {};
 
         // The parameters of the last search
         // Used to request previous and next results.
@@ -188,9 +201,55 @@
 
     }
 
-    /*
+    Search.prototype.process_results = function(data) {
+        console.log('Got Search Query');
+        var zone_items;
+        var zone_name;
+
+        this.items = {}; // Clear the last lot of results
+        this.response = data.response; // Store the raw response
+
+        for (var zone_num in this.response.zone) {
+            zone_name = this.response.zone[zone_num].name;
+            // console.log(zone_name);
+
+            this.items[zone_name] = []; // Create an empty list for this zone
+
+            zone_items = this.response.zone[zone_num].records[SEARCH_RECORDS[zone_name]];
+
+            for (item_num in zone_items) {
+                this.items[zone_name].push(new SEARCH_CONSTRUCTORS[zone_name](zone_items[item_num]));
+            }
+
+            // console.dir(this.items[zone_name]);
+
+            // if (zone_name == 'people') {
+            //     zone_items = this.response.zone[zone_num].records['people'];
+            // } else if (zone_name == 'list') {
+            //     zone_items = this.response.zone[zone_num].records['list'];
+            // } else if (zone_name == 'newspaper') {
+            //     zone_items = this.response.zone[zone_num].records['article'];
+            // } else {
+            //     zone_items = this.response.zone[zone_num].records['work'];
+            // }
+
+        }
+
+        // if ((options != undefined) && (options.done != undefined)) {
+        //     options.done(this);
+        // } else if (this.done != undefined) {
+        //     this.done(this);
+        // }
+
+        // TODO: Should I keep the options.done?
+        if (this.done != undefined) {
+            this.done(this);
+        }
+    };
+
+    /**
      * Remove the named facet.
-     * @param {string} facet
+     * @param {string} facet The name of the facet to remove
      */
     exports.Search.prototype.remove_facet = function(facet) {
         if (this.facets.indexOf(facet) != -1) {
@@ -198,15 +257,15 @@
         }
     };
 
-    /*
+    /**
      * Add the named facet.
-     * @param {string} facet
+     * @param {string} facet The name of the facet to add
      */
     exports.Search.prototype.add_facet = function(facet) {
         this.facets.push(facet);
     };
 
-    /*
+    /**
      * Clear the date range limits.
      */
     exports.Search.prototype.clear_date_range_limit = function() {
@@ -215,8 +274,9 @@
         if (this.limits.month != undefined) delete this.limits.month;
     };
 
-    /*
+    /**
      * Set the limits on the date range returned
+     * @param {string} start The date limit, one of: YYY for decade, YYYY for year, or YYYY-MM for month
      */
     exports.Search.prototype.limit_date_range = function(start) {
         var split_start = start.split('-');
@@ -239,7 +299,16 @@
     /**
      * Query the Trove database.
      * @param {Object} options An object containing, at least, the terms to search for.
-     *
+     * @property {string|Array} options.zones The default zone or list of zones to search
+     * @property {string} options.terms The default search terms
+     * @property {Function} options.done The default callback called on receipt of data
+     * @property {number} options.start
+     * @property {number} options.number
+     * @property {string} options.sort
+     * @property {string} options.reclevel
+     * @property {string|Array} options.includes
+     * @property {string|Array} options.limits
+     * @property {string|Array} options.facets
      */
     exports.Search.prototype.query = function (options) {
         // Searches are composed of the following
@@ -338,20 +407,27 @@
 
         this._last_search = query_data;
 
+        // $.ajax({
+        //     dataType : "jsonp",
+        //     url      : API.QUERY,
+        //     data     : query_data,
+        //     context  : this
+        // }).done(function (data) {
+        //     console.log('Got Search Query');
+        //     this.response = data.response;
+        //     if ((options != undefined) && (options.done != undefined)) {
+        //         options.done(this);
+        //     } else if (this.done != undefined) {
+        //         this.done(this);
+        //     }
+        // });
+
         $.ajax({
             dataType : "jsonp",
             url      : API.QUERY,
             data     : query_data,
             context  : this
-        }).done(function (data) {
-            console.log('Got Search Query');
-            this.response = data.response;
-            if ((options != undefined) && (options.done != undefined)) {
-                options.done(this);
-            } else if (this.done != undefined) {
-                this.done(this);
-            }
-        });
+        }).done(this.process_results);
 
     };
 
@@ -403,8 +479,91 @@
     }
 
 
+    exports.List = List;
+    function List (options) {
+        $.extend(this, options);
+    }
+
     /**
-     * An Class to hold newspaper articles
+     * A class to hold a person
+     * @class
+     * @param {Object} options
+     * @property {string} options.id
+     * @property {string} options.troveUrl
+     * @property {string} options.url
+     */
+    exports.Person = Person;
+    function Person (options) {
+        console.log('Creating Person');
+        $.extend(this, options);
+    }
+
+    /**
+     * A class to hold a journal article
+     * @class
+     * @param {Object} options
+     * @property {Array} options.contributor
+     * @property {number} options.holdingsCount
+     * @property {string} options.id
+     * @property {number} options.issued
+     * @property {Object} options.relevance
+     * @property {string} options.title
+     * @property {string} options.troveUrl
+     * @property {Array} options.type
+     * @property {string} options.url
+     * @property {number} options.versionCount
+     */
+    exports.Article = Article;
+    function Article (options) {
+        console.log('Creating Article');
+        $.extend(this, options);
+    }
+
+    /**
+     * A class to hold a picture
+     * @class
+     * @param {Object} options
+     * @property {number} options.holdingsCount
+     * @property {string} options.id
+     * @property {Array} options.identifier
+     * @property {Object} options.relevance
+     * @property {string} options.title
+     * @property {string} options.troveUrl
+     * @property {Array} options.type
+     * @property {string} options.url
+     * @property {number} options.versionCount
+     */
+    exports.Picture = Picture;
+    function Picture (options) {
+        console.log('Creating Picture');
+        $.extend(this, options);
+    }
+
+    exports.Book = Book;
+    function Book (options) {
+        console.log('Creating Book');
+        $.extend(this, options);
+        console.dir(this);
+    }
+
+    exports.Map = Map;
+    function Map (options) {
+        $.extend(this, options);
+    }
+
+    exports.Music = Music;
+    function Music (options) {
+        $.extend(this, options);
+    }
+
+    exports.Collection = Collection;
+    function Collection (options) {
+        $.extend(this, options);
+    }
+
+
+    /**
+     * A Class to hold newspaper articles
      * @class
      * @param {Object} options An object specifying the default options
      * @property {number} options.init The article identifier for which to retrieve data on construction.
