@@ -1,23 +1,8 @@
-/**
- * Trove Module
- * @module Trove
- */
-( // Module boilerplate to support browser globals and browserify and AMD.
-    typeof define === "function" ? function(m) {
-        define("trove-api", m);
-    } : typeof exports === "object" ? function(m) {
-        module.exports = m();
-    } : function(m) {
-        this.Trove = m();
-    }
-)(function() {
+(function(Trove, $, undefined) {
+    'use strict';
 
-    "use strict";
-
-    var exports = {};
-
-    // Store the key here
-    var trove_key = '';
+    //Public Property
+    Trove.trove_key = '';
 
     /**
      * @function init
@@ -25,8 +10,8 @@
      *
      * This function should be called before any queries are made to the Trove servers.
      */
-    exports.init = function init (key) {
-        trove_key = key;
+    Trove.init = function (key) {
+        Trove.trove_key = key;
     };
 
     var ENC = '&encoding=json';
@@ -44,7 +29,7 @@
         LIST: 'list',
         ALL: 'all'
     };
-    exports.ZONE = ZONE;
+    Trove.ZONE = ZONE;
 
     var FACETS = {
         FORMAT: 'format',
@@ -66,7 +51,7 @@
         WORD: 'word',
         ALL: 'all'
     };
-    exports.FACETS = FACETS;
+    Trove.FACETS = FACETS;
 
     var LIMITS = {
         FORMAT: 'l-format',
@@ -88,20 +73,20 @@
         WORD: 'l-word',
         ALL: 'l-all'
     };
-    exports.LIMITS = LIMITS;
+    Trove.LIMITS = LIMITS;
 
     var SORTBY = {
         DATEDESC: 'datedesc',
         DATEASC: 'dateasc',
         RELEVANCE: 'relevance'
     };
-    exports.SORTBY = SORTBY;
+    Trove.SORTBY = SORTBY;
 
     var RECLEVEL = {
         FULL: 'full',
         BRIEF: 'brief'
     };
-    exports.RECLEVEL = RECLEVEL;
+    Trove.RECLEVEL = RECLEVEL;
 
     // can include multiple as a list
     // used for QUERY, WORK, LIST and NP_ARTICLE
@@ -118,7 +103,7 @@
         LISTITEMS       : 'listitems',
         ALL             : 'all'
     };
-    exports.INCLUDE = INCLUDE;
+    Trove.INCLUDE = INCLUDE;
 
     var CATEGORIES = {
         ARTICLE: 'Article',
@@ -127,7 +112,7 @@
         FAMILY_NOTICES: 'Family Notices',
         LITERATURE: 'Literature'
     };
-    exports.CATEGORIES = CATEGORIES;
+    Trove.CATEGORIES = CATEGORIES;
 
     var SEARCH_RECORDS = {
         people: 'people',
@@ -140,19 +125,11 @@
         map: 'work',
         music: 'work'
     };
+    Trove.SEARCH_RECORDS = SEARCH_RECORDS;
 
     // Mapping of search result zones to constructors
-    var SEARCH_CONSTRUCTORS = {
-        people: Person,
-        article: Article,
-        list: List,
-        collection: Collection,
-        book: Book,
-        picture: Picture,
-        map: Map,
-        music: Music,
-        newspaper: NewspaperArticle
-    };
+    var SEARCH_CONSTRUCTORS = {};
+    Trove.SEARCH_CONSTRUCTORS = SEARCH_CONSTRUCTORS;
 
     var API_ADDRESS = 'http://api.trove.nla.gov.au/';
 
@@ -161,7 +138,7 @@
             NEWS: 'newspaper/',
             LIST: 'list/'
     };
-    exports.RECORD_TYPE = RECORD_TYPE;
+    Trove.RECORD_TYPE = RECORD_TYPE;
 
     var API = {
         WORK       : API_ADDRESS + RECORD_TYPE.WORK,
@@ -171,6 +148,13 @@
         NP_TITLES  : API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
         QUERY      : API_ADDRESS + 'result'
     };
+    Trove.API = API;
+
+}(window.Trove = window.Trove || {}, jQuery));
+
+//Adding New Functionality to the Skillet
+(function(Trove, $, undefined) {
+    'use strict';
 
     /**
      * An object to perform searches
@@ -180,7 +164,6 @@
      * @property {Function} options.done The default callback called on receipt of data
      * @property {string} options.terms The default search terms
      */
-    exports.Search = Search;
     function Search (options) {
         console.log('Creating Search');
 
@@ -215,10 +198,10 @@
 
             this.items[zone_name] = []; // Create an empty list for this zone
 
-            zone_items = this.response.zone[zone_num].records[SEARCH_RECORDS[zone_name]];
+            zone_items = this.response.zone[zone_num].records[Trove.SEARCH_RECORDS[zone_name]];
 
             for (var item_num in zone_items) {
-                this.items[zone_name].push(new SEARCH_CONSTRUCTORS[zone_name](zone_items[item_num]));
+                this.items[zone_name].push(new Trove.SEARCH_CONSTRUCTORS[zone_name](zone_items[item_num]));
             }
 
             // console.dir(this.items[zone_name]);
@@ -251,7 +234,7 @@
      * Remove the named facet.
      * @param {string} facet The name of the facet to remove
      */
-    exports.Search.prototype.remove_facet = function(facet) {
+    Search.prototype.remove_facet = function(facet) {
         if (this.facets.indexOf(facet) != -1) {
             this.facets.splice(this.facets.indexOf(facet), 1);
         }
@@ -261,14 +244,14 @@
      * Add the named facet.
      * @param {string} facet The name of the facet to add
      */
-    exports.Search.prototype.add_facet = function(facet) {
+    Search.prototype.add_facet = function(facet) {
         this.facets.push(facet);
     };
 
     /**
      * Clear the date range limits.
      */
-    exports.Search.prototype.clear_date_range_limit = function() {
+    Search.prototype.clear_date_range_limit = function() {
         if (this.limits.decade !== undefined) delete this.limits.decade;
         if (this.limits.year !== undefined) delete this.limits.year;
         if (this.limits.month !== undefined) delete this.limits.month;
@@ -278,7 +261,7 @@
      * Set the limits on the date range returned
      * @param {string} start The date limit, one of: YYY for decade, YYYY for year, or YYYY-MM for month
      */
-    exports.Search.prototype.limit_date_range = function(start) {
+    Search.prototype.limit_date_range = function(start) {
         var split_start = start.split('-');
         if (split_start.length >= 1) {
             if (split_start[0].length == 3) {
@@ -310,7 +293,7 @@
      * @property {string|Array} options.limits
      * @property {string|Array} options.facets
      */
-    exports.Search.prototype.query = function (options) {
+    Search.prototype.query = function (options) {
         // Searches are composed of the following
         //   options.zones => string or list
         //   options.terms => string
@@ -338,7 +321,7 @@
 
         // Get the zone or zones for the query.
         // Preference is given to the zone(s) in the options passed but will fallback to the options specified in the construction of the Search object. The default is ZONE.ALL.
-        var zones = ZONE.ALL;
+        var zones = Trove.ZONE.ALL;
         if (typeof options.zones == 'string') {
             zones = options.zones;
         } else if (Array.isArray(options.zones)) {
@@ -350,7 +333,7 @@
         }
 
         var query_data = {
-                key: trove_key,
+                key: Trove.trove_key,
                 encoding: 'json',
                 zone: zones,
                 q: options.terms || this.terms,
@@ -424,7 +407,7 @@
 
         $.ajax({
             dataType : "jsonp",
-            url      : API.QUERY,
+            url      : Trove.API.QUERY,
             data     : query_data,
             context  : this
         }).done(this.process_results);
@@ -438,7 +421,7 @@
 
             $.ajax({
                 dataType : "jsonp",
-                url      : API.QUERY,
+                url      : Trove.API.QUERY,
                 data     : this._last_search,
                 context  : this
             }).done(function (data) {
@@ -457,7 +440,7 @@
      * Request the next search results
      *
      */
-    exports.Search.prototype.next = function(options) {
+    Search.prototype.next = function(options) {
         if (this._last_search !== undefined) {
             this.requery(options, this._last_search.n);
         }
@@ -467,22 +450,34 @@
      * Request the previous search results
      *
      */
-    exports.Search.prototype.previous = function(options) {
+    Search.prototype.previous = function(options) {
         if (this._last_search !== undefined) {
             this.requery(options, -this._last_search.n);
         }
     };
 
-    exports.Search.prototype.newspaper_articles = function() {
+    Search.prototype.newspaper_articles = function() {
         // The Search object just
         return [];
     };
 
+    Trove.Search = Search;
 
-    exports.List = List;
+}(window.Trove = window.Trove || {}, jQuery));
+
+(function( Trove, $, undefined ) {
+    'use strict';
+
     function List (options) {
         $.extend(this, options);
     }
+    Trove.List = List;
+    Trove.SEARCH_CONSTRUCTORS.list = List;
+
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
 
     /**
      * A class to hold a person
@@ -492,11 +487,17 @@
      * @property {string} options.troveUrl
      * @property {string} options.url
      */
-    exports.Person = Person;
     function Person (options) {
         console.log('Creating Person');
         $.extend(this, options);
     }
+    Trove.Person = Person;
+    Trove.SEARCH_CONSTRUCTORS.people = Person;
+
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
 
     /**
      * A class to hold a journal article
@@ -513,11 +514,17 @@
      * @property {string} options.url
      * @property {number} options.versionCount
      */
-    exports.Article = Article;
     function Article (options) {
         console.log('Creating Article');
         $.extend(this, options);
     }
+    Trove.Article = Article;
+    Trove.SEARCH_CONSTRUCTORS.article = Article;
+
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
 
     /**
      * A class to hold a picture
@@ -533,11 +540,17 @@
      * @property {string} options.url
      * @property {number} options.versionCount
      */
-    exports.Picture = Picture;
     function Picture (options) {
         console.log('Creating Picture');
         $.extend(this, options);
     }
+    Trove.Picture = Picture;
+    Trove.SEARCH_CONSTRUCTORS.picture = Picture;
+
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
 
     /**
      * A class to hold a book
@@ -553,11 +566,17 @@
      * @property {Array} options.type
      * @property {string} options.url
      */
-    exports.Book = Book;
     function Book (options) {
         console.log('Creating Book');
         $.extend(this, options);
     }
+    Trove.Book = Book;
+    Trove.SEARCH_CONSTRUCTORS.book = Book;
+
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
 
     /**
      * A class to hold a map
@@ -575,11 +594,17 @@
      * @property {string} options.url
      * @property {number} options.versionCount
      */
-    exports.Map = Map;
     function Map (options) {
         console.log('Creating Map');
         $.extend(this, options);
     }
+    Trove.Map = Map;
+    Trove.SEARCH_CONSTRUCTORS.map = Map;
+
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
 
     /**
      * A class to hold music
@@ -596,19 +621,30 @@
      * @property {string} options.url
      * @property {number} options.versionCount
      */
-    exports.Music = Music;
     function Music (options) {
         console.log('Creating Music');
         $.extend(this, options);
     }
+    Trove.Music = Music;
+    Trove.SEARCH_CONSTRUCTORS.music = Music;
 
-    exports.Collection = Collection;
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
+
     function Collection (options) {
         console.log('Creating Collection');
         $.extend(this, options);
         // console.dir(this);
     }
+    Trove.Collection = Collection;
+    Trove.SEARCH_CONSTRUCTORS.collection = Collection;
 
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
 
     /**
      * A Class to hold newspaper articles
@@ -617,7 +653,6 @@
      * @property {number} options.init The article identifier for which to retrieve data on construction.
      * @property {function} options.done The default callback called when data has been returned from the Trove servers.
      */
-    exports.NewspaperArticle = NewspaperArticle;
     function NewspaperArticle (options) {
         console.log('Creating NewspaperArticle');
 
@@ -643,18 +678,18 @@
      * @property {number} options.identifier The article identifier for which to retrieve data.
      * @property {function} options.done The callback called when data has been returned from the Trove servers. This overrides the default calback.
      */
-    exports.NewspaperArticle.prototype.get = function (options) {
+    NewspaperArticle.prototype.get = function (options) {
         console.log('Getting NewspaperArticle');
         // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
 
         var query_data = {
-            key: trove_key,
+            key: Trove.trove_key,
             encoding: 'json'
         };
 
         $.ajax({
             dataType : "jsonp",
-            url      : API.NP_ARTICLE + options.identifier,
+            url      : Trove.API.NP_ARTICLE + options.identifier,
             data     : query_data,
             context  : this
         }).done(function (data) {
@@ -673,7 +708,7 @@
      * @param {function} done
      * @returns {Newspaper} the Newspaper object
      */
-    exports.NewspaperArticle.prototype.get_newspaper = function(options) {
+    NewspaperArticle.prototype.get_newspaper = function(options) {
         console.log('Get Newspaper for Article');
         if (this.title !== undefined) {
             if (this.title.id !== undefined) {
@@ -684,6 +719,14 @@
             }
         }
     };
+
+    Trove.NewspaperArticle = NewspaperArticle;
+    Trove.SEARCH_CONSTRUCTORS.newspaper = NewspaperArticle;
+
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
 
     /**
      * An object to hold an instance of a newspaper
@@ -697,7 +740,6 @@
      * startDate
      * endDate
      */
-    exports.Newspaper = Newspaper;
     function Newspaper (options) {
         console.log('Creating Newspaper');
 
@@ -725,13 +767,13 @@
         // http://api.trove.nla.gov.au/newspaper/title/35?encoding=json
 
         var query_data = {
-            key: trove_key,
+            key: Trove.trove_key,
             encoding: 'json'
         };
 
         $.ajax({
             dataType : "jsonp",
-            url      : API.NP_TITLE + options.identifier,
+            url      : Trove.API.NP_TITLE + options.identifier,
             data     : query_data,
             context  : this
         }).done(function (data) {
@@ -745,6 +787,13 @@
         });
     };
 
+    Trove.Newspaper = Newspaper;
+
+}( window.Trove = window.Trove || {}, jQuery ));
+
+(function( Trove, $, undefined ) {
+    'use strict';
+
     /**
      * A list of Newspapers for a specific state or all states.
      * @class
@@ -752,7 +801,6 @@
      * @classdesc
      * If constructed with a 'state' blah
      */
-    exports.NewspaperList = NewspaperList;
     function NewspaperList (options) {
         console.log('Creating NewspaperList');
         // http://api.trove.nla.gov.au/newspaper/titles?state=vic
@@ -788,7 +836,7 @@
     NewspaperList.prototype.get = function (options) {
         console.log('Getting NewspaperList');
         var query_data = {
-            key: trove_key,
+            key: Trove.trove_key,
             encoding: 'json'
         };
 
@@ -798,12 +846,12 @@
 
         $.ajax({
             dataType : "jsonp",
-            url      : API.NP_TITLES,
+            url      : Trove.API.NP_TITLES,
             data     : query_data,
             context  : this
         }).done(this.processGet);
     };
 
-    return exports;
+    Trove.NewspaperList = NewspaperList;
 
-});
+}( window.Trove = window.Trove || {}, jQuery ));
