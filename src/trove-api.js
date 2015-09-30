@@ -27,7 +27,7 @@
      */
     exports.init = function init (key) {
         trove_key = key;
-    }
+    };
 
     var ENC = '&encoding=json';
 
@@ -154,7 +154,7 @@
         newspaper: NewspaperArticle
     };
 
-    var API_ADDRESS = 'http://api.trove.nla.gov.au/'
+    var API_ADDRESS = 'http://api.trove.nla.gov.au/';
 
     var RECORD_TYPE = {
             WORK: 'work/',
@@ -217,7 +217,7 @@
 
             zone_items = this.response.zone[zone_num].records[SEARCH_RECORDS[zone_name]];
 
-            for (item_num in zone_items) {
+            for (var item_num in zone_items) {
                 this.items[zone_name].push(new SEARCH_CONSTRUCTORS[zone_name](zone_items[item_num]));
             }
 
@@ -242,7 +242,7 @@
         // }
 
         // TODO: Should I keep the options.done?
-        if (this.done != undefined) {
+        if (this.done !== undefined) {
             this.done(this);
         }
     };
@@ -269,9 +269,9 @@
      * Clear the date range limits.
      */
     exports.Search.prototype.clear_date_range_limit = function() {
-        if (this.limits.decade != undefined) delete this.limits.decade;
-        if (this.limits.year != undefined) delete this.limits.year;
-        if (this.limits.month != undefined) delete this.limits.month;
+        if (this.limits.decade !== undefined) delete this.limits.decade;
+        if (this.limits.year !== undefined) delete this.limits.year;
+        if (this.limits.month !== undefined) delete this.limits.month;
     };
 
     /**
@@ -329,9 +329,9 @@
 
         console.log('Querying Search');
 
-        if (options == undefined) {
+        if (options === undefined) {
             console.error('options is undefined');
-            return
+            return;
         }
 
         //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
@@ -359,22 +359,22 @@
         };
 
         // Where to start
-        if (options.start != undefined) {
+        if (options.start !== undefined) {
             query_data.s = options.start;
         }
 
         // How many to return
-        if (options.number != undefined) {
+        if (options.number !== undefined) {
             query_data.n = options.number;
         }
 
         // In what sort order
-        if (options.sort != undefined) {
+        if (options.sort !== undefined) {
             query_data.sortby = options.sort;
-        };
+        }
 
         // Full or brief
-        if (options.reclevel != undefined) {
+        if (options.reclevel !== undefined) {
             query_data.reclevel = options.reclevel;
         }
 
@@ -432,7 +432,7 @@
     };
 
     Search.prototype.requery = function(options, delta) {
-        if (this._last_search != undefined) {
+        if (this._last_search !== undefined) {
 
             this._last_search.s = this._last_search.s + delta;
 
@@ -444,9 +444,9 @@
             }).done(function (data) {
                 console.log('Got Search Requery');
                 this.response = data.response;
-                if ((options != undefined) && (options.done != undefined)) {
+                if ((options !== undefined) && (options.done !== undefined)) {
                     options.done(this);
-                } else if (this.done != undefined) {
+                } else if (this.done !== undefined) {
                     this.done(this);
                 }
             });
@@ -458,7 +458,7 @@
      *
      */
     exports.Search.prototype.next = function(options) {
-        if (this._last_search != undefined) {
+        if (this._last_search !== undefined) {
             this.requery(options, this._last_search.n);
         }
     };
@@ -468,7 +468,7 @@
      *
      */
     exports.Search.prototype.previous = function(options) {
-        if (this._last_search != undefined) {
+        if (this._last_search !== undefined) {
             this.requery(options, -this._last_search.n);
         }
     };
@@ -476,7 +476,7 @@
     exports.Search.prototype.newspaper_articles = function() {
         // The Search object just
         return [];
-    }
+    };
 
 
     exports.List = List;
@@ -573,15 +573,15 @@
     function NewspaperArticle (options) {
         console.log('Creating NewspaperArticle');
 
-        var init = undefined;
-        if (options.init != undefined) {
+        var init;
+        if (options.init !== undefined) {
             init = options.init;
             delete options.init;
-        };
+        }
         $.extend(this, options);
 
         // If we know the identifier, get the data
-        if (init != undefined) {
+        if (init !== undefined) {
             this.get({
                 identifier: init,
                 done: this.done
@@ -612,9 +612,9 @@
         }).done(function (data) {
             console.log('Got NewspaperArticle');
             $.extend(this, data.article);
-            if (options.done != undefined) {
+            if (options.done !== undefined) {
                 options.done(this);
-            } else if (this.done != undefined) {
+            } else if (this.done !== undefined) {
                 this.done(this);
             }
         });
@@ -627,8 +627,8 @@
      */
     exports.NewspaperArticle.prototype.get_newspaper = function(options) {
         console.log('Get Newspaper for Article');
-        if (this.title != undefined) {
-            if (this.title.id != undefined) {
+        if (this.title !== undefined) {
+            if (this.title.id !== undefined) {
                 return new Newspaper({
                     init: this.title.id,
                     done: options.done || this.done
@@ -653,14 +653,14 @@
     function Newspaper (options) {
         console.log('Creating Newspaper');
 
-        var init = undefined;
-        if (options.init != undefined) {
+        var init;
+        if (options.init !== undefined) {
             init = options.init;
             delete options.init;
-        };
+        }
 
         $.extend(this, options);
-        if (init != undefined) {
+        if (init !== undefined) {
             this.get({
                 identifier: init,
                 done: this.done
@@ -689,9 +689,9 @@
         }).done(function (data) {
             console.log('Got Newspaper');
             $.extend(this, data.newspaper);
-            if (options.done != undefined) {
+            if (options.done !== undefined) {
                 options.done(this);
-            } else if (this.done != undefined) {
+            } else if (this.done !== undefined) {
                 this.done(this);
             }
         });
@@ -712,7 +712,7 @@
 
         this.newspapers = [];
 
-        if (this.state != undefined) {
+        if (this.state !== undefined) {
             this.get({
                 state: this.state
             });
@@ -744,7 +744,7 @@
             encoding: 'json'
         };
 
-        if ((options != undefined) && (options.state != undefined)) {
+        if ((options !== undefined) && (options.state !== undefined)) {
             query_data.state = options.state;
         }
 
