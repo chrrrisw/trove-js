@@ -131,14 +131,14 @@
 
     var SEARCH_RECORDS = {
         people: 'people',
-        article: 'work',
         list: 'list',
+        newspaper: 'article',
+        article: 'work',
         collection: 'work',
         book: 'work',
         picture: 'work',
         map: 'work',
-        music: 'work',
-        newspaper: 'article'
+        music: 'work'
     };
 
     // Mapping of search result zones to constructors
@@ -505,7 +505,7 @@
      * @property {Array} options.contributor
      * @property {number} options.holdingsCount
      * @property {string} options.id
-     * @property {number} options.issued
+     * @property {number|string} options.issued
      * @property {Object} options.relevance
      * @property {string} options.title
      * @property {string} options.troveUrl
@@ -539,26 +539,74 @@
         $.extend(this, options);
     }
 
+    /**
+     * A class to hold a book
+     * @class
+     * @param {Object} options
+     * @property {Array} options.contributor
+     * @property {number} options.holdingsCount
+     * @property {string} options.id
+     * @property {number|string} options.issued
+     * @property {Object} options.relevance
+     * @property {string} options.title
+     * @property {string} options.troveUrl
+     * @property {Array} options.type
+     * @property {string} options.url
+     */
     exports.Book = Book;
     function Book (options) {
         console.log('Creating Book');
         $.extend(this, options);
-        console.dir(this);
     }
 
+    /**
+     * A class to hold a map
+     * @class
+     * @param {Object} options
+     * @property {Array} options.contributor
+     * @property {number} options.holdingsCount
+     * @property {string} options.id
+     * @property {Array} options.identifier
+     * @property {number|string} options.issued
+     * @property {Object} options.relevance
+     * @property {string} options.title
+     * @property {string} options.troveUrl
+     * @property {Array} options.type
+     * @property {string} options.url
+     * @property {number} options.versionCount
+     */
     exports.Map = Map;
     function Map (options) {
+        console.log('Creating Map');
         $.extend(this, options);
     }
 
+    /**
+     * A class to hold music
+     * @class
+     * @param {Object} options
+     * @property {Array} options.contributor
+     * @property {number} options.holdingsCount
+     * @property {string} options.id
+     * @property {number|string} options.issued
+     * @property {Object} options.relevance
+     * @property {string} options.title
+     * @property {string} options.troveUrl
+     * @property {Array} options.type
+     * @property {string} options.url
+     * @property {number} options.versionCount
+     */
     exports.Music = Music;
     function Music (options) {
+        console.log('Creating Music');
         $.extend(this, options);
     }
 
     exports.Collection = Collection;
     function Collection (options) {
+        console.log('Creating Collection');
         $.extend(this, options);
+        // console.dir(this);
     }
 
 
