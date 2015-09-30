@@ -133,40 +133,21 @@ var item_template = ' \
     </tr>';
 
 function search_done(s) {
-    // people -> people
-    // article -> work
-    // list -> list
-    // collection -> work
-    // book -> work
-    // picture -> work
-    // map -> work
-    // music -> work
-    // newspaper -> article
-    console.dir(s.response.zone);
     var zone_items;
     var zone_name;
     var temp1, temp2;
-    for (var zone_num in s.response.zone) {
-        zone_name = s.response.zone[zone_num].name;
-        console.log(zone_name);
-        if (zone_name == 'people') {
-            zone_items = s.response.zone[zone_num].records['people'];
-        } else if (zone_name == 'list') {
-            zone_items = s.response.zone[zone_num].records['list'];
-        } else if (zone_name == 'newspaper') {
-            zone_items = s.response.zone[zone_num].records['article'];
-        } else {
-            zone_items = s.response.zone[zone_num].records['work'];
-        }
+
+    results_accordion.empty();
+
+    for (zone_name in s.items) {
+        zone_items = s.items[zone_name];
 
         // Add a title
-        // results_accordion.append('<div class="title"><i class="dropdown icon"></i>' + zone_name + '</div>');
         temp1 = title_template.replace('%title%', zone_name);
         temp1 = temp1.replace('%count%', zone_items.length);
         results_accordion.append(temp1);
 
         // Add the contents
-        // results_accordion.append('<div class="content"><p>Stuff here</p></div>');
         temp2 = '';
         for (item_num in zone_items) {
             temp1 = item_template.replace('%identifier%', zone_items[item_num].id);
