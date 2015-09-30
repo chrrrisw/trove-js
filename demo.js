@@ -41,21 +41,21 @@ function test_trove (key) {
 
     // var act_newspapers = new Trove.NewspaperList({state: 'act'});
 
-    test_search = new Trove.Search({
+    demo_search = new Trove.Search({
         zones: [Trove.ZONE.NEWS, Trove.ZONE.PIC],
         done: function(s) {
             console.dir(s.response);
         }
     });
 
-    test_search.query({
+    demo_search.query({
         terms: 'willoughby',
         start: 40,
         number: 4
     });
 }
 
-var test_search;
+var demo_search;
 var key_field;
 var zone_dropdown;
 var categories_dropdown;
@@ -84,7 +84,7 @@ function search(terms) {
 
     if (started) {
         settings_sidebar.sidebar('hide');
-        test_search.query({
+        demo_search.query({
             zones: zone_dropdown.val(),
             terms: terms
         });
@@ -93,13 +93,13 @@ function search(terms) {
 
 function search_previous() {
     if (started) {
-        test_search.previous();
+        demo_search.previous();
     }
 }
 
 function search_next() {
     if (started) {
-        test_search.next();
+        demo_search.next();
     }
 }
 
@@ -197,7 +197,7 @@ function documentReady(jQuery) {
     });
 
     // Create a Search object
-    test_search = new Trove.Search({
+    demo_search = new Trove.Search({
         done: search_done
     });
 
