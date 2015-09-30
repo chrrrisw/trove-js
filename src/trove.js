@@ -1,33 +1,6 @@
 (function(Trove, $, undefined) {
     'use strict';
 
-    // //Private Property
-    // var isHot = true;
-
-    // //Public Property
-    // Trove.ingredient = "Bacon Strips";
-
-    // //Public Method
-    // Trove.fry = function() {
-    //     var oliveOil;
-
-    //     addItem("\t\n Butter \n\t");
-    //     addItem(oliveOil);
-    //     console.log("Frying " + Trove.ingredient);
-    // };
-
-    // //Private Method
-    // function addItem(item) {
-    //     if (item !== undefined) {
-    //         console.log("Adding " + $.trim(item));
-    //     }
-    // }
-
-
-
-
-
-
     //Public Property
     Trove.trove_key = '';
 

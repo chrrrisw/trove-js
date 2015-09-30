@@ -2,19 +2,6 @@
 (function(Trove, $, undefined) {
     'use strict';
 
-    // //Private Property
-    // var amountOfGrease = "1 Cup";
-
-    // //Public Method
-    // Trove.toString = function() {
-    //     console.log(Trove.quantity + " " +
-    //         Trove.ingredient + " & " +
-    //         amountOfGrease + " of Grease");
-    //     console.log(isHot ? "Hot" : "Cold");
-    // };
-
-
-
     /**
      * An object to perform searches
      * @class

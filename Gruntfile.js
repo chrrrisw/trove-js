@@ -9,7 +9,20 @@ module.exports = function(grunt) {
         separator: '\n'
       },
       dist: {
-        src: ['src/**/*.js'],
+        src: [
+          'src/trove.js',
+          'src/search.js',
+          'src/list.js',
+          'src/person.js',
+          'src/article.js',
+          'src/picture.js',
+          'src/book.js',
+          'src/map.js',
+          'src/music.js',
+          'src/collection.js',
+          'src/newspaper_article.js',
+          'src/newspaper.js',
+          'src/newspaper_list.js'],
         dest: 'dist/<%= pkg.name %>.js',
         options: {
           banner: '',
