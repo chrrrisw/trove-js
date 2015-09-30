@@ -12,9 +12,9 @@
     }
 )(function() {
 
-    var exports = {};
-
     "use strict";
+
+    var exports = {};
 
     // Store the key here
     var trove_key = '';
