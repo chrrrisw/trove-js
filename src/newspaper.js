@@ -1,10 +1,11 @@
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
      * An object to hold an instance of a newspaper
      * @constructor
      * @param {Object} options
+     * @property {number|string} options.init If specified, will request the data immediately
      * id
      * title
      * state
@@ -13,7 +14,7 @@
      * startDate
      * endDate
      */
-    function Newspaper (options) {
+    function Newspaper(options) {
         console.log('Creating Newspaper');
 
         var init;
@@ -35,7 +36,7 @@
      * Get information about the specified newspaper
      * @param (Number) identifier
      */
-    Newspaper.prototype.get = function (options) {
+    Newspaper.prototype.get = function(options) {
         console.log('Getting Newspaper');
         // http://api.trove.nla.gov.au/newspaper/title/35?encoding=json
 
@@ -45,11 +46,11 @@
         };
 
         $.ajax({
-            dataType : "jsonp",
-            url      : Trove.API.NP_TITLE + options.identifier,
-            data     : query_data,
-            context  : this
-        }).done(function (data) {
+            dataType: "jsonp",
+            url: Trove.API.NP_TITLE + options.identifier,
+            data: query_data,
+            context: this
+        }).done(function(data) {
             console.log('Got Newspaper');
             $.extend(this, data.newspaper);
             if (options.done !== undefined) {
@@ -62,4 +63,4 @@
 
     Trove.Newspaper = Newspaper;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));

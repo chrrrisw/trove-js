@@ -203,30 +203,18 @@
             for (var item_num in zone_items) {
                 this.items[zone_name].push(new Trove.SEARCH_CONSTRUCTORS[zone_name](zone_items[item_num]));
             }
-
-            // console.dir(this.items[zone_name]);
-
-            // if (zone_name == 'people') {
-            //     zone_items = this.response.zone[zone_num].records['people'];
-            // } else if (zone_name == 'list') {
-            //     zone_items = this.response.zone[zone_num].records['list'];
-            // } else if (zone_name == 'newspaper') {
-            //     zone_items = this.response.zone[zone_num].records['article'];
-            // } else {
-            //     zone_items = this.response.zone[zone_num].records['work'];
-            // }
-
         }
 
-        // if ((options != undefined) && (options.done != undefined)) {
-        //     options.done(this);
-        // } else if (this.done != undefined) {
-        //     this.done(this);
-        // }
-
-        // TODO: Should I keep the options.done?
         if (this.done !== undefined) {
             this.done(this);
+        }
+    };
+
+    Search.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
         }
     };
 
@@ -284,7 +272,6 @@
      * @param {Object} options An object containing, at least, the terms to search for.
      * @property {string|Array} options.zones The default zone or list of zones to search
      * @property {string} options.terms The default search terms
-     * @property {Function} options.done The default callback called on receipt of data
      * @property {number} options.start
      * @property {number} options.number
      * @property {string} options.sort
@@ -294,21 +281,6 @@
      * @property {string|Array} options.facets
      */
     Search.prototype.query = function (options) {
-        // Searches are composed of the following
-        //   options.zones => string or list
-        //   options.terms => string
-        //   options.start => number
-        //   options.number => number
-        //   options.sort => string
-        //   options.reclevel => string
-        //   options.includes => string or list
-        //   options.limits => string or list
-        //   options.facets => string or list
-        //     encoding => "json"
-        //     callback => string
-        //     key => string
-
-        // options.done
 
         console.log('Querying Search');
 
@@ -320,7 +292,8 @@
         //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
 
         // Get the zone or zones for the query.
-        // Preference is given to the zone(s) in the options passed but will fallback to the options specified in the construction of the Search object. The default is ZONE.ALL.
+        // Preference is given to the zone(s) in the options passed but will
+        // fallback to the options specified in the construction of the Search object. The default is ZONE.ALL.
         var zones = Trove.ZONE.ALL;
         if (typeof options.zones == 'string') {
             zones = options.zones;
@@ -373,48 +346,44 @@
         }
 
         // What facets of the data to return
-        if (this.facets.length > 0) {
+        if ((options.facets !== undefined) && (Array.isArray(options.facets))) {
+            query_data.facet = options.facets.join(',');
+        } else if (this.facets.length > 0) {
             query_data.facet = this.facets.join(',');
         }
 
         // What limits apply to the search
-        // var limit_url = '';
-        var limit_keys = Object.keys(this.limits);
+        var limits;
+        var limit_keys;
+        if (options.limits !== undefined) {
+            limit_keys = Object.keys(options.limits);
+            limits = options.limits;
+        } else {
+            limit_keys = Object.keys(this.limits);
+            limits = this.limits;
+        }
         if (limit_keys.length > 0) {
             for (var index in limit_keys) {
-                query_data['l-' + limit_keys[index]] = this.limits[limit_keys[index]];
-                // limit_url = limit_url + '&l-' + limit_keys[index] + '=' + this.limits[limit_keys[index]];
+                query_data['l-' + limit_keys[index]] = limits[limit_keys[index]];
             }
         }
-        // console.log('limits: ' + limit_url);
 
         this._last_search = query_data;
-
-        // $.ajax({
-        //     dataType : "jsonp",
-        //     url      : API.QUERY,
-        //     data     : query_data,
-        //     context  : this
-        // }).done(function (data) {
-        //     console.log('Got Search Query');
-        //     this.response = data.response;
-        //     if ((options != undefined) && (options.done != undefined)) {
-        //         options.done(this);
-        //     } else if (this.done != undefined) {
-        //         this.done(this);
-        //     }
-        // });
 
         $.ajax({
             dataType : "jsonp",
             url      : Trove.API.QUERY,
             data     : query_data,
             context  : this
-        }).done(this.process_results);
+        }).done(this.process_results).fail(this.process_fail);
 
     };
 
-    Search.prototype.requery = function(options, delta) {
+    /**
+     * Repeat the last query, with a delta applied to the start.
+     * @param {number} delta The change to be applied to the start number (positive or negative).
+     */
+    Search.prototype.requery = function(delta) {
         if (this._last_search !== undefined) {
 
             this._last_search.s = this._last_search.s + delta;
@@ -424,35 +393,25 @@
                 url      : Trove.API.QUERY,
                 data     : this._last_search,
                 context  : this
-            }).done(function (data) {
-                console.log('Got Search Requery');
-                this.response = data.response;
-                if ((options !== undefined) && (options.done !== undefined)) {
-                    options.done(this);
-                } else if (this.done !== undefined) {
-                    this.done(this);
-                }
-            });
+            }).done(this.process_results).fail(this.process_fail);
         }
     };
 
     /**
      * Request the next search results
-     *
      */
-    Search.prototype.next = function(options) {
+    Search.prototype.next = function() {
         if (this._last_search !== undefined) {
-            this.requery(options, this._last_search.n);
+            this.requery(this._last_search.n);
         }
     };
 
     /**
      * Request the previous search results
-     *
      */
-    Search.prototype.previous = function(options) {
+    Search.prototype.previous = function() {
         if (this._last_search !== undefined) {
-            this.requery(options, -this._last_search.n);
+            this.requery(-this._last_search.n);
         }
     };
 
@@ -725,13 +684,14 @@
 
 }( window.Trove = window.Trove || {}, jQuery ));
 
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
      * An object to hold an instance of a newspaper
      * @constructor
      * @param {Object} options
+     * @property {number|string} options.init If specified, will request the data immediately
      * id
      * title
      * state
@@ -740,7 +700,7 @@
      * startDate
      * endDate
      */
-    function Newspaper (options) {
+    function Newspaper(options) {
         console.log('Creating Newspaper');
 
         var init;
@@ -762,7 +722,7 @@
      * Get information about the specified newspaper
      * @param (Number) identifier
      */
-    Newspaper.prototype.get = function (options) {
+    Newspaper.prototype.get = function(options) {
         console.log('Getting Newspaper');
         // http://api.trove.nla.gov.au/newspaper/title/35?encoding=json
 
@@ -772,11 +732,11 @@
         };
 
         $.ajax({
-            dataType : "jsonp",
-            url      : Trove.API.NP_TITLE + options.identifier,
-            data     : query_data,
-            context  : this
-        }).done(function (data) {
+            dataType: "jsonp",
+            url: Trove.API.NP_TITLE + options.identifier,
+            data: query_data,
+            context: this
+        }).done(function(data) {
             console.log('Got Newspaper');
             $.extend(this, data.newspaper);
             if (options.done !== undefined) {
@@ -789,7 +749,7 @@
 
     Trove.Newspaper = Newspaper;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));
 
 (function( Trove, $, undefined ) {
     'use strict';
