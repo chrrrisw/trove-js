@@ -1,6 +1,21 @@
 # trove-js
 A JavaScript library to access the National Library of Australia's Trove API
 
+## If you just want to use the library in your webpage
+1. Get a Trove API key
+2. Download dist/trove-api.js
+3. Include it in your web page
+4. Use it
+
+## Developing the library
+You'll need node/npm installed.
+
+Clone this repository, and go to the directory created. Type:
+
+    npm install
+
+This will install the dependencies for building and testing.
+
 ## Getting an API key
 You'll need to get an API key first, by signing up and requesting one. Instructions for doing so are found at [Trove Help](http://help.nla.gov.au/trove/building-with-trove/api).
 
@@ -14,28 +29,34 @@ In your JavaScript, initialise the library first giving it your key:
 ## Asynchrony
 Remember that each time you make a call for data, the data will not be available until the Trove servers respond. For example, if you were to write:
 
-    var article = new Trove.NewspaperArticle({
-        init :18342701
-    });
-    console.log(article.heading);
+```javascript
+var article = new Trove.NewspaperArticle({
+    init :18342701
+});
+console.log(article.heading);
+```
 
 you would, more than likely, see 'undefined' at the console.  For this reason, the API provides a second parameter for a function to be called when the request completes:
 
-    var article = new Trove.NewspaperArticle({
-        init :18342701,
-        done: function (a) {console.log(a.heading)};
-    });
+```javascript
+var article = new Trove.NewspaperArticle({
+    init :18342701,
+    done: function (a) {console.log(a.heading)};
+});
+```
 
 You could also write:
 
-    function done_callback(a) {
-        console.log(a.heading);
-    }
+```javascript
+function done_callback(a) {
+    console.log(a.heading);
+}
 
-    var article = new Trove.NewspaperArticle({
-        init :18342701,
-        done : done_callback
-    });
+var article = new Trove.NewspaperArticle({
+    init :18342701,
+    done : done_callback
+});
+```
 
 to get the same result. The parameter to the called function is the object that has been updated by the request.
 
