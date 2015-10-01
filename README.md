@@ -2,7 +2,7 @@
 A JavaScript library to access the National Library of Australia's Trove API
 
 ## If you just want to use the library in your webpage
-1. Get a Trove API key
+1. Get a Trove API key: [see here](#getting_key)
 2. Download dist/trove-api.js
 3. Include it in your web page
 4. Use it
@@ -24,7 +24,7 @@ grunt
 
 Which should check your files for code style and produce a concatenated file, as well as an uglified one.
 
-## Getting an API key
+## <a name="getting_key"></a>Getting an API key
 You'll need to get an API key first, by signing up and requesting one. Instructions for doing so are found at [Trove Help](http://help.nla.gov.au/trove/building-with-trove/api).
 
 Please comply with the conditions of use, an put "powered by trove" somewhere on your site.
@@ -46,7 +46,7 @@ var article = new Trove.NewspaperArticle({
 console.log(article.heading);
 ```
 
-you would, more than likely, see 'undefined' at the console.  For this reason, the API provides a second parameter for a function to be called when the request completes:
+you would, more than likely, see 'undefined' at the console.  For this reason, the API provides a parameter for a function to be called when the request completes:
 
 ```javascript
 var article = new Trove.NewspaperArticle({

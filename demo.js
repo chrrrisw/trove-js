@@ -23,7 +23,7 @@ function test_trove (key) {
         done : function (article) {
             var n = article.get_newspaper({
                 done: function (newspaper) {
-                    for (k in newspaper) {
+                    for (var k in newspaper) {
                         if (typeof(newspaper[k]) != 'function') {
                             newspaper_table.append(
                                 '<tr>' +
@@ -34,7 +34,7 @@ function test_trove (key) {
                     }
                     article_div.append('<p>' + article.heading + '</p>');
                 }
-            })
+            });
         }
     });
 
@@ -65,14 +65,14 @@ var results_accordion;
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
-}
+};
 
 function search(terms) {
 
     // If we haven't initialised yet, do so
     // Show the sidebar if the user hasn't entered a key
     if (!started) {
-        if (key_field.val() == '') {
+        if (key_field.val() === '') {
             key_field.parent().addClass('error');
             settings_sidebar.sidebar('show');
         } else {
@@ -108,29 +108,29 @@ function search_next() {
 //     return books[i].getElementsByTagName(arguments[1])[0].childNodes[0].nodeValue;
 // }
 
-var title_template = ' \
-    <div class="title"> \
-        <i class="dropdown icon"></i> \
-        %title% (%count%) \
-    </div>';
+var title_template =
+'    <div class="title">' +
+'        <i class="dropdown icon"></i>' +
+'        %title% (%count%)' +
+'    </div>';
 
-var content_template = ' \
-    <div class="content"> \
-        <table class="ui celled table"> \
-            <thead> \
-                <tr><th>ID</th><th>Trove URL</th></tr> \
-            </thead> \
-            <tbody> \
-                %items% \
-            </tbody> \
-        </table> \
-    </div>';
+var content_template =
+'    <div class="content">' +
+'        <table class="ui celled table">' +
+'            <thead>' +
+'                <tr><th>ID</th><th>Trove URL</th></tr>' +
+'            </thead>' +
+'            <tbody>' +
+'                %items%' +
+'            </tbody>' +
+'        </table>' +
+'    </div>';
 
-var item_template = ' \
-    <tr> \
-        <td>%identifier%</td> \
-        <td><a href="%trove_url%">See here</a></td> \
-    </tr>';
+var item_template =
+'    <tr>' +
+'        <td>%identifier%</td>' +
+'        <td><a href="%trove_url%">See here</a></td>' +
+'    </tr>';
 
 function search_done(s) {
     var zone_items;
@@ -149,7 +149,7 @@ function search_done(s) {
 
         // Add the contents
         temp2 = '';
-        for (item_num in zone_items) {
+        for (var item_num in zone_items) {
             temp1 = item_template.replace('%identifier%', zone_items[item_num].id);
             temp1 = temp1.replace('%trove_url%', zone_items[item_num].troveUrl);
             temp2 = temp2 + temp1;
@@ -169,7 +169,7 @@ function documentReady(jQuery) {
 
     // Fill in and initiliase the categories dropdown
     categories_dropdown = $('.ui.categories.dropdown');
-    for (z in Trove.CATEGORIES) {
+    for (var z in Trove.CATEGORIES) {
         categories_dropdown.append('<option value="' + Trove.CATEGORIES[z] + '">' + Trove.CATEGORIES[z].capitalize() + '</option>');
     }
     categories_dropdown.dropdown();
