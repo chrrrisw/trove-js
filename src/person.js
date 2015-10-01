@@ -1,9 +1,13 @@
+/**
+ * @lends Trove
+ */
 (function( Trove, $, undefined ) {
     'use strict';
 
     /**
      * A class to hold a person
      * @class
+     * @alias Trove.Person
      * @param {Object} options
      * @property {string} options.id
      * @property {string} options.troveUrl

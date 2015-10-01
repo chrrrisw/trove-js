@@ -1,3 +1,6 @@
+/**
+ * @namespace Trove
+ */
 (function(Trove, $, undefined) {
     'use strict';
 
@@ -5,7 +8,7 @@
     Trove.trove_key = '';
 
     /**
-     * @function init
+     * @alias Trove.init
      * @param {string} key The Trove API key given to you by the National Library of Australia.
      *
      * This function should be called before any queries are made to the Trove servers.

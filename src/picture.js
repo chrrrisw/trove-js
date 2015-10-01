@@ -1,9 +1,13 @@
+/**
+ * @lends Trove
+ */
 (function( Trove, $, undefined ) {
     'use strict';
 
     /**
      * A class to hold a picture
      * @class
+     * @alias Trove.Picture
      * @param {Object} options
      * @property {number} options.holdingsCount
      * @property {string} options.id

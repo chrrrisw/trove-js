@@ -1,9 +1,13 @@
+/**
+ * @lends Trove
+ */
 (function( Trove, $, undefined ) {
     'use strict';
 
     /**
      * A Class to hold newspaper articles
      * @class
+     * @alias Trove.NewspaperArticle
      * @param {Object} options An object specifying the default options
      * @property {number} options.init The article identifier for which to retrieve data on construction.
      * @property {function} options.done The default callback called when data has been returned from the Trove servers.

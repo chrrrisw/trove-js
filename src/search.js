@@ -1,10 +1,13 @@
-//Adding New Functionality to the Skillet
+/**
+ * @lends Trove
+ */
 (function(Trove, $, undefined) {
     'use strict';
 
     /**
      * An object to perform searches
      * @class
+     * @alias Trove.Search
      * @param {Object} options An object specifying the options for this Search
      * @property {string|Array} options.zones The default zone or list of zones to search
      * @property {Function} options.done The default callback called on receipt of data

@@ -1,9 +1,13 @@
+/**
+ * @lends Trove
+ */
 (function(Trove, $, undefined) {
     'use strict';
 
     /**
      * An object to hold an instance of a newspaper
-     * @constructor
+     * @class
+     * @alias Trove.Newspaper
      * @param {Object} options
      * @property {number|string} options.init If specified, will request the data immediately
      * id

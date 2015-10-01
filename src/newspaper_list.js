@@ -1,9 +1,13 @@
+/**
+ * @lends Trove
+ */
 (function( Trove, $, undefined ) {
     'use strict';
 
     /**
      * A list of Newspapers for a specific state or all states.
      * @class
+     * @alias Trove.NewspaperList
      * @param {Object} options
      * @classdesc
      * If constructed with a 'state' blah
