@@ -76,6 +76,14 @@
         }
     };
 
+    Search.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
+
     /**
      * Remove the named facet.
      * @param {string} facet The name of the facet to remove
@@ -236,27 +244,12 @@
 
         this._last_search = query_data;
 
-        // $.ajax({
-        //     dataType : "jsonp",
-        //     url      : API.QUERY,
-        //     data     : query_data,
-        //     context  : this
-        // }).done(function (data) {
-        //     console.log('Got Search Query');
-        //     this.response = data.response;
-        //     if ((options != undefined) && (options.done != undefined)) {
-        //         options.done(this);
-        //     } else if (this.done != undefined) {
-        //         this.done(this);
-        //     }
-        // });
-
         $.ajax({
             dataType : "jsonp",
             url      : Trove.API.QUERY,
             data     : query_data,
             context  : this
-        }).done(this.process_results);
+        }).done(this.process_results).fail(this.process_fail);
 
     };
 
@@ -270,15 +263,7 @@
                 url      : Trove.API.QUERY,
                 data     : this._last_search,
                 context  : this
-            }).done(function (data) {
-                console.log('Got Search Requery');
-                this.response = data.response;
-                if ((options !== undefined) && (options.done !== undefined)) {
-                    options.done(this);
-                } else if (this.done !== undefined) {
-                    this.done(this);
-                }
-            });
+            }).done(this.process_results).fail(this.process_fail);
         }
     };
 
