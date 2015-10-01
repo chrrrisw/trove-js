@@ -13,7 +13,7 @@
      *
      * This function should be called before any queries are made to the Trove servers.
      */
-    Trove.init = function (key) {
+    Trove.init = function(key) {
         Trove.trove_key = key;
     };
 
@@ -36,9 +36,9 @@
 
     var FACETS = {
         FORMAT: 'format',
-        DECADE: 'decade',  //YYY
-        YEAR: 'year',  //YYYY
-        MONTH: 'month',  //
+        DECADE: 'decade', //YYY
+        YEAR: 'year', //YYYY
+        MONTH: 'month', //
         LANGUAGE: 'language',
         AVAILABILITY: 'availability',
         AUSTRALIAN: 'australian',
@@ -94,17 +94,17 @@
     // can include multiple as a list
     // used for QUERY, WORK, LIST and NP_ARTICLE
     var INCLUDE = {
-        TAGS            : 'tags',
-        COMMENTS        : 'comments',
-        LISTS           : 'lists',
-        HOLDINGS        : 'holdings',
-        LINKS           : 'links',
-        SUBSCRIBINGLIBS : 'subscribinglibs',
-        WORKVERSIONS    : 'workversions',
-        ARTICLETEXT     : 'articletext',
-        YEARS           : 'years',
-        LISTITEMS       : 'listitems',
-        ALL             : 'all'
+        TAGS: 'tags',
+        COMMENTS: 'comments',
+        LISTS: 'lists',
+        HOLDINGS: 'holdings',
+        LINKS: 'links',
+        SUBSCRIBINGLIBS: 'subscribinglibs',
+        WORKVERSIONS: 'workversions',
+        ARTICLETEXT: 'articletext',
+        YEARS: 'years',
+        LISTITEMS: 'listitems',
+        ALL: 'all'
     };
     Trove.INCLUDE = INCLUDE;
 
@@ -137,19 +137,19 @@
     var API_ADDRESS = 'http://api.trove.nla.gov.au/';
 
     var RECORD_TYPE = {
-            WORK: 'work/',
-            NEWS: 'newspaper/',
-            LIST: 'list/'
+        WORK: 'work/',
+        NEWS: 'newspaper/',
+        LIST: 'list/'
     };
     Trove.RECORD_TYPE = RECORD_TYPE;
 
     var API = {
-        WORK       : API_ADDRESS + RECORD_TYPE.WORK,
-        LIST       : API_ADDRESS + RECORD_TYPE.LIST,
-        NP_ARTICLE : API_ADDRESS + RECORD_TYPE.NEWS,
-        NP_TITLE   : API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
-        NP_TITLES  : API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
-        QUERY      : API_ADDRESS + 'result'
+        WORK: API_ADDRESS + RECORD_TYPE.WORK,
+        LIST: API_ADDRESS + RECORD_TYPE.LIST,
+        NP_ARTICLE: API_ADDRESS + RECORD_TYPE.NEWS,
+        NP_TITLE: API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
+        NP_TITLES: API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
+        QUERY: API_ADDRESS + 'result'
     };
     Trove.API = API;
 

@@ -1,7 +1,7 @@
 /**
  * @lends Trove
  */
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
@@ -19,11 +19,11 @@
      * @property {Array} options.type
      * @property {string} options.url
      */
-    function Book (options) {
+    function Book(options) {
         console.log('Creating Book');
         $.extend(this, options);
     }
     Trove.Book = Book;
     Trove.SEARCH_CONSTRUCTORS.book = Book;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));

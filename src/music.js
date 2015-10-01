@@ -1,7 +1,7 @@
 /**
  * @lends Trove
  */
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
@@ -20,11 +20,11 @@
      * @property {string} options.url
      * @property {number} options.versionCount
      */
-    function Music (options) {
+    function Music(options) {
         console.log('Creating Music');
         $.extend(this, options);
     }
     Trove.Music = Music;
     Trove.SEARCH_CONSTRUCTORS.music = Music;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));

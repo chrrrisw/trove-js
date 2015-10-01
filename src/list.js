@@ -1,7 +1,7 @@
 /**
  * @lends Trove
  */
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
@@ -9,10 +9,10 @@
      * @class
      * @alias Trove.List
      */
-    function List (options) {
+    function List(options) {
         $.extend(this, options);
     }
     Trove.List = List;
     Trove.SEARCH_CONSTRUCTORS.list = List;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));

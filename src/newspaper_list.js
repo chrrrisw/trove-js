@@ -1,7 +1,7 @@
 /**
  * @lends Trove
  */
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
@@ -12,7 +12,7 @@
      * @classdesc
      * If constructed with a 'state' blah
      */
-    function NewspaperList (options) {
+    function NewspaperList(options) {
         console.log('Creating NewspaperList');
         // http://api.trove.nla.gov.au/newspaper/titles?state=vic
         $.extend(this, options);
@@ -29,7 +29,7 @@
     /**
      *
      */
-    NewspaperList.prototype.processGet = function (data) {
+    NewspaperList.prototype.processGet = function(data) {
 
         for (var index in data.response.records.newspaper) {
             console.dir(data.response.records.newspaper[index]);
@@ -44,7 +44,7 @@
     /**
      *
      */
-    NewspaperList.prototype.get = function (options) {
+    NewspaperList.prototype.get = function(options) {
         console.log('Getting NewspaperList');
         var query_data = {
             key: Trove.trove_key,
@@ -56,13 +56,13 @@
         }
 
         $.ajax({
-            dataType : "jsonp",
-            url      : Trove.API.NP_TITLES,
-            data     : query_data,
-            context  : this
+            dataType: "jsonp",
+            url: Trove.API.NP_TITLES,
+            data: query_data,
+            context: this
         }).done(this.processGet);
     };
 
     Trove.NewspaperList = NewspaperList;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));

@@ -1,7 +1,7 @@
 /**
  * @lends Trove
  */
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
@@ -12,7 +12,7 @@
      * @property {number} options.init The article identifier for which to retrieve data on construction.
      * @property {function} options.done The default callback called when data has been returned from the Trove servers.
      */
-    function NewspaperArticle (options) {
+    function NewspaperArticle(options) {
         console.log('Creating NewspaperArticle');
 
         var init;
@@ -37,7 +37,7 @@
      * @property {number} options.identifier The article identifier for which to retrieve data.
      * @property {function} options.done The callback called when data has been returned from the Trove servers. This overrides the default calback.
      */
-    NewspaperArticle.prototype.get = function (options) {
+    NewspaperArticle.prototype.get = function(options) {
         console.log('Getting NewspaperArticle');
         // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
 
@@ -47,11 +47,11 @@
         };
 
         $.ajax({
-            dataType : "jsonp",
-            url      : Trove.API.NP_ARTICLE + options.identifier,
-            data     : query_data,
-            context  : this
-        }).done(function (data) {
+            dataType: "jsonp",
+            url: Trove.API.NP_ARTICLE + options.identifier,
+            data: query_data,
+            context: this
+        }).done(function(data) {
             console.log('Got NewspaperArticle');
             $.extend(this, data.article);
             if (options.done !== undefined) {
@@ -82,4 +82,4 @@
     Trove.NewspaperArticle = NewspaperArticle;
     Trove.SEARCH_CONSTRUCTORS.newspaper = NewspaperArticle;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));

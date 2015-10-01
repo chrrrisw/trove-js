@@ -1,7 +1,7 @@
 /**
  * @lends Trove
  */
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
@@ -21,11 +21,11 @@
      * @property {string} options.url
      * @property {number} options.versionCount
      */
-    function Map (options) {
+    function Map(options) {
         console.log('Creating Map');
         $.extend(this, options);
     }
     Trove.Map = Map;
     Trove.SEARCH_CONSTRUCTORS.map = Map;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));

@@ -13,7 +13,7 @@
      * @property {Function} options.done The default callback called on receipt of data
      * @property {string} options.terms The default search terms
      */
-    function Search (options) {
+    function Search(options) {
         console.log('Creating Search');
 
         // copy everything from options to this object
@@ -26,7 +26,7 @@
 
         // The parameters of the last search
         // Used to request previous and next results.
-        this._last_search =  undefined;
+        this._last_search = undefined;
 
         this.facets = [];
         this.limits = {};
@@ -129,7 +129,7 @@
      * @property {string|Array} options.limits
      * @property {string|Array} options.facets
      */
-    Search.prototype.query = function (options) {
+    Search.prototype.query = function(options) {
 
         console.log('Querying Search');
 
@@ -155,12 +155,12 @@
         }
 
         var query_data = {
-                key: Trove.trove_key,
-                encoding: 'json',
-                zone: zones,
-                q: options.terms || this.terms,
-                s: 0,
-                n: 20
+            key: Trove.trove_key,
+            encoding: 'json',
+            zone: zones,
+            q: options.terms || this.terms,
+            s: 0,
+            n: 20
         };
 
         // Where to start
@@ -220,10 +220,10 @@
         this._last_search = query_data;
 
         $.ajax({
-            dataType : "jsonp",
-            url      : Trove.API.QUERY,
-            data     : query_data,
-            context  : this
+            dataType: "jsonp",
+            url: Trove.API.QUERY,
+            data: query_data,
+            context: this
         }).done(this.process_results).fail(this.process_fail);
 
     };
@@ -238,10 +238,10 @@
             this._last_search.s = this._last_search.s + delta;
 
             $.ajax({
-                dataType : "jsonp",
-                url      : Trove.API.QUERY,
-                data     : this._last_search,
-                context  : this
+                dataType: "jsonp",
+                url: Trove.API.QUERY,
+                data: this._last_search,
+                context: this
             }).done(this.process_results).fail(this.process_fail);
         }
     };

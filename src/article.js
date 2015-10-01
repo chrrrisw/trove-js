@@ -1,7 +1,7 @@
 /**
  * @lends Trove
  */
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
@@ -20,11 +20,11 @@
      * @property {string} options.url
      * @property {number} options.versionCount
      */
-    function Article (options) {
+    function Article(options) {
         console.log('Creating Article');
         $.extend(this, options);
     }
     Trove.Article = Article;
     Trove.SEARCH_CONSTRUCTORS.article = Article;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));

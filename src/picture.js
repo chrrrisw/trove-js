@@ -1,7 +1,7 @@
 /**
  * @lends Trove
  */
-(function( Trove, $, undefined ) {
+(function(Trove, $, undefined) {
     'use strict';
 
     /**
@@ -19,11 +19,11 @@
      * @property {string} options.url
      * @property {number} options.versionCount
      */
-    function Picture (options) {
+    function Picture(options) {
         console.log('Creating Picture');
         $.extend(this, options);
     }
     Trove.Picture = Picture;
     Trove.SEARCH_CONSTRUCTORS.picture = Picture;
 
-}( window.Trove = window.Trove || {}, jQuery ));
+}(window.Trove = window.Trove || {}, jQuery));
