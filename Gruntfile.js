@@ -54,10 +54,15 @@ module.exports = function(grunt) {
     qunit: {
       all: {
         options: {
-          timeout: 10000,
+          timeout: 20000,
           urls: [
             'http://localhost:3000/test/test.html',
-          ]
+          ],
+          page: {
+            settings: {
+              userAgent: 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:44.0) Gecko/20100101 Firefox/44.0'
+            }
+          }
         }
       }
     },
