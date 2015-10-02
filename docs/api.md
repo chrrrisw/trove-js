@@ -8,7 +8,7 @@
   * [.Book](#Trove.Book)
     * [new Book(options)](#new_Trove.Book_new)
   * [.Collection](#Trove.Collection)
-    * [new Collection()](#new_Trove.Collection_new)
+    * [new Collection(options)](#new_Trove.Collection_new)
   * [.List](#Trove.List)
     * [new List()](#new_Trove.List_new)
   * [.Map](#Trove.Map)
@@ -39,6 +39,8 @@
     * [.requery(options, delta)](#Trove.Search+requery)
     * [.next(options)](#Trove.Search+next)
     * [.previous(options)](#Trove.Search+previous)
+  * [.Work](#Trove.Work)
+    * [new Work(options)](#new_Trove.Work_new)
   * [.ZONE](#Trove.ZONE) : <code>enum</code>
   * [.FACETS](#Trove.FACETS) : <code>enum</code>
   * [.LIMITS](#Trove.LIMITS) : <code>enum</code>
@@ -52,21 +54,6 @@
 <a name="Trove.Article"></a>
 ### Trove.Article
 **Kind**: static class of <code>[Trove](#Trove)</code>
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| options.contributor | <code>Array</code> |
-| options.holdingsCount | <code>number</code> |
-| options.id | <code>string</code> |
-| options.issued | <code>number</code> &#124; <code>string</code> |
-| options.relevance | <code>Object</code> |
-| options.title | <code>string</code> |
-| options.troveUrl | <code>string</code> |
-| options.type | <code>Array</code> |
-| options.url | <code>string</code> |
-| options.versionCount | <code>number</code> |
-
 <a name="new_Trove.Article_new"></a>
 #### new Article(options)
 A class to hold a journal article
@@ -79,20 +66,6 @@ A class to hold a journal article
 <a name="Trove.Book"></a>
 ### Trove.Book
 **Kind**: static class of <code>[Trove](#Trove)</code>
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| options.contributor | <code>Array</code> |
-| options.holdingsCount | <code>number</code> |
-| options.id | <code>string</code> |
-| options.issued | <code>number</code> &#124; <code>string</code> |
-| options.relevance | <code>Object</code> |
-| options.title | <code>string</code> |
-| options.troveUrl | <code>string</code> |
-| options.type | <code>Array</code> |
-| options.url | <code>string</code> |
-
 <a name="new_Trove.Book_new"></a>
 #### new Book(options)
 A class to hold a book
@@ -106,8 +79,13 @@ A class to hold a book
 ### Trove.Collection
 **Kind**: static class of <code>[Trove](#Trove)</code>
 <a name="new_Trove.Collection_new"></a>
-#### new Collection()
+#### new Collection(options)
 A class to hold a collection
+
+
+| Param | Type |
+| --- | --- |
+| options | <code>Object</code> |
 
 <a name="Trove.List"></a>
 ### Trove.List
@@ -119,22 +97,6 @@ A class to hold a list
 <a name="Trove.Map"></a>
 ### Trove.Map
 **Kind**: static class of <code>[Trove](#Trove)</code>
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| options.contributor | <code>Array</code> |
-| options.holdingsCount | <code>number</code> |
-| options.id | <code>string</code> |
-| options.identifier | <code>Array</code> |
-| options.issued | <code>number</code> &#124; <code>string</code> |
-| options.relevance | <code>Object</code> |
-| options.title | <code>string</code> |
-| options.troveUrl | <code>string</code> |
-| options.type | <code>Array</code> |
-| options.url | <code>string</code> |
-| options.versionCount | <code>number</code> |
-
 <a name="new_Trove.Map_new"></a>
 #### new Map(options)
 A class to hold a map
@@ -147,21 +109,6 @@ A class to hold a map
 <a name="Trove.Music"></a>
 ### Trove.Music
 **Kind**: static class of <code>[Trove](#Trove)</code>
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| options.contributor | <code>Array</code> |
-| options.holdingsCount | <code>number</code> |
-| options.id | <code>string</code> |
-| options.issued | <code>number</code> &#124; <code>string</code> |
-| options.relevance | <code>Object</code> |
-| options.title | <code>string</code> |
-| options.troveUrl | <code>string</code> |
-| options.type | <code>Array</code> |
-| options.url | <code>string</code> |
-| options.versionCount | <code>number</code> |
-
 <a name="new_Trove.Music_new"></a>
 #### new Music(options)
 A class to hold music
@@ -325,20 +272,6 @@ A class to hold a person
 <a name="Trove.Picture"></a>
 ### Trove.Picture
 **Kind**: static class of <code>[Trove](#Trove)</code>
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| options.holdingsCount | <code>number</code> |
-| options.id | <code>string</code> |
-| options.identifier | <code>Array</code> |
-| options.relevance | <code>Object</code> |
-| options.title | <code>string</code> |
-| options.troveUrl | <code>string</code> |
-| options.type | <code>Array</code> |
-| options.url | <code>string</code> |
-| options.versionCount | <code>number</code> |
-
 <a name="new_Trove.Picture_new"></a>
 #### new Picture(options)
 A class to hold a picture
@@ -491,6 +424,34 @@ Request the previous search results
 | --- | --- |
 | options.done | <code>function</code> |
 | options.fail | <code>function</code> |
+
+<a name="Trove.Work"></a>
+### Trove.Work
+**Kind**: static class of <code>[Trove](#Trove)</code>
+**Properties**
+
+| Name | Type |
+| --- | --- |
+| options.contributor | <code>Array</code> |
+| options.identifier | <code>Array</code> |
+| options.type | <code>Array</code> |
+| options.holdingsCount | <code>number</code> |
+| options.versionCount | <code>number</code> |
+| options.issued | <code>number</code> &#124; <code>string</code> |
+| options.relevance | <code>Object</code> |
+| options.id | <code>string</code> |
+| options.title | <code>string</code> |
+| options.troveUrl | <code>string</code> |
+| options.url | <code>string</code> |
+
+<a name="new_Trove.Work_new"></a>
+#### new Work(options)
+A class to hold a work. Work is the super class for other classes
+
+
+| Param | Type |
+| --- | --- |
+| options | <code>Object</code> |
 
 <a name="Trove.ZONE"></a>
 ### Trove.ZONE : <code>enum</code>
