@@ -21,7 +21,7 @@
      * @property {number} options.versionCount
      */
     function Article(options) {
-        console.log('Creating Article');
+        // console.log('Creating Article');
         $.extend(this, options);
     }
     Trove.Article = Article;

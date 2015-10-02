@@ -20,7 +20,7 @@
      * @property {string} options.url
      */
     function Book(options) {
-        console.log('Creating Book');
+        // console.log('Creating Book');
         $.extend(this, options);
     }
     Trove.Book = Book;

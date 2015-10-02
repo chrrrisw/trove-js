@@ -21,7 +21,7 @@
      * @property {number} options.versionCount
      */
     function Music(options) {
-        console.log('Creating Music');
+        // console.log('Creating Music');
         $.extend(this, options);
     }
     Trove.Music = Music;

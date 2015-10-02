@@ -22,7 +22,7 @@
      * @property {number} options.versionCount
      */
     function Map(options) {
-        console.log('Creating Map');
+        // console.log('Creating Map');
         $.extend(this, options);
     }
     Trove.Map = Map;

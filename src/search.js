@@ -15,7 +15,7 @@
      * @property {string} options.terms The default search terms
      */
     function Search(options) {
-        console.log('Creating Search');
+        // console.log('Creating Search');
 
         // copy everything from options to this object
         $.extend(this, options);
@@ -35,7 +35,7 @@
     }
 
     Search.prototype.process_results = function(data) {
-        console.log('Got Search Query');
+        // console.log('Got Search Query');
         var zone_items;
         var zone_name;
 
@@ -132,7 +132,7 @@
      */
     Search.prototype.query = function(options) {
 
-        console.log('Querying Search');
+        // console.log('Querying Search');
 
         if (options === undefined) {
             console.error('options is undefined');

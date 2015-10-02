@@ -10,7 +10,7 @@
      * @alias Trove.Collection
      */
     function Collection(options) {
-        console.log('Creating Collection');
+        // console.log('Creating Collection');
         $.extend(this, options);
         // console.dir(this);
     }

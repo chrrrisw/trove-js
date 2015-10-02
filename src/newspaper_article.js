@@ -13,7 +13,7 @@
      * @property {function} options.done The default callback called when data has been returned from the Trove servers.
      */
     function NewspaperArticle(options) {
-        console.log('Creating NewspaperArticle');
+        // console.log('Creating NewspaperArticle');
 
         var init;
         if (options.init !== undefined) {
@@ -38,7 +38,7 @@
      * @property {function} options.done The callback called when data has been returned from the Trove servers. This overrides the default calback.
      */
     NewspaperArticle.prototype.get = function(options) {
-        console.log('Getting NewspaperArticle');
+        // console.log('Getting NewspaperArticle');
         // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
 
         var query_data = {
@@ -52,7 +52,7 @@
             data: query_data,
             context: this
         }).done(function(data) {
-            console.log('Got NewspaperArticle');
+            // console.log('Got NewspaperArticle');
             $.extend(this, data.article);
             if (options.done !== undefined) {
                 options.done(this);
@@ -68,7 +68,7 @@
      * @returns {Newspaper} the Newspaper object
      */
     NewspaperArticle.prototype.get_newspaper = function(options) {
-        console.log('Get Newspaper for Article');
+        // console.log('Get Newspaper for Article');
         if (this.title !== undefined) {
             if (this.title.id !== undefined) {
                 return new Trove.CONSTRUCTORS.newspaper_title({

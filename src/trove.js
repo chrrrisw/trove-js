@@ -169,6 +169,25 @@
     Trove.INCLUDE = INCLUDE;
 
     /**
+     * Enumeration for states.
+     * @alias Trove.STATES
+     * @readonly
+     * @enum {string}
+     */
+    var STATES = {
+        nsw: 'nsw',
+        act: 'act',
+        qld: 'qld',
+        tas: 'tas',
+        sa: 'sa',
+        nt: 'nt',
+        wa: 'wa',
+        vic: 'vic',
+        national: 'national'
+    };
+    Trove.STATES = STATES;
+
+    /**
      * Enumeration for categories
      * @alias Trove.CATEGORIES
      * @readonly

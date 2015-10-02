@@ -169,6 +169,25 @@
     Trove.INCLUDE = INCLUDE;
 
     /**
+     * Enumeration for states.
+     * @alias Trove.STATES
+     * @readonly
+     * @enum {string}
+     */
+    var STATES = {
+        nsw: 'nsw',
+        act: 'act',
+        qld: 'qld',
+        tas: 'tas',
+        sa: 'sa',
+        nt: 'nt',
+        wa: 'wa',
+        vic: 'vic',
+        national: 'national'
+    };
+    Trove.STATES = STATES;
+
+    /**
      * Enumeration for categories
      * @alias Trove.CATEGORIES
      * @readonly
@@ -240,7 +259,7 @@
      * @property {string} options.terms The default search terms
      */
     function Search(options) {
-        console.log('Creating Search');
+        // console.log('Creating Search');
 
         // copy everything from options to this object
         $.extend(this, options);
@@ -260,7 +279,7 @@
     }
 
     Search.prototype.process_results = function(data) {
-        console.log('Got Search Query');
+        // console.log('Got Search Query');
         var zone_items;
         var zone_name;
 
@@ -357,7 +376,7 @@
      */
     Search.prototype.query = function(options) {
 
-        console.log('Querying Search');
+        // console.log('Querying Search');
 
         if (options === undefined) {
             console.error('options is undefined');
@@ -558,7 +577,7 @@
      * @property {string} options.url
      */
     function Person(options) {
-        console.log('Creating Person');
+        // console.log('Creating Person');
         $.extend(this, options);
     }
     Trove.Person = Person;
@@ -589,7 +608,7 @@
      * @property {number} options.versionCount
      */
     function Article(options) {
-        console.log('Creating Article');
+        // console.log('Creating Article');
         $.extend(this, options);
     }
     Trove.Article = Article;
@@ -619,7 +638,7 @@
      * @property {number} options.versionCount
      */
     function Picture(options) {
-        console.log('Creating Picture');
+        // console.log('Creating Picture');
         $.extend(this, options);
     }
     Trove.Picture = Picture;
@@ -649,7 +668,7 @@
      * @property {string} options.url
      */
     function Book(options) {
-        console.log('Creating Book');
+        // console.log('Creating Book');
         $.extend(this, options);
     }
     Trove.Book = Book;
@@ -681,7 +700,7 @@
      * @property {number} options.versionCount
      */
     function Map(options) {
-        console.log('Creating Map');
+        // console.log('Creating Map');
         $.extend(this, options);
     }
     Trove.Map = Map;
@@ -712,7 +731,7 @@
      * @property {number} options.versionCount
      */
     function Music(options) {
-        console.log('Creating Music');
+        // console.log('Creating Music');
         $.extend(this, options);
     }
     Trove.Music = Music;
@@ -732,7 +751,7 @@
      * @alias Trove.Collection
      */
     function Collection(options) {
-        console.log('Creating Collection');
+        // console.log('Creating Collection');
         $.extend(this, options);
         // console.dir(this);
     }
@@ -756,7 +775,7 @@
      * @property {function} options.done The default callback called when data has been returned from the Trove servers.
      */
     function NewspaperArticle(options) {
-        console.log('Creating NewspaperArticle');
+        // console.log('Creating NewspaperArticle');
 
         var init;
         if (options.init !== undefined) {
@@ -781,7 +800,7 @@
      * @property {function} options.done The callback called when data has been returned from the Trove servers. This overrides the default calback.
      */
     NewspaperArticle.prototype.get = function(options) {
-        console.log('Getting NewspaperArticle');
+        // console.log('Getting NewspaperArticle');
         // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
 
         var query_data = {
@@ -795,7 +814,7 @@
             data: query_data,
             context: this
         }).done(function(data) {
-            console.log('Got NewspaperArticle');
+            // console.log('Got NewspaperArticle');
             $.extend(this, data.article);
             if (options.done !== undefined) {
                 options.done(this);
@@ -811,7 +830,7 @@
      * @returns {Newspaper} the Newspaper object
      */
     NewspaperArticle.prototype.get_newspaper = function(options) {
-        console.log('Get Newspaper for Article');
+        // console.log('Get Newspaper for Article');
         if (this.title !== undefined) {
             if (this.title.id !== undefined) {
                 return new Trove.CONSTRUCTORS.newspaper_title({
@@ -848,7 +867,7 @@
      * endDate
      */
     function Newspaper(options) {
-        console.log('Creating Newspaper');
+        // console.log('Creating Newspaper');
 
         var init;
         if (options.init !== undefined) {
@@ -870,7 +889,7 @@
      * @param (Number) identifier
      */
     Newspaper.prototype.get = function(options) {
-        console.log('Getting Newspaper');
+        // console.log('Getting Newspaper');
         // http://api.trove.nla.gov.au/newspaper/title/35?encoding=json
 
         var query_data = {
@@ -884,7 +903,7 @@
             data: query_data,
             context: this
         }).done(function(data) {
-            console.log('Got Newspaper');
+            // console.log('Got Newspaper');
             $.extend(this, data.newspaper);
             if (options.done !== undefined) {
                 options.done(this);
@@ -910,11 +929,11 @@
      * @class
      * @alias Trove.NewspaperList
      * @param {Object} options
-     * @classdesc
-     * If constructed with a 'state' blah
+     * @property {string} options.state The state for which the newspaper list will be returned.
+     * @property {string} options.state The state for which the newspaper list will be returned.
      */
     function NewspaperList(options) {
-        console.log('Creating NewspaperList');
+        // console.log('Creating NewspaperList');
         // http://api.trove.nla.gov.au/newspaper/titles?state=vic
         $.extend(this, options);
 
@@ -933,20 +952,21 @@
     NewspaperList.prototype.processGet = function(data) {
 
         for (var index in data.response.records.newspaper) {
-            console.dir(data.response.records.newspaper[index]);
+            // console.dir(data.response.records.newspaper[index]);
             this.newspapers.push(new Trove.CONSTRUCTORS.newspaper_title(
                 data.response.records.newspaper[index]
             ));
         }
 
-        console.log("total = " + data.response.records.total);
+        // console.log("total = " + data.response.records.total);
+        if (this.done !== undefined) this.done(this);
     };
 
     /**
      *
      */
     NewspaperList.prototype.get = function(options) {
-        console.log('Getting NewspaperList');
+        // console.log('Getting NewspaperList');
         var query_data = {
             key: Trove.trove_key,
             encoding: 'json'

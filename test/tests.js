@@ -1,4 +1,5 @@
 // Should start a test server, instead of querying Trove.
+var num_records = 4;
 var search = new Trove.Search();
 
 QUnit.test("init test", function(assert) {
@@ -12,21 +13,34 @@ QUnit.test("init test", function(assert) {
     });
 });
 
+QUnit.test("newspaper list test", function(assert) {
+    var list_done = assert.async();
+    var nl = new Trove.NewspaperList({
+        state: Trove.STATES.act,
+        done: function(n) {
+            // console.dir(n.newspapers);
+            assert.ok(n.newspapers.length > 0, "Checking newspapers > 0");
+            list_done();
+        }
+    });
+});
+
 QUnit.test("default zone search test", function(assert) {
     var search_done = assert.async();
     var terms = 'periwinkle';
     search.query({
         terms: terms,
+        number: num_records,
         done: function(s) {
             // console.log(s._last_search);
             assert.equal(s._last_search.zone, Trove.ZONE.ALL, "Checking default zone");
             assert.equal(s._last_search.q, terms, "Checking query terms");
             assert.equal(s._last_search.s, 0, "Checking start");
-            assert.equal(s._last_search.n, 20, "Checking number");
+            assert.equal(s._last_search.n, num_records, "Checking number");
             search_done();
         },
         fail: function(s) {
-            console.log('Failed');
+            console.error('Failed');
             search_done();
         }
     });
@@ -39,16 +53,17 @@ QUnit.test("newspaper zone search test", function(assert) {
     search.query({
         terms: terms,
         zones: zones,
+        number: num_records,
         done: function(s) {
             // console.log(s._last_search);
             assert.equal(s._last_search.zone, zones.join(','), "Checking newspaper zone");
             assert.equal(s._last_search.q, terms, "Checking query terms");
             assert.equal(s._last_search.s, 0, "Checking start");
-            assert.equal(s._last_search.n, 20, "Checking number");
+            assert.equal(s._last_search.n, num_records, "Checking number");
             search_done();
         },
         fail: function(s) {
-            console.log('Failed');
+            console.error('Failed');
             search_done();
         }
     });
@@ -59,8 +74,8 @@ QUnit.test("search next test", function(assert) {
     search.next({
         done: function(s) {
             // console.log(s._last_search);
-            assert.equal(s._last_search.s, 20, "Checking start");
-            assert.equal(s._last_search.n, 20, "Checking number");
+            assert.equal(s._last_search.s, num_records, "Checking start");
+            assert.equal(s._last_search.n, num_records, "Checking number");
             search_done();
         }
     });
@@ -72,7 +87,7 @@ QUnit.test("search previous test", function(assert) {
         done: function(s) {
             // console.log(s._last_search);
             assert.equal(s._last_search.s, 0, "Checking start");
-            assert.equal(s._last_search.n, 20, "Checking number");
+            assert.equal(s._last_search.n, num_records, "Checking number");
             search_done();
         }
     });
@@ -93,12 +108,13 @@ QUnit.test("facet test", function(assert) {
     search.query({
         terms: terms,
         zones: zones,
+        number: num_records,
         done: function(s) {
             assert.equal(s._last_search.facet, facets, "Checking facets");
             search_done();
         },
         fail: function(s) {
-            console.log('Failed');
+            console.error('Failed');
             search_done();
         }
     });

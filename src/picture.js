@@ -20,7 +20,7 @@
      * @property {number} options.versionCount
      */
     function Picture(options) {
-        console.log('Creating Picture');
+        // console.log('Creating Picture');
         $.extend(this, options);
     }
     Trove.Picture = Picture;

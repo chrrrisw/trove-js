@@ -19,7 +19,7 @@
      * endDate
      */
     function Newspaper(options) {
-        console.log('Creating Newspaper');
+        // console.log('Creating Newspaper');
 
         var init;
         if (options.init !== undefined) {
@@ -41,7 +41,7 @@
      * @param (Number) identifier
      */
     Newspaper.prototype.get = function(options) {
-        console.log('Getting Newspaper');
+        // console.log('Getting Newspaper');
         // http://api.trove.nla.gov.au/newspaper/title/35?encoding=json
 
         var query_data = {
@@ -55,7 +55,7 @@
             data: query_data,
             context: this
         }).done(function(data) {
-            console.log('Got Newspaper');
+            // console.log('Got Newspaper');
             $.extend(this, data.newspaper);
             if (options.done !== undefined) {
                 options.done(this);

@@ -14,7 +14,7 @@
      * @property {string} options.url
      */
     function Person(options) {
-        console.log('Creating Person');
+        // console.log('Creating Person');
         $.extend(this, options);
     }
     Trove.Person = Person;
