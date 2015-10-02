@@ -66,5 +66,6 @@
     };
 
     Trove.Newspaper = Newspaper;
+    Trove.CONSTRUCTORS.newspaper_title = Newspaper;
 
 }(window.Trove = window.Trove || {}, jQuery));

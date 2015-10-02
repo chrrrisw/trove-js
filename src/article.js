@@ -25,6 +25,6 @@
         $.extend(this, options);
     }
     Trove.Article = Article;
-    Trove.SEARCH_CONSTRUCTORS.article = Article;
+    Trove.CONSTRUCTORS.article = Article;
 
 }(window.Trove = window.Trove || {}, jQuery));

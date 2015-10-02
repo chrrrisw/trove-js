@@ -51,7 +51,7 @@
             zone_items = this.response.zone[zone_num].records[Trove.SEARCH_RECORDS[zone_name]];
 
             for (var item_num in zone_items) {
-                this.items[zone_name].push(new Trove.SEARCH_CONSTRUCTORS[zone_name](zone_items[item_num]));
+                this.items[zone_name].push(new Trove.CONSTRUCTORS[zone_name](zone_items[item_num]));
             }
         }
 

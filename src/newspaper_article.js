@@ -71,7 +71,7 @@
         console.log('Get Newspaper for Article');
         if (this.title !== undefined) {
             if (this.title.id !== undefined) {
-                return new Newspaper({
+                return new Trove.CONSTRUCTORS.newspaper_title({
                     init: this.title.id,
                     done: options.done || this.done
                 });
@@ -80,6 +80,6 @@
     };
 
     Trove.NewspaperArticle = NewspaperArticle;
-    Trove.SEARCH_CONSTRUCTORS.newspaper = NewspaperArticle;
+    Trove.CONSTRUCTORS.newspaper = NewspaperArticle;
 
 }(window.Trove = window.Trove || {}, jQuery));

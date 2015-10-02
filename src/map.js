@@ -26,6 +26,6 @@
         $.extend(this, options);
     }
     Trove.Map = Map;
-    Trove.SEARCH_CONSTRUCTORS.map = Map;
+    Trove.CONSTRUCTORS.map = Map;
 
 }(window.Trove = window.Trove || {}, jQuery));

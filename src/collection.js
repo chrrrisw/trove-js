@@ -15,6 +15,6 @@
         // console.dir(this);
     }
     Trove.Collection = Collection;
-    Trove.SEARCH_CONSTRUCTORS.collection = Collection;
+    Trove.CONSTRUCTORS.collection = Collection;
 
 }(window.Trove = window.Trove || {}, jQuery));

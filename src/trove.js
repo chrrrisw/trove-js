@@ -196,10 +196,12 @@
     };
     Trove.SEARCH_RECORDS = SEARCH_RECORDS;
 
-    // Mapping of search result zones to constructors
-    var SEARCH_CONSTRUCTORS = {};
-    Trove.SEARCH_CONSTRUCTORS = SEARCH_CONSTRUCTORS;
+    // Mapping of zones to constructors for those zones.
+    // Mostly used by Search to create objects on receipt of results.
+    var CONSTRUCTORS = {};
+    Trove.CONSTRUCTORS = CONSTRUCTORS;
 
+    // Base URL for Trove
     var API_ADDRESS = 'http://api.trove.nla.gov.au/';
 
     var RECORD_TYPE = {

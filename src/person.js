@@ -18,6 +18,6 @@
         $.extend(this, options);
     }
     Trove.Person = Person;
-    Trove.SEARCH_CONSTRUCTORS.people = Person;
+    Trove.CONSTRUCTORS.people = Person;
 
 }(window.Trove = window.Trove || {}, jQuery));

@@ -24,6 +24,6 @@
         $.extend(this, options);
     }
     Trove.Picture = Picture;
-    Trove.SEARCH_CONSTRUCTORS.picture = Picture;
+    Trove.CONSTRUCTORS.picture = Picture;
 
 }(window.Trove = window.Trove || {}, jQuery));

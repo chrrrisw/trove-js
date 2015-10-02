@@ -25,6 +25,6 @@
         $.extend(this, options);
     }
     Trove.Music = Music;
-    Trove.SEARCH_CONSTRUCTORS.music = Music;
+    Trove.CONSTRUCTORS.music = Music;
 
 }(window.Trove = window.Trove || {}, jQuery));

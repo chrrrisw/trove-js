@@ -13,6 +13,6 @@
         $.extend(this, options);
     }
     Trove.List = List;
-    Trove.SEARCH_CONSTRUCTORS.list = List;
+    Trove.CONSTRUCTORS.list = List;
 
 }(window.Trove = window.Trove || {}, jQuery));

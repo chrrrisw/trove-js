@@ -24,6 +24,6 @@
         $.extend(this, options);
     }
     Trove.Book = Book;
-    Trove.SEARCH_CONSTRUCTORS.book = Book;
+    Trove.CONSTRUCTORS.book = Book;
 
 }(window.Trove = window.Trove || {}, jQuery));

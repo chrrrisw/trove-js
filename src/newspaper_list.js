@@ -33,7 +33,7 @@
 
         for (var index in data.response.records.newspaper) {
             console.dir(data.response.records.newspaper[index]);
-            this.newspapers.push(new Newspaper(
+            this.newspapers.push(new Trove.CONSTRUCTORS.newspaper_title(
                 data.response.records.newspaper[index]
             ));
         }

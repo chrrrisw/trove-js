@@ -196,10 +196,12 @@
     };
     Trove.SEARCH_RECORDS = SEARCH_RECORDS;
 
-    // Mapping of search result zones to constructors
-    var SEARCH_CONSTRUCTORS = {};
-    Trove.SEARCH_CONSTRUCTORS = SEARCH_CONSTRUCTORS;
+    // Mapping of zones to constructors for those zones.
+    // Mostly used by Search to create objects on receipt of results.
+    var CONSTRUCTORS = {};
+    Trove.CONSTRUCTORS = CONSTRUCTORS;
 
+    // Base URL for Trove
     var API_ADDRESS = 'http://api.trove.nla.gov.au/';
 
     var RECORD_TYPE = {
@@ -274,7 +276,7 @@
             zone_items = this.response.zone[zone_num].records[Trove.SEARCH_RECORDS[zone_name]];
 
             for (var item_num in zone_items) {
-                this.items[zone_name].push(new Trove.SEARCH_CONSTRUCTORS[zone_name](zone_items[item_num]));
+                this.items[zone_name].push(new Trove.CONSTRUCTORS[zone_name](zone_items[item_num]));
             }
         }
 
@@ -536,7 +538,7 @@
         $.extend(this, options);
     }
     Trove.List = List;
-    Trove.SEARCH_CONSTRUCTORS.list = List;
+    Trove.CONSTRUCTORS.list = List;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -560,7 +562,7 @@
         $.extend(this, options);
     }
     Trove.Person = Person;
-    Trove.SEARCH_CONSTRUCTORS.people = Person;
+    Trove.CONSTRUCTORS.people = Person;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -591,7 +593,7 @@
         $.extend(this, options);
     }
     Trove.Article = Article;
-    Trove.SEARCH_CONSTRUCTORS.article = Article;
+    Trove.CONSTRUCTORS.article = Article;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -621,7 +623,7 @@
         $.extend(this, options);
     }
     Trove.Picture = Picture;
-    Trove.SEARCH_CONSTRUCTORS.picture = Picture;
+    Trove.CONSTRUCTORS.picture = Picture;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -651,7 +653,7 @@
         $.extend(this, options);
     }
     Trove.Book = Book;
-    Trove.SEARCH_CONSTRUCTORS.book = Book;
+    Trove.CONSTRUCTORS.book = Book;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -683,7 +685,7 @@
         $.extend(this, options);
     }
     Trove.Map = Map;
-    Trove.SEARCH_CONSTRUCTORS.map = Map;
+    Trove.CONSTRUCTORS.map = Map;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -714,7 +716,7 @@
         $.extend(this, options);
     }
     Trove.Music = Music;
-    Trove.SEARCH_CONSTRUCTORS.music = Music;
+    Trove.CONSTRUCTORS.music = Music;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -735,7 +737,7 @@
         // console.dir(this);
     }
     Trove.Collection = Collection;
-    Trove.SEARCH_CONSTRUCTORS.collection = Collection;
+    Trove.CONSTRUCTORS.collection = Collection;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -812,7 +814,7 @@
         console.log('Get Newspaper for Article');
         if (this.title !== undefined) {
             if (this.title.id !== undefined) {
-                return new Newspaper({
+                return new Trove.CONSTRUCTORS.newspaper_title({
                     init: this.title.id,
                     done: options.done || this.done
                 });
@@ -821,7 +823,7 @@
     };
 
     Trove.NewspaperArticle = NewspaperArticle;
-    Trove.SEARCH_CONSTRUCTORS.newspaper = NewspaperArticle;
+    Trove.CONSTRUCTORS.newspaper = NewspaperArticle;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -893,6 +895,7 @@
     };
 
     Trove.Newspaper = Newspaper;
+    Trove.CONSTRUCTORS.newspaper_title = Newspaper;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
@@ -931,7 +934,7 @@
 
         for (var index in data.response.records.newspaper) {
             console.dir(data.response.records.newspaper[index]);
-            this.newspapers.push(new Newspaper(
+            this.newspapers.push(new Trove.CONSTRUCTORS.newspaper_title(
                 data.response.records.newspaper[index]
             ));
         }
