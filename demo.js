@@ -57,6 +57,7 @@ function test_trove (key) {
 
 var demo_search;
 var key_field;
+var date_field;
 var zone_dropdown;
 var categories_dropdown;
 var started = false;
@@ -84,6 +85,13 @@ function search(terms) {
 
     if (started) {
         settings_sidebar.sidebar('hide');
+
+        if (date_field.val() === '') {
+            demo_search.clear_date_range_limit();
+        } else {
+            demo_search.limit_date_range(date_field.val());
+        }
+
         demo_search.query({
             zones: zone_dropdown.val(),
             terms: terms
@@ -202,6 +210,7 @@ function documentReady(jQuery) {
     });
 
     key_field = $('#key_id');
+    date_field = $('#date-range');
 }
 
 $(document).ready(documentReady);

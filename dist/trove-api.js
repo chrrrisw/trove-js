@@ -249,6 +249,44 @@
     'use strict';
 
     /**
+     * A class to hold a work. Work is the super class for other classes
+     * @class
+     * @alias Trove.Work
+     * @param {Object} options
+     * @property {Array} options.contributor
+     * @property {Array} options.identifier
+     * @property {Array} options.type
+     * @property {number} options.holdingsCount
+     * @property {number} options.versionCount
+     * @property {number|string} options.issued
+     * @property {Object} options.relevance
+     * @property {string} options.id
+     * @property {string} options.title
+     * @property {string} options.troveUrl
+     * @property {string} options.url
+     */
+    function Work(options) {
+        console.log('Creating Work');
+        $.extend(this, options);
+    }
+
+    Work.prototype.get = function(options) {
+        console.log('Getting work');
+    };
+
+    Trove.Work = Work;
+    Trove.CONSTRUCTORS.work = Work;
+
+
+}(window.Trove = window.Trove || {}, jQuery));
+
+/**
+ * @lends Trove
+ */
+(function(Trove, $, undefined) {
+    'use strict';
+
+    /**
      * An object to perform searches
      * @class
      * @alias Trove.Search
@@ -596,21 +634,13 @@
      * @class
      * @alias Trove.Article
      * @param {Object} options
-     * @property {Array} options.contributor
-     * @property {number} options.holdingsCount
-     * @property {string} options.id
-     * @property {number|string} options.issued
-     * @property {Object} options.relevance
-     * @property {string} options.title
-     * @property {string} options.troveUrl
-     * @property {Array} options.type
-     * @property {string} options.url
-     * @property {number} options.versionCount
      */
     function Article(options) {
-        // console.log('Creating Article');
-        $.extend(this, options);
+        console.log('Creating Article');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Article.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Article.prototype.constructor = Article;
     Trove.Article = Article;
     Trove.CONSTRUCTORS.article = Article;
 
@@ -627,20 +657,13 @@
      * @class
      * @alias Trove.Picture
      * @param {Object} options
-     * @property {number} options.holdingsCount
-     * @property {string} options.id
-     * @property {Array} options.identifier
-     * @property {Object} options.relevance
-     * @property {string} options.title
-     * @property {string} options.troveUrl
-     * @property {Array} options.type
-     * @property {string} options.url
-     * @property {number} options.versionCount
      */
     function Picture(options) {
-        // console.log('Creating Picture');
-        $.extend(this, options);
+        console.log('Creating Picture');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Picture.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Picture.prototype.constructor = Picture;
     Trove.Picture = Picture;
     Trove.CONSTRUCTORS.picture = Picture;
 
@@ -657,20 +680,13 @@
      * @class
      * @alias Trove.Book
      * @param {Object} options
-     * @property {Array} options.contributor
-     * @property {number} options.holdingsCount
-     * @property {string} options.id
-     * @property {number|string} options.issued
-     * @property {Object} options.relevance
-     * @property {string} options.title
-     * @property {string} options.troveUrl
-     * @property {Array} options.type
-     * @property {string} options.url
      */
     function Book(options) {
-        // console.log('Creating Book');
-        $.extend(this, options);
+        console.log('Creating Book');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Book.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Book.prototype.constructor = Book;
     Trove.Book = Book;
     Trove.CONSTRUCTORS.book = Book;
 
@@ -687,22 +703,13 @@
      * @class
      * @alias Trove.Map
      * @param {Object} options
-     * @property {Array} options.contributor
-     * @property {number} options.holdingsCount
-     * @property {string} options.id
-     * @property {Array} options.identifier
-     * @property {number|string} options.issued
-     * @property {Object} options.relevance
-     * @property {string} options.title
-     * @property {string} options.troveUrl
-     * @property {Array} options.type
-     * @property {string} options.url
-     * @property {number} options.versionCount
      */
     function Map(options) {
-        // console.log('Creating Map');
-        $.extend(this, options);
+        console.log('Creating Map');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Map.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Map.prototype.constructor = Map;
     Trove.Map = Map;
     Trove.CONSTRUCTORS.map = Map;
 
@@ -719,21 +726,13 @@
      * @class
      * @alias Trove.Music
      * @param {Object} options
-     * @property {Array} options.contributor
-     * @property {number} options.holdingsCount
-     * @property {string} options.id
-     * @property {number|string} options.issued
-     * @property {Object} options.relevance
-     * @property {string} options.title
-     * @property {string} options.troveUrl
-     * @property {Array} options.type
-     * @property {string} options.url
-     * @property {number} options.versionCount
      */
     function Music(options) {
-        // console.log('Creating Music');
-        $.extend(this, options);
+        console.log('Creating Music');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Music.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Music.prototype.constructor = Music;
     Trove.Music = Music;
     Trove.CONSTRUCTORS.music = Music;
 
@@ -749,12 +748,14 @@
      * A class to hold a collection
      * @class
      * @alias Trove.Collection
+     * @param {Object} options
      */
     function Collection(options) {
-        // console.log('Creating Collection');
-        $.extend(this, options);
-        // console.dir(this);
+        console.log('Creating Collection');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Collection.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Collection.prototype.constructor = Collection;
     Trove.Collection = Collection;
     Trove.CONSTRUCTORS.collection = Collection;
 

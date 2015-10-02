@@ -9,20 +9,13 @@
      * @class
      * @alias Trove.Picture
      * @param {Object} options
-     * @property {number} options.holdingsCount
-     * @property {string} options.id
-     * @property {Array} options.identifier
-     * @property {Object} options.relevance
-     * @property {string} options.title
-     * @property {string} options.troveUrl
-     * @property {Array} options.type
-     * @property {string} options.url
-     * @property {number} options.versionCount
      */
     function Picture(options) {
-        // console.log('Creating Picture');
-        $.extend(this, options);
+        console.log('Creating Picture');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Picture.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Picture.prototype.constructor = Picture;
     Trove.Picture = Picture;
     Trove.CONSTRUCTORS.picture = Picture;
 

@@ -8,12 +8,14 @@
      * A class to hold a collection
      * @class
      * @alias Trove.Collection
+     * @param {Object} options
      */
     function Collection(options) {
-        // console.log('Creating Collection');
-        $.extend(this, options);
-        // console.dir(this);
+        console.log('Creating Collection');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Collection.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Collection.prototype.constructor = Collection;
     Trove.Collection = Collection;
     Trove.CONSTRUCTORS.collection = Collection;
 

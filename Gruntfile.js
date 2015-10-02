@@ -11,6 +11,7 @@ module.exports = function(grunt) {
             dist: {
                 src: [
                     'src/trove.js',
+                    'src/work.js',
                     'src/search.js',
                     'src/list.js',
                     'src/person.js',

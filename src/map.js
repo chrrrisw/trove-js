@@ -9,22 +9,13 @@
      * @class
      * @alias Trove.Map
      * @param {Object} options
-     * @property {Array} options.contributor
-     * @property {number} options.holdingsCount
-     * @property {string} options.id
-     * @property {Array} options.identifier
-     * @property {number|string} options.issued
-     * @property {Object} options.relevance
-     * @property {string} options.title
-     * @property {string} options.troveUrl
-     * @property {Array} options.type
-     * @property {string} options.url
-     * @property {number} options.versionCount
      */
     function Map(options) {
-        // console.log('Creating Map');
-        $.extend(this, options);
+        console.log('Creating Map');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Map.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Map.prototype.constructor = Map;
     Trove.Map = Map;
     Trove.CONSTRUCTORS.map = Map;
 

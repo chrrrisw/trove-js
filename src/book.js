@@ -9,20 +9,13 @@
      * @class
      * @alias Trove.Book
      * @param {Object} options
-     * @property {Array} options.contributor
-     * @property {number} options.holdingsCount
-     * @property {string} options.id
-     * @property {number|string} options.issued
-     * @property {Object} options.relevance
-     * @property {string} options.title
-     * @property {string} options.troveUrl
-     * @property {Array} options.type
-     * @property {string} options.url
      */
     function Book(options) {
-        // console.log('Creating Book');
-        $.extend(this, options);
+        console.log('Creating Book');
+        Trove.CONSTRUCTORS.work.call(this, options);
     }
+    Book.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
+    Book.prototype.constructor = Book;
     Trove.Book = Book;
     Trove.CONSTRUCTORS.book = Book;
 
