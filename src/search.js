@@ -10,7 +10,8 @@
      * @alias Trove.Search
      * @param {Object} options An object specifying the options for this Search
      * @property {string|Array} options.zones The default zone or list of zones to search
-     * @property {Function} options.done The default callback called on receipt of data
+     * @property {Function} options.done The callback called on receipt of data
+     * @property {Function} options.fail The callback called on a failed query
      * @property {string} options.terms The default search terms
      */
     function Search(options) {
@@ -138,6 +139,12 @@
             return;
         }
 
+        // Override the done callback
+        this.done = options.done || this.done;
+
+        // Override the fail callback
+        this.fail = options.fail || this.fail;
+
         //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
 
         // Get the zone or zones for the query.
@@ -230,9 +237,21 @@
 
     /**
      * Repeat the last query, with a delta applied to the start.
+     * @param {Object} options Options to be applied to the query
+     * @property {function} options.done
+     * @property {function} options.fail
      * @param {number} delta The change to be applied to the start number (positive or negative).
      */
-    Search.prototype.requery = function(delta) {
+    Search.prototype.requery = function(options, delta) {
+
+        if (options) {
+            // Override the done callback
+            this.done = options.done || this.done;
+
+            // Override the fail callback
+            this.fail = options.fail || this.fail;
+        }
+
         if (this._last_search !== undefined) {
 
             this._last_search.s = this._last_search.s + delta;
@@ -248,19 +267,25 @@
 
     /**
      * Request the next search results
+     * @param {Object} options Options to be applied to the query
+     * @property {function} options.done
+     * @property {function} options.fail
      */
-    Search.prototype.next = function() {
+    Search.prototype.next = function(options) {
         if (this._last_search !== undefined) {
-            this.requery(this._last_search.n);
+            this.requery(options, this._last_search.n);
         }
     };
 
     /**
      * Request the previous search results
+     * @param {Object} options Options to be applied to the query
+     * @property {function} options.done
+     * @property {function} options.fail
      */
-    Search.prototype.previous = function() {
+    Search.prototype.previous = function(options) {
         if (this._last_search !== undefined) {
-            this.requery(-this._last_search.n);
+            this.requery(options, -this._last_search.n);
         }
     };
 

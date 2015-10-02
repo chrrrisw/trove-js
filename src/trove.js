@@ -19,21 +19,40 @@
 
     var ENC = '&encoding=json';
 
-    // can include multiple as a list
-    // website and people not included
+    /**
+     * Enumeration for zones, can include multiple as a list
+     * @alias Trove.ZONE
+     * @readonly
+     * @enum {string}
+     */
     var ZONE = {
+        /** The zone for books */
         BOOK: 'book',
-        PIC: 'picture',
-        ART: 'article',
-        MUS: 'music',
+        /** The zone for pictures */
+        PICTURE: 'picture',
+        /** The zone for journal articles */
+        ARTICLE: 'article',
+        /** The zone for music */
+        MUSIC: 'music',
+        /** The zone for maps */
         MAP: 'map',
-        COLL: 'collection',
-        NEWS: 'newspaper',
+        /** The zone for collections */
+        COLLECTION: 'collection',
+        /** The zone for newspapers */
+        NEWSPAPER: 'newspaper',
+        /** The zone for lists */
         LIST: 'list',
+        /** All of the above */
         ALL: 'all'
     };
     Trove.ZONE = ZONE;
 
+    /**
+     * Enumeration for facets
+     * @alias Trove.FACETS
+     * @readonly
+     * @enum {string}
+     */
     var FACETS = {
         FORMAT: 'format',
         DECADE: 'decade', //YYY
@@ -56,28 +75,59 @@
     };
     Trove.FACETS = FACETS;
 
+    /**
+     * Enumeration for limits.
+     * Use these to limit the results of a search.
+     * @alias Trove.LIMITS
+     * @readonly
+     * @enum {string}
+     */
     var LIMITS = {
+        /** Limit by format. */
         FORMAT: 'l-format',
+        /** Limit by decade. In the form of YYY e.g. 190 is the 1900s. */
         DECADE: 'l-decade',
+        /** Limit by year: limit by decade must also be set. In the form of YYYY. */
         YEAR: 'l-year',
+        /** Limit by month: limit by decade and year must also be set. Only applies to the newspaper zone. */
         MONTH: 'l-month',
+        /** Limit by language */
         LANGUAGE: 'l-language',
+        /** Limit by availability (whether online or not) */
         AVAILABILITY: 'l-availability',
+        /** Limit by whether the work is Australian */
         AUSTRALIAN: 'l-australian',
+        /** Limit by occupation. Only applies to the collection zone. */
         OCCUPATION: 'l-occupation',
+        /** Limit by map scale. Only applies to the map zone. */
         ZOOM: 'l-zoom',
+        /** Limit by vendor database code. */
         VENDORDB: 'l-vendordb',
+        /** Limit by vendor. */
         VENDOR: 'l-vendor',
+        /** Limit by audience */
         AUDIENCE: 'l-audience',
+        /** Limit by title */
         TITLE: 'l-title',
+        /** Limit by category */
         CATEGORY: 'l-category',
+        /** Limit by illustration */
         ILLUSTRATED: 'l-illustrated',
+        /** Limit by illustration type */
         ILLTYPE: 'l-illtype',
+        /** Limit by word */
         WORD: 'l-word',
+        /** Limit by all */
         ALL: 'l-all'
     };
     Trove.LIMITS = LIMITS;
 
+    /**
+     * Enumeration for sort order
+     * @alias Trove.SORTBY
+     * @readonly
+     * @enum {string}
+     */
     var SORTBY = {
         DATEDESC: 'datedesc',
         DATEASC: 'dateasc',
@@ -85,14 +135,24 @@
     };
     Trove.SORTBY = SORTBY;
 
+    /**
+     * Enumeration for record level
+     * @alias Trove.RECLEVEL
+     * @readonly
+     * @enum {string}
+     */
     var RECLEVEL = {
         FULL: 'full',
         BRIEF: 'brief'
     };
     Trove.RECLEVEL = RECLEVEL;
 
-    // can include multiple as a list
-    // used for QUERY, WORK, LIST and NP_ARTICLE
+    /**
+     * Enumeration for includes, can include multiple as a list.
+     * @alias Trove.INCLUDE
+     * @readonly
+     * @enum {string}
+     */
     var INCLUDE = {
         TAGS: 'tags',
         COMMENTS: 'comments',
@@ -108,6 +168,12 @@
     };
     Trove.INCLUDE = INCLUDE;
 
+    /**
+     * Enumeration for categories
+     * @alias Trove.CATEGORIES
+     * @readonly
+     * @enum {string}
+     */
     var CATEGORIES = {
         ARTICLE: 'Article',
         ADVERTISING: 'Advertising',

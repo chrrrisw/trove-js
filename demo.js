@@ -42,7 +42,7 @@ function test_trove (key) {
     // var act_newspapers = new Trove.NewspaperList({state: 'act'});
 
     demo_search = new Trove.Search({
-        zones: [Trove.ZONE.NEWS, Trove.ZONE.PIC],
+        zones: [Trove.ZONE.NEWSPAPER, Trove.ZONE.PICTURE],
         done: function(s) {
             console.dir(s.response);
         }
