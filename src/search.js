@@ -8,11 +8,13 @@
      * An object to perform searches
      * @class
      * @alias Trove.Search
-     * @param {Object} options An object specifying the options for this Search
-     * @property {string|Array} options.zones The default zone or list of zones to search
-     * @property {Function} options.done The callback called on receipt of data
-     * @property {Function} options.fail The callback called on a failed query
-     * @property {string} options.terms The default search terms
+     * @param {Object} options An object specifying the options for this
+     *   Search
+     * @param {Trove.ZONE[]} options.zones The list of zones to search
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {string} options.terms The search terms
      */
     function Search(options) {
         // console.log('Creating Search');
@@ -48,10 +50,12 @@
 
             this.items[zone_name] = []; // Create an empty list for this zone
 
-            zone_items = this.response.zone[zone_num].records[Trove.SEARCH_RECORDS[zone_name]];
+            zone_items = this.response.zone[zone_num].records[
+                Trove.SEARCH_RECORDS[zone_name]];
 
             for (var item_num in zone_items) {
-                this.items[zone_name].push(new Trove.CONSTRUCTORS[zone_name](zone_items[item_num]));
+                this.items[zone_name].push(new Trove.CONSTRUCTORS[
+                    zone_name](zone_items[item_num]));
             }
         }
 
@@ -70,7 +74,7 @@
 
     /**
      * Remove the named facet.
-     * @param {string} facet The name of the facet to remove
+     * @param {Trove.FACETS} facet The name of the facet to remove
      */
     Search.prototype.remove_facet = function(facet) {
         if (this.facets.indexOf(facet) != -1) {
@@ -80,7 +84,7 @@
 
     /**
      * Add the named facet.
-     * @param {string} facet The name of the facet to add
+     * @param {Trove.FACETS} facet The name of the facet to add
      */
     Search.prototype.add_facet = function(facet) {
         this.facets.push(facet);
@@ -97,7 +101,8 @@
 
     /**
      * Set the limits on the date range returned
-     * @param {string} start The date limit, one of: YYY for decade, YYYY for year, or YYYY-MM for month
+     * @param {string} start The date limit, one of: YYY for decade,
+     *   YYYY for year, or YYYY-MM for month
      */
     Search.prototype.limit_date_range = function(start) {
         var split_start = start.split('-');
@@ -119,16 +124,22 @@
 
     /**
      * Query the Trove database.
-     * @param {Object} options An object containing, at least, the terms to search for.
-     * @property {string|Array} options.zones The default zone or list of zones to search
-     * @property {string} options.terms The default search terms
-     * @property {number} options.start
-     * @property {number} options.number
-     * @property {string} options.sort
-     * @property {string} options.reclevel
-     * @property {string|Array} options.includes
-     * @property {string|Array} options.limits
-     * @property {string|Array} options.facets
+     *
+     * @param {Object} options An object containing, at least, the terms to
+     *   search for.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.ZONE[]} options.zones The list of zones to search
+     * @param {string} options.terms The search terms
+     * @param {number} options.start
+     * @param {number} options.number
+     * @param {Trove.SORTBY} options.sort
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
+     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.LIMITS[]} options.limits
+     * @param {Trove.FACETS[]} options.facets
      */
     Search.prototype.query = function(options) {
 
@@ -139,25 +150,21 @@
             return;
         }
 
-        // Override the done callback
+        // Override reclevel, includes, done and fail if specified
+        this.reclevel = options.reclevel || this.reclevel;
+        this.includes = options.includes || this.includes;
         this.done = options.done || this.done;
-
-        // Override the fail callback
         this.fail = options.fail || this.fail;
 
-        //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
+        // Override zones, terms and facets if specified.
+        this.zones = options.zones || this.zones;
+        this.terms = options.terms || this.terms;
+        this.facets = options.facets || this.facets;
 
         // Get the zone or zones for the query.
-        // Preference is given to the zone(s) in the options passed but will
-        // fallback to the options specified in the construction of the Search object. The default is ZONE.ALL.
+        // The default is ZONE.ALL.
         var zones = Trove.ZONE.ALL;
-        if (typeof options.zones == 'string') {
-            zones = options.zones;
-        } else if (Array.isArray(options.zones)) {
-            zones = options.zones.join(',');
-        } else if (typeof this.zones == 'string') {
-            zones = this.zones;
-        } else if (Array.isArray(this.zones)) {
+        if (Array.isArray(this.zones)) {
             zones = this.zones.join(',');
         }
 
@@ -165,7 +172,7 @@
             key: Trove.trove_key,
             encoding: 'json',
             zone: zones,
-            q: options.terms || this.terms,
+            q: this.terms,
             s: 0,
             n: 20
         };
@@ -191,20 +198,16 @@
         }
 
         // What to include
-        if (typeof options.includes == 'string') {
-            query_data.include = options.includes;
-        } else if (Array.isArray(options.includes)) {
-            query_data.include = options.includes.join(',');
-        } else if (typeof this.includes == 'string') {
-            query_data.include = this.includes;
-        } else if (Array.isArray(this.includes)) {
+        if ((this.includes !== undefined) &&
+            (Array.isArray(this.includes)) &&
+            (this.includes.length > 0)) {
             query_data.include = this.includes.join(',');
         }
 
         // What facets of the data to return
-        if ((options.facets !== undefined) && (Array.isArray(options.facets))) {
-            query_data.facet = options.facets.join(',');
-        } else if (this.facets.length > 0) {
+        if ((this.facets !== undefined) &&
+            (Array.isArray(this.facets)) &&
+            (this.facets.length > 0)) {
             query_data.facet = this.facets.join(',');
         }
 
@@ -220,7 +223,8 @@
         }
         if (limit_keys.length > 0) {
             for (var index in limit_keys) {
-                query_data['l-' + limit_keys[index]] = limits[limit_keys[index]];
+                query_data['l-' + limit_keys[index]] =
+                    limits[limit_keys[index]];
             }
         }
 
@@ -238,9 +242,11 @@
     /**
      * Repeat the last query, with a delta applied to the start.
      * @param {Object} options Options to be applied to the query
-     * @property {function} options.done
-     * @property {function} options.fail
-     * @param {number} delta The change to be applied to the start number (positive or negative).
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {number} delta The change to be applied to the start number
+     *   (positive or negative).
      */
     Search.prototype.requery = function(options, delta) {
 
@@ -268,8 +274,9 @@
     /**
      * Request the next search results
      * @param {Object} options Options to be applied to the query
-     * @property {function} options.done
-     * @property {function} options.fail
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
      */
     Search.prototype.next = function(options) {
         if (this._last_search !== undefined) {
@@ -280,8 +287,9 @@
     /**
      * Request the previous search results
      * @param {Object} options Options to be applied to the query
-     * @property {function} options.done
-     * @property {function} options.fail
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
      */
     Search.prototype.previous = function(options) {
         if (this._last_search !== undefined) {
