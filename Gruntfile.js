@@ -22,7 +22,7 @@ module.exports = function(grunt) {
                     'src/music.js',
                     'src/collection.js',
                     'src/newspaper_article.js',
-                    'src/newspaper.js',
+                    'src/newspaper_title.js',
                     'src/newspaper_list.js'
                 ],
                 dest: 'dist/<%= pkg.name %>.js',
