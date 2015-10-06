@@ -9,9 +9,11 @@
 
     /**
      * @alias Trove.init
-     * @param {string} key The Trove API key given to you by the National Library of Australia.
+     * @param {string} key The Trove API key given to you by the National
+     *   Library of Australia.
      *
-     * This function should be called before any queries are made to the Trove servers.
+     * This function should be called before any queries are made to the
+     *   Trove servers.
      */
     Trove.init = function(key) {
         Trove.trove_key = key;

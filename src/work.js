@@ -7,14 +7,20 @@
     /**
      * A class to hold a work. Work is the parent class for other classes
      *   (Article, Book, Collection, Map, Music, Picture).
+     *
      * @class
      * @alias Trove.Work
+     *
      * @param {Object} options The options object for the work.
-     * @param {(number|string)} options.init The work identifier for which to retrieve data on construction.
-     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {(number|string)} options.init The work identifier for which
+     *   to retrieve data on construction.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
      * @param {Trove.INCLUDE[]} options.includes
+     *
      * @property {string} id
      * @property {string} url
      * @property {string} troveUrl
@@ -98,10 +104,13 @@
     /**
      * Get the Work metadata from the Trove server.
      * @param {Object} options The options object for the query.
-     * @param {(number|string)} options.identifier The work ID for which to retrieve data.
-     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {(number|string)} options.identifier The Work ID for which
+     *   to retrieve data.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
      * @param {Trove.INCLUDE[]} options.includes
      */
     Work.prototype.get = function(options) {
