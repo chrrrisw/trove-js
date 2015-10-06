@@ -8,27 +8,36 @@
      * A list of Newspapers for a specific state or all states.
      * @class
      * @alias Trove.NewspaperList
-     * @classdesc The NewspaperList class is a wrapper around the "http://api.trove.nla.gov.au/newspaper/titles" API. If no state is specified on construction, you will have to call the get() method to actually request the data from Trove. If the state is specified on construction, the get() method will be called immediately. The get() method, called without a state, will return the list of all the newpapers digitised by Trove.
-     * @param {Object} options An object specifying the options for this NewspaperList.
-     * @property {string} options.state The state for which the newspaper list will be returned (optional). If specified, the request will be made immediately.
-     * @property {string} options.done The callback on receipt of data (optional).
-     * @property {function} options.fail The callback on failure (optional).
+     * @classdesc The NewspaperList class is a wrapper around the
+     *   "http://api.trove.nla.gov.au/newspaper/titles" API. If no state
+     *   is specified on construction, you will have to call the get()
+     *   method to actually request the data from Trove. If the state
+     *   is specified on construction, the get() method will be
+     *   called immediately.
+     * @param {Object} options An object specifying the options for
+     *   this NewspaperList.
+     * @param {Trove.STATES} options.state The state for which the newspaper
+     *   list will be returned (optional). If specified, the request
+     *   will be made immediately.
+     * @param {string} options.done The callback on receipt of data (optional).
+     * @param {function} options.fail The callback on failure (optional).
      */
     function NewspaperList(options) {
         // console.log('Creating NewspaperList');
-        // http://api.trove.nla.gov.au/newspaper/titles?state=vic
+
+        // Save the options in the object.
         $.extend(this, options);
 
+        // The list of newspapers, initially empty.
         this.newspapers = [];
 
+        // If state is defined, get the data.
         if (this.state !== undefined) {
-            this.get({
-                state: this.state
-            });
+            this.get();
         }
     }
 
-    NewspaperList.prototype.processGet = function(data) {
+    NewspaperList.prototype.process_get = function(data) {
 
         for (var index in data.response.records.newspaper) {
             // console.dir(data.response.records.newspaper[index]);
@@ -41,10 +50,22 @@
         if (this.done !== undefined) this.done(this);
     };
 
+    NewspaperList.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
+
+
     /**
-     * Get the data from the Trove server. If done or fail are set, they will be copied into the object, overwriting any existing callbacks.
+     * Get the data from the Trove server. If done or fail are set,
+     *   they will be copied into the object, overwriting any
+     *   existing callbacks.
      * @param {Object} options Options for the request.
-     * @property {string} options.state The state for which to request data (optional). If not set, all states will be returned.
+     * @property {string} options.state The state for which to
+     *   request data (optional). If not set, all states will be returned.
      * @property {function} options.done The callback on receipt of data (optional).
      * @property {function} options.fail The callback on failure (optional).
      */
@@ -57,15 +78,15 @@
         // Override the fail callback
         this.fail = options.fail || this.fail;
 
+        // Override the state
+        this.state = options.state || this.state;
+
         var query_data = {
             key: Trove.trove_key,
             encoding: 'json'
         };
 
-        if ((options !== undefined) && (options.state !== undefined)) {
-            query_data.state = options.state;
-        } else if (this.state !== undefined) {
-            // If the state is not in the options, try the object
+        if ((this.state !== undefined) || (this.state != Trove.STATES.ALL)) {
             query_data.state = this.state;
         }
 
@@ -74,7 +95,7 @@
             url: Trove.API.NP_TITLES,
             data: query_data,
             context: this
-        }).done(this.processGet);
+        }).done(this.process_get).fail(this.process_fail);
     };
 
     Trove.NewspaperList = NewspaperList;
