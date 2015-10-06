@@ -8,6 +8,7 @@
      * A class to hold a journal article
      * @class
      * @alias Trove.Article
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Article(options) {

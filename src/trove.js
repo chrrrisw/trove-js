@@ -154,50 +154,77 @@
      * @enum {string}
      */
     var INCLUDE = {
+        /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public tags on this item. */
         TAGS: 'tags',
+        /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public comments on this item. */
         COMMENTS: 'comments',
+        /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle) Include the name and ID of any public lists this item belongs to. */
         LISTS: 'lists',
+        /** (Book, Picture, Article, Music, Map, Collection) Include information on which organisations have a copy of this item or version. */
         HOLDINGS: 'holdings',
+        /** (Book, Picture, Article, Music, Map, Collection) Include the URLs for the item. */
         LINKS: 'links',
+        /** (Book, Picture, Article, Music, Map, Collection) Include the subsribing organisation NUC ID and links. */
         SUBSCRIBINGLIBS: 'subscribinglibs',
+        /** (Book, Picture, Article, Music, Map, Collection) Include all versions that make up this item. */
         WORKVERSIONS: 'workversions',
+        /** (NewspaperArticle) Include the full text for this digitised newspaper article. */
         ARTICLETEXT: 'articletext',
+        /** (Newspapers only) Include a list of years for which digitised articles from this newspaper title appear in Trove. */
         YEARS: 'years',
+        /** (List only) Include the brief works, articles, people, external websites that belong to this list. */
         LISTITEMS: 'listitems',
+        /** (All) Include all of the above. */
         ALL: 'all'
     };
     Trove.INCLUDE = INCLUDE;
 
     /**
-     * Enumeration for states.
+     * Enumeration for Australian states. Used to specify a state for which to return {@link Trove.Newspaper} titles using the {@link Trove.NewspaperList} class. To return all [Newspapers]{@link Trove.Newspaper} for all states, do not specify a state when making the query via {@link Trove.NewspaperList} or use ALL.
      * @alias Trove.STATES
      * @readonly
      * @enum {string}
      */
     var STATES = {
-        nsw: 'nsw',
-        act: 'act',
-        qld: 'qld',
-        tas: 'tas',
-        sa: 'sa',
-        nt: 'nt',
-        wa: 'wa',
-        vic: 'vic',
-        national: 'national'
+        /** New South Wales. */
+        NSW: 'nsw',
+        /** Australian Capital Territory. */
+        ACT: 'act',
+        /** Queensland. */
+        QLD: 'qld',
+        /** Tasmania. */
+        TAS: 'tas',
+        /** South Australia. */
+        SA: 'sa',
+        /** Northern Territory. */
+        NT: 'nt',
+        /** Western Australia. */
+        WA: 'wa',
+        /** Victoria. */
+        VIC: 'vic',
+        /** National newspapers (not the same as all states). */
+        NATIONAL: 'national',
+        /** All states. */
+        ALL: ''
     };
     Trove.STATES = STATES;
 
     /**
-     * Enumeration for categories
+     * Enumeration for NewspaperArticle categories. Returned as part of the brief record for NewspaperArticle, and may also be used to limit the results of a search using {@link Trove.LIMITS}.CATEGORY.
      * @alias Trove.CATEGORIES
      * @readonly
      * @enum {string}
      */
     var CATEGORIES = {
+        /** Classified as an article. */
         ARTICLE: 'Article',
+        /** Classified as advertising. */
         ADVERTISING: 'Advertising',
+        /** Classified as a list. */
         LISTS: 'Detailed lists, results, guides',
+        /** Classified as family notices. */
         FAMILY_NOTICES: 'Family Notices',
+        /** Classified as literature. */
         LITERATURE: 'Literature'
     };
     Trove.CATEGORIES = CATEGORIES;

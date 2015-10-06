@@ -8,6 +8,7 @@
      * A class to hold music
      * @class
      * @alias Trove.Music
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Music(options) {

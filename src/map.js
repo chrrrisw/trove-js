@@ -8,6 +8,7 @@
      * A class to hold a map
      * @class
      * @alias Trove.Map
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Map(options) {

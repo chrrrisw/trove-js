@@ -8,6 +8,7 @@
      * A class to hold a book
      * @class
      * @alias Trove.Book
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Book(options) {

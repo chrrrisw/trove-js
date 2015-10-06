@@ -8,6 +8,7 @@
      * A class to hold a picture
      * @class
      * @alias Trove.Picture
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Picture(options) {

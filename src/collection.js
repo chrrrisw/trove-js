@@ -8,6 +8,7 @@
      * A class to hold a collection
      * @class
      * @alias Trove.Collection
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Collection(options) {

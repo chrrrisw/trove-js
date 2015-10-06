@@ -154,50 +154,77 @@
      * @enum {string}
      */
     var INCLUDE = {
+        /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public tags on this item. */
         TAGS: 'tags',
+        /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public comments on this item. */
         COMMENTS: 'comments',
+        /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle) Include the name and ID of any public lists this item belongs to. */
         LISTS: 'lists',
+        /** (Book, Picture, Article, Music, Map, Collection) Include information on which organisations have a copy of this item or version. */
         HOLDINGS: 'holdings',
+        /** (Book, Picture, Article, Music, Map, Collection) Include the URLs for the item. */
         LINKS: 'links',
+        /** (Book, Picture, Article, Music, Map, Collection) Include the subsribing organisation NUC ID and links. */
         SUBSCRIBINGLIBS: 'subscribinglibs',
+        /** (Book, Picture, Article, Music, Map, Collection) Include all versions that make up this item. */
         WORKVERSIONS: 'workversions',
+        /** (NewspaperArticle) Include the full text for this digitised newspaper article. */
         ARTICLETEXT: 'articletext',
+        /** (Newspapers only) Include a list of years for which digitised articles from this newspaper title appear in Trove. */
         YEARS: 'years',
+        /** (List only) Include the brief works, articles, people, external websites that belong to this list. */
         LISTITEMS: 'listitems',
+        /** (All) Include all of the above. */
         ALL: 'all'
     };
     Trove.INCLUDE = INCLUDE;
 
     /**
-     * Enumeration for states.
+     * Enumeration for Australian states. Used to specify a state for which to return {@link Trove.Newspaper} titles using the {@link Trove.NewspaperList} class. To return all [Newspapers]{@link Trove.Newspaper} for all states, do not specify a state when making the query via {@link Trove.NewspaperList} or use ALL.
      * @alias Trove.STATES
      * @readonly
      * @enum {string}
      */
     var STATES = {
-        nsw: 'nsw',
-        act: 'act',
-        qld: 'qld',
-        tas: 'tas',
-        sa: 'sa',
-        nt: 'nt',
-        wa: 'wa',
-        vic: 'vic',
-        national: 'national'
+        /** New South Wales. */
+        NSW: 'nsw',
+        /** Australian Capital Territory. */
+        ACT: 'act',
+        /** Queensland. */
+        QLD: 'qld',
+        /** Tasmania. */
+        TAS: 'tas',
+        /** South Australia. */
+        SA: 'sa',
+        /** Northern Territory. */
+        NT: 'nt',
+        /** Western Australia. */
+        WA: 'wa',
+        /** Victoria. */
+        VIC: 'vic',
+        /** National newspapers (not the same as all states). */
+        NATIONAL: 'national',
+        /** All states. */
+        ALL: ''
     };
     Trove.STATES = STATES;
 
     /**
-     * Enumeration for categories
+     * Enumeration for NewspaperArticle categories. Returned as part of the brief record for NewspaperArticle, and may also be used to limit the results of a search using {@link Trove.LIMITS}.CATEGORY.
      * @alias Trove.CATEGORIES
      * @readonly
      * @enum {string}
      */
     var CATEGORIES = {
+        /** Classified as an article. */
         ARTICLE: 'Article',
+        /** Classified as advertising. */
         ADVERTISING: 'Advertising',
+        /** Classified as a list. */
         LISTS: 'Detailed lists, results, guides',
+        /** Classified as family notices. */
         FAMILY_NOTICES: 'Family Notices',
+        /** Classified as literature. */
         LITERATURE: 'Literature'
     };
     Trove.CATEGORIES = CATEGORIES;
@@ -633,6 +660,7 @@
      * A class to hold a journal article
      * @class
      * @alias Trove.Article
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Article(options) {
@@ -656,6 +684,7 @@
      * A class to hold a picture
      * @class
      * @alias Trove.Picture
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Picture(options) {
@@ -679,6 +708,7 @@
      * A class to hold a book
      * @class
      * @alias Trove.Book
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Book(options) {
@@ -702,6 +732,7 @@
      * A class to hold a map
      * @class
      * @alias Trove.Map
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Map(options) {
@@ -725,6 +756,7 @@
      * A class to hold music
      * @class
      * @alias Trove.Music
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Music(options) {
@@ -748,6 +780,7 @@
      * A class to hold a collection
      * @class
      * @alias Trove.Collection
+     * @augments Trove.Work
      * @param {Object} options
      */
     function Collection(options) {
@@ -768,22 +801,74 @@
     'use strict';
 
     /**
-     * A Class to hold newspaper articles
+     * A Class to hold newspaper articles.
      * @class
      * @alias Trove.NewspaperArticle
      * @param {Object} options An object specifying the default options
-     * @property {number} options.init The article identifier for which to retrieve data on construction.
-     * @property {function} options.done The default callback called when data has been returned from the Trove servers.
+     * @param {number} options.init The article identifier for which to retrieve data on construction.
+     * @param {function} options.done The callback called when data has been returned from the Trove servers.
+     * @param {Trove.RECLEVEL} options.reclevel
+     * @param {Trove.INCLUDE[]} options.includes
+     * @property {string} id (brief) Trove newspaper article ID.
+     * @property {string} heading (brief) The article heading.
+     * @property {string} category (brief) The type of article
+     * @property {Object} title (brief) The name and ID of the newspaper or periodical in which this article is found.
+     * @property {string} title.id (brief) The Trove ID of the newspaper or periodical.
+     * @property {string} title.value (brief) The name of the newspaper or periodical.
+     * @property {string} edition (brief) Name of the special edition of the newspaper or periodical in which this article is found, if applicable.
+     * @property {string} date (brief) The date of the issue in which this article was published.
+     * @property {number} page (brief) The page on which this article appeared.
+     * @property {number} pageSequence (brief)
+     * @property {string} pageLabel (reclevel=full)
+     * @property {string} status (brief) Included is the article is not currently available.
+     * @property {string} relevance (brief, following search) How relevant this article is to the search.
+     * @property {string} relevance.score (brief, following search) A numeric representation of how relevant this article is to the search.
+     * @property {string} snippet (brief, following search) A small amount of text containing one or more of the search terms.
+     * @property {string} troveUrl (brief)
+     * @property {string} trovePageUrl (brief)
+     * @property {string} supplement (reclevel=full)
+     * @property {string} section (reclevel=full)
+     * @property {string} illustrated (reclevel=full)
+     * @property {number} wordCount (reclevel=full)
+     * @property {number} correctionCount (reclevel=full)
+     * @property {number} listCount (reclevel=full)
+     * @property {number} tagCount (reclevel=full)
+     * @property {number} commentCount (reclevel=full)
+     * @property {Object[]} tag (include=tags)
+     * @property {string} tag.lastupdated
+     * @property {string} tag.value
+     * @property {Object[]} comment (include=comments)
+     * @property {string} comment.by
+     * @property {string} comment.lastupdated
+     * @property {string} comment.value
+     * @property {Object[]} list (include=lists)
+     * @property {string} list.by
+     * @property {string} list.lastupdated
+     * @property {string} list.url
+     * @property {Object} lastCorrection (reclevel=full)
+     * @property {string} lastCorrection.by (reclevel=full)
+     * @property {string} lastCorrection.lastupdated (reclevel=full)
+     * @property {string} identifier (reclevel=full)
+     * @property {string} pdf (reclevel=full)
+     * @property {string} articleText (include=articletext)
      */
     function NewspaperArticle(options) {
-        // console.log('Creating NewspaperArticle');
+        console.log('Creating NewspaperArticle');
 
+        // Save and remove init from options.
         var init;
         if (options.init !== undefined) {
             init = options.init;
             delete options.init;
         }
+
+        // Save all other options in this object.
         $.extend(this, options);
+
+        // reclevel
+        console.log(this.reclevel);
+        // include
+        console.log(this.includes);
 
         // If we know the identifier, get the data
         if (init !== undefined) {
@@ -795,19 +880,38 @@
     }
 
     /**
-     * Retrieve article information based on identifier
-     * @param {Object} options
-     * @property {number} options.identifier The article identifier for which to retrieve data.
-     * @property {function} options.done The callback called when data has been returned from the Trove servers. This overrides the default calback.
+     * Retrieve article information from Trove based on identifier.
+     * @param {Object} options The options object for the query.
+     * @param {number} options.identifier The article ID for which to retrieve data.
+     * @param {function} options.done The callback for when data has been returned from the Trove servers.
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief or full record.
+     * @param {Trove.INCLUDE[]} options.includes
      */
     NewspaperArticle.prototype.get = function(options) {
         // console.log('Getting NewspaperArticle');
         // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
 
+        // Override reclevel, includes, and done if specified
+        this.reclevel = options.reclevel || this.reclevel;
+        this.includes = options.includes || this.includes;
+        this.done = options.done || this.done;
+
         var query_data = {
             key: Trove.trove_key,
             encoding: 'json'
         };
+
+        // Full or brief
+        if (this.reclevel !== undefined) {
+            query_data.reclevel = this.reclevel;
+        }
+
+        // What to include
+        if ((this.includes !== undefined) &&
+            (Array.isArray(this.includes)) &&
+            (this.includes.length > 0)) {
+            query_data.include = this.includes.join(',');
+        }
 
         $.ajax({
             dataType: "jsonp",
@@ -817,21 +921,19 @@
         }).done(function(data) {
             // console.log('Got NewspaperArticle');
             $.extend(this, data.article);
-            if (options.done !== undefined) {
-                options.done(this);
-            } else if (this.done !== undefined) {
+            if (this.done !== undefined) {
                 this.done(this);
             }
         });
     };
 
     /**
-     * Retrieve newspaper information for the article
+     * Retrieve newspaper title information for the article
      * @param {function} done
-     * @returns {Newspaper} the Newspaper object
+     * @returns {Trove.NewspaperTitle} The NewspaperTitle object that contains the NewspaperArticle.
      */
     NewspaperArticle.prototype.get_newspaper = function(options) {
-        // console.log('Get Newspaper for Article');
+        // console.log('Get NewspaperTitle for Article');
         if (this.title !== undefined) {
             if (this.title.id !== undefined) {
                 return new Trove.CONSTRUCTORS.newspaper_title({
@@ -854,29 +956,40 @@
     'use strict';
 
     /**
-     * An object to hold an instance of a newspaper
+     * An object to hold an instance of a newspaper title.
      * @class
-     * @alias Trove.Newspaper
+     * @alias Trove.NewspaperTitle
      * @param {Object} options
-     * @property {number|string} options.init If specified, will request the data immediately
-     * id
-     * title
-     * state
-     * issn
-     * troveUrl
-     * startDate
-     * endDate
+     * @property {(number|string)} options.init If specified, will request the data immediately.
+     * @property {} id The identifier of the newspaper title.
+     * @property {} title Name of the newpaper (or magazine).
+     * @property {} state The state in which the newspaper title was primarily published.
+     * @property {} issn International Standard Serial Number.
+     * @property {} troveURL A link to view the newspaper title in Trove.
+     * @property {} startDate The earliest publication date of this newspaper title available in Trove.
+     * @property {} endDate The most recent publication date of this newspaper title available in Trove.
+     * @property {} year A list of the publication years for this newspaper title that are included in Trove.
+     * @property {} year.date A year this newspaper title was published
+     * @property {} year.issuecount The number of issues published in this year.
+     * @property {} year.issue
+     * @property {} year.issue.id
+     * @property {} year.issue.date
+     * @property {} year.issue.url
      */
-    function Newspaper(options) {
-        // console.log('Creating Newspaper');
+    function NewspaperTitle(options) {
+        // console.log('Creating NewspaperTitle ');
 
+        // Save and remove init from options.
         var init;
         if (options.init !== undefined) {
             init = options.init;
             delete options.init;
         }
 
+        // Save all other options as part of this object.
         $.extend(this, options);
+
+        // If init was specified, treat it as the identifier.
         if (init !== undefined) {
             this.get({
                 identifier: init,
@@ -886,11 +999,11 @@
     }
 
     /**
-     * Get information about the specified newspaper
+     * Get information about the specified newspaper title from Trove.
      * @param (Number) identifier
      */
-    Newspaper.prototype.get = function(options) {
-        // console.log('Getting Newspaper');
+    NewspaperTitle.prototype.get = function(options) {
+        // console.log('Getting NewspaperTitle');
         // http://api.trove.nla.gov.au/newspaper/title/35?encoding=json
 
         var query_data = {
@@ -904,7 +1017,7 @@
             data: query_data,
             context: this
         }).done(function(data) {
-            // console.log('Got Newspaper');
+            // console.log('Got NewspaperTitle');
             $.extend(this, data.newspaper);
             if (options.done !== undefined) {
                 options.done(this);
@@ -914,8 +1027,8 @@
         });
     };
 
-    Trove.Newspaper = Newspaper;
-    Trove.CONSTRUCTORS.newspaper_title = Newspaper;
+    Trove.NewspaperTitle = NewspaperTitle;
+    Trove.CONSTRUCTORS.newspaper_title = NewspaperTitle;
 
 }(window.Trove = window.Trove || {}, jQuery));
 
