@@ -19,9 +19,11 @@
      * @param {Trove.STATES} options.state The state for which the newspaper
      *   list will be returned (optional). If specified, the request
      *   will be made immediately.
-     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @property {Trove.NewspaperTitle[]} newspapers The list of [NewspaperTitles]{@link Trove.NewspaperTitle} returned from the query.
+     * @property {Trove.NewspaperTitle[]} newspapers The list of
+     *   [NewspaperTitles]{@link Trove.NewspaperTitle} returned from the query.
      */
     function NewspaperList(options) {
         // console.log('Creating NewspaperList');
@@ -53,7 +55,9 @@
         }
     };
 
-    NewspaperList.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+    NewspaperList.prototype.process_fail = function(
+            jqXHR, textStatus, errorThrown) {
+
         console.error(textStatus);
 
         if (this.fail !== undefined) {
@@ -70,7 +74,8 @@
      * @param {Trove.STATES} options.state The state for which to
      *   request data (optional). If not set, or set to ALL,
      *   all states will be returned.
-     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
      * @param {function} options.fail The callback on failure (optional).
      */
     NewspaperList.prototype.get = function(options) {

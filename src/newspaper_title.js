@@ -9,17 +9,23 @@
      * @class
      * @alias Trove.NewspaperTitle
      * @param {Object} options
-     * @property {(number|string)} options.init If specified, will request the data immediately.
+     * @property {(number|string)} options.init If specified, will request
+     *   the data immediately.
      * @property {} id The identifier of the newspaper title.
      * @property {} title Name of the newpaper (or magazine).
-     * @property {} state The state in which the newspaper title was primarily published.
+     * @property {} state The state in which the newspaper title was
+     *   primarily published.
      * @property {} issn International Standard Serial Number.
      * @property {} troveURL A link to view the newspaper title in Trove.
-     * @property {} startDate The earliest publication date of this newspaper title available in Trove.
-     * @property {} endDate The most recent publication date of this newspaper title available in Trove.
-     * @property {} year A list of the publication years for this newspaper title that are included in Trove.
+     * @property {} startDate The earliest publication date of this newspaper
+     *   title available in Trove.
+     * @property {} endDate The most recent publication date of this
+     *   newspaper title available in Trove.
+     * @property {} year A list of the publication years for this newspaper
+     *   title that are included in Trove.
      * @property {} year.date A year this newspaper title was published
-     * @property {} year.issuecount The number of issues published in this year.
+     * @property {} year.issuecount The number of issues published in this
+     *   year.
      * @property {} year.issue
      * @property {} year.issue.id
      * @property {} year.issue.date

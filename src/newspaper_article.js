@@ -6,28 +6,46 @@
 
     /**
      * A Class to hold newspaper articles.
+     *
      * @class
      * @alias Trove.NewspaperArticle
+     *
      * @param {Object} options An object specifying the default options
-     * @param {number} options.init The article identifier for which to retrieve data on construction.
-     * @param {function} options.done The callback called when data has been returned from the Trove servers.
-     * @param {Trove.RECLEVEL} options.reclevel
+     * @param {number} options.init The article identifier for which
+     *   to retrieve data on construction.
+     * @param {function} options.done The callback on receipt of
+     *   data (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
      * @param {Trove.INCLUDE[]} options.includes
+     *
      * @property {string} id (brief) Trove newspaper article ID.
      * @property {string} heading (brief) The article heading.
      * @property {string} category (brief) The type of article
-     * @property {Object} title (brief) The name and ID of the newspaper or periodical in which this article is found.
-     * @property {string} title.id (brief) The Trove ID of the newspaper or periodical.
-     * @property {string} title.value (brief) The name of the newspaper or periodical.
-     * @property {string} edition (brief) Name of the special edition of the newspaper or periodical in which this article is found, if applicable.
-     * @property {string} date (brief) The date of the issue in which this article was published.
-     * @property {number} page (brief) The page on which this article appeared.
+     * @property {Object} title (brief) The name and ID of the newspaper
+     *   or periodical in which this article is found.
+     * @property {string} title.id (brief) The Trove ID of the newspaper
+     *   or periodical.
+     * @property {string} title.value (brief) The name of the newspaper
+     *   or periodical.
+     * @property {string} edition (brief) Name of the special edition of
+     *   the newspaper or periodical in which this article is found,
+     *   if applicable.
+     * @property {string} date (brief) The date of the issue in which
+     *   this article was published.
+     * @property {number} page (brief) The page on which this article
+     *   appeared.
      * @property {number} pageSequence (brief)
      * @property {string} pageLabel (reclevel=full)
-     * @property {string} status (brief) Included is the article is not currently available.
-     * @property {string} relevance (brief, following search) How relevant this article is to the search.
-     * @property {string} relevance.score (brief, following search) A numeric representation of how relevant this article is to the search.
-     * @property {string} snippet (brief, following search) A small amount of text containing one or more of the search terms.
+     * @property {string} status (brief) Included is the article is
+     *   not currently available.
+     * @property {string} relevance (brief, following search) How relevant
+     *   this article is to the search.
+     * @property {string} relevance.score (brief, following search) A
+     *   numeric representation of how relevant this article is to the search.
+     * @property {string} snippet (brief, following search) A small amount
+     *   of text containing one or more of the search terms.
      * @property {string} troveUrl (brief)
      * @property {string} trovePageUrl (brief)
      * @property {string} supplement (reclevel=full)
@@ -69,11 +87,6 @@
         // Save all other options in this object.
         $.extend(this, options);
 
-        // reclevel
-        // console.log(this.reclevel);
-        // include
-        // console.log(this.includes);
-
         // If we know the identifier, get the data
         if (init !== undefined) {
             this.get({identifier: init});
@@ -87,7 +100,9 @@
         }
     };
 
-    NewspaperArticle.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+    NewspaperArticle.prototype.process_fail = function(
+            jqXHR, textStatus, errorThrown) {
+
         console.error(textStatus);
 
         if (this.fail !== undefined) {
@@ -97,10 +112,15 @@
 
     /**
      * Retrieve article information from Trove based on identifier.
+     *
      * @param {Object} options The options object for the query.
-     * @param {number} options.identifier The article ID for which to retrieve data.
-     * @param {function} options.done The callback for when data has been returned from the Trove servers.
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief or full record.
+     * @param {number} options.identifier The article ID for which to
+     *   retrieve data.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
      * @param {Trove.INCLUDE[]} options.includes
      */
     NewspaperArticle.prototype.get = function(options) {
@@ -140,8 +160,12 @@
 
     /**
      * Retrieve newspaper title information for the article
-     * @param {function} done
-     * @returns {Trove.NewspaperTitle} The NewspaperTitle object that contains the NewspaperArticle.
+     *
+     * @param {Object} options The options object for the query.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @returns {Trove.NewspaperTitle} The NewspaperTitle object that
+     *   contains the NewspaperArticle.
      */
     NewspaperArticle.prototype.get_newspaper = function(options) {
         // console.log('Get NewspaperTitle for Article');
