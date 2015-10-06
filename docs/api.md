@@ -5,19 +5,21 @@
 * [Trove](#Trove) : <code>object</code>
   * [.Article](#Trove.Article) ⇐ <code>[Work](#Trove.Work)</code>
     * [new Article(options)](#new_Trove.Article_new)
+    * [.get(options)](#Trove.Work+get)
   * [.Book](#Trove.Book) ⇐ <code>[Work](#Trove.Work)</code>
     * [new Book(options)](#new_Trove.Book_new)
+    * [.get(options)](#Trove.Work+get)
   * [.Collection](#Trove.Collection) ⇐ <code>[Work](#Trove.Work)</code>
     * [new Collection(options)](#new_Trove.Collection_new)
+    * [.get(options)](#Trove.Work+get)
   * [.List](#Trove.List)
     * [new List()](#new_Trove.List_new)
   * [.Map](#Trove.Map) ⇐ <code>[Work](#Trove.Work)</code>
     * [new Map(options)](#new_Trove.Map_new)
+    * [.get(options)](#Trove.Work+get)
   * [.Music](#Trove.Music) ⇐ <code>[Work](#Trove.Work)</code>
     * [new Music(options)](#new_Trove.Music_new)
-  * [.NewspaperTitle](#Trove.NewspaperTitle)
-    * [new NewspaperTitle(options)](#new_Trove.NewspaperTitle_new)
-    * [.get((Number))](#Trove.NewspaperTitle+get)
+    * [.get(options)](#Trove.Work+get)
   * [.NewspaperArticle](#Trove.NewspaperArticle)
     * [new NewspaperArticle(options)](#new_Trove.NewspaperArticle_new)
     * [.get(options)](#Trove.NewspaperArticle+get)
@@ -25,10 +27,14 @@
   * [.NewspaperList](#Trove.NewspaperList)
     * [new NewspaperList(options)](#new_Trove.NewspaperList_new)
     * [.get(options)](#Trove.NewspaperList+get)
+  * [.NewspaperTitle](#Trove.NewspaperTitle)
+    * [new NewspaperTitle(options)](#new_Trove.NewspaperTitle_new)
+    * [.get((Number))](#Trove.NewspaperTitle+get)
   * [.Person](#Trove.Person)
     * [new Person(options)](#new_Trove.Person_new)
   * [.Picture](#Trove.Picture) ⇐ <code>[Work](#Trove.Work)</code>
     * [new Picture(options)](#new_Trove.Picture_new)
+    * [.get(options)](#Trove.Work+get)
   * [.Search](#Trove.Search)
     * [new Search(options)](#new_Trove.Search_new)
     * [.remove_facet(facet)](#Trove.Search+remove_facet)
@@ -41,6 +47,7 @@
     * [.previous(options)](#Trove.Search+previous)
   * [.Work](#Trove.Work)
     * [new Work(options)](#new_Trove.Work_new)
+    * [.get(options)](#Trove.Work+get)
   * [.ZONE](#Trove.ZONE) : <code>enum</code>
   * [.FACETS](#Trove.FACETS) : <code>enum</code>
   * [.LIMITS](#Trove.LIMITS) : <code>enum</code>
@@ -55,6 +62,11 @@
 ### Trove.Article ⇐ <code>[Work](#Trove.Work)</code>
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Extends:** <code>[Work](#Trove.Work)</code>  
+
+* [.Article](#Trove.Article) ⇐ <code>[Work](#Trove.Work)</code>
+  * [new Article(options)](#new_Trove.Article_new)
+  * [.get(options)](#Trove.Work+get)
+
 <a name="new_Trove.Article_new"></a>
 #### new Article(options)
 A class to hold a journal article
@@ -64,10 +76,30 @@ A class to hold a journal article
 | --- | --- |
 | options | <code>Object</code> | 
 
+<a name="Trove.Work+get"></a>
+#### article.get(options)
+Get the Work metadata from the Trove server.
+
+**Kind**: instance method of <code>[Article](#Trove.Article)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+
 <a name="Trove.Book"></a>
 ### Trove.Book ⇐ <code>[Work](#Trove.Work)</code>
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Extends:** <code>[Work](#Trove.Work)</code>  
+
+* [.Book](#Trove.Book) ⇐ <code>[Work](#Trove.Work)</code>
+  * [new Book(options)](#new_Trove.Book_new)
+  * [.get(options)](#Trove.Work+get)
+
 <a name="new_Trove.Book_new"></a>
 #### new Book(options)
 A class to hold a book
@@ -77,10 +109,30 @@ A class to hold a book
 | --- | --- |
 | options | <code>Object</code> | 
 
+<a name="Trove.Work+get"></a>
+#### book.get(options)
+Get the Work metadata from the Trove server.
+
+**Kind**: instance method of <code>[Book](#Trove.Book)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+
 <a name="Trove.Collection"></a>
 ### Trove.Collection ⇐ <code>[Work](#Trove.Work)</code>
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Extends:** <code>[Work](#Trove.Work)</code>  
+
+* [.Collection](#Trove.Collection) ⇐ <code>[Work](#Trove.Work)</code>
+  * [new Collection(options)](#new_Trove.Collection_new)
+  * [.get(options)](#Trove.Work+get)
+
 <a name="new_Trove.Collection_new"></a>
 #### new Collection(options)
 A class to hold a collection
@@ -89,6 +141,21 @@ A class to hold a collection
 | Param | Type |
 | --- | --- |
 | options | <code>Object</code> | 
+
+<a name="Trove.Work+get"></a>
+#### collection.get(options)
+Get the Work metadata from the Trove server.
+
+**Kind**: instance method of <code>[Collection](#Trove.Collection)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.List"></a>
 ### Trove.List
@@ -101,6 +168,11 @@ A class to hold a list
 ### Trove.Map ⇐ <code>[Work](#Trove.Work)</code>
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Extends:** <code>[Work](#Trove.Work)</code>  
+
+* [.Map](#Trove.Map) ⇐ <code>[Work](#Trove.Work)</code>
+  * [new Map(options)](#new_Trove.Map_new)
+  * [.get(options)](#Trove.Work+get)
+
 <a name="new_Trove.Map_new"></a>
 #### new Map(options)
 A class to hold a map
@@ -110,10 +182,30 @@ A class to hold a map
 | --- | --- |
 | options | <code>Object</code> | 
 
+<a name="Trove.Work+get"></a>
+#### map.get(options)
+Get the Work metadata from the Trove server.
+
+**Kind**: instance method of <code>[Map](#Trove.Map)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+
 <a name="Trove.Music"></a>
 ### Trove.Music ⇐ <code>[Work](#Trove.Work)</code>
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Extends:** <code>[Work](#Trove.Work)</code>  
+
+* [.Music](#Trove.Music) ⇐ <code>[Work](#Trove.Work)</code>
+  * [new Music(options)](#new_Trove.Music_new)
+  * [.get(options)](#Trove.Work+get)
+
 <a name="new_Trove.Music_new"></a>
 #### new Music(options)
 A class to hold music
@@ -123,52 +215,20 @@ A class to hold music
 | --- | --- |
 | options | <code>Object</code> | 
 
-<a name="Trove.NewspaperTitle"></a>
-### Trove.NewspaperTitle
-**Kind**: static class of <code>[Trove](#Trove)</code>  
-**Properties**
+<a name="Trove.Work+get"></a>
+#### music.get(options)
+Get the Work metadata from the Trove server.
 
-| Name | Type | Description |
+**Kind**: instance method of <code>[Music](#Trove.Music)</code>  
+
+| Param | Type | Description |
 | --- | --- | --- |
-| options.init | <code>number</code> &#124; <code>string</code> | If specified, will request the data immediately. |
-| id |  | The identifier of the newspaper title. |
-| title |  | Name of the newpaper (or magazine). |
-| state |  | The state in which the newspaper title was primarily published. |
-| issn |  | International Standard Serial Number. |
-| troveURL |  | A link to view the newspaper title in Trove. |
-| startDate |  | The earliest publication date of this newspaper title available in Trove. |
-| endDate |  | The most recent publication date of this newspaper title available in Trove. |
-| year |  | A list of the publication years for this newspaper title that are included in Trove. |
-| year.date |  | A year this newspaper title was published |
-| year.issuecount |  | The number of issues published in this year. |
-| year.issue |  |  |
-| year.issue.id |  |  |
-| year.issue.date |  |  |
-| year.issue.url |  |  |
-
-
-* [.NewspaperTitle](#Trove.NewspaperTitle)
-  * [new NewspaperTitle(options)](#new_Trove.NewspaperTitle_new)
-  * [.get((Number))](#Trove.NewspaperTitle+get)
-
-<a name="new_Trove.NewspaperTitle_new"></a>
-#### new NewspaperTitle(options)
-An object to hold an instance of a newspaper title.
-
-
-| Param | Type |
-| --- | --- |
-| options | <code>Object</code> | 
-
-<a name="Trove.NewspaperTitle+get"></a>
-#### newspaperTitle.get((Number))
-Get information about the specified newspaper title from Trove.
-
-**Kind**: instance method of <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>  
-
-| Param | Description |
-| --- | --- |
-| (Number) | identifier |
+| options | <code>Object</code> | The options object for the query. |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.NewspaperArticle"></a>
 ### Trove.NewspaperArticle
@@ -266,16 +326,19 @@ Retrieve newspaper title information for the article
 
 <a name="Trove.NewspaperList"></a>
 ### Trove.NewspaperList
-The NewspaperList class is a wrapper around the "http://api.trove.nla.gov.au/newspaper/titles" API. If no state is specified on construction, you will have to call the get() method to actually request the data from Trove. If the state is specified on construction, the get() method will be called immediately. The get() method, called without a state, will return the list of all the newpapers digitised by Trove.
+The NewspaperList class is a wrapper around the
+  "http://api.trove.nla.gov.au/newspaper/titles" API. If no state
+  is specified on construction, you will have to call the get()
+  method to actually request the data from Trove. If the state
+  is specified on construction, the get() method will be
+  called immediately.
 
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| options.state | <code>string</code> | The state for which the newspaper list will be returned (optional). If specified, the request will be made immediately. |
-| options.done | <code>string</code> | The callback on receipt of data (optional). |
-| options.fail | <code>function</code> | The callback on failure (optional). |
+| newspapers | <code>[Array.&lt;NewspaperTitle&gt;](#Trove.NewspaperTitle)</code> | The list of [NewspaperTitles](#Trove.NewspaperTitle) returned from the query. |
 
 
 * [.NewspaperList](#Trove.NewspaperList)
@@ -289,25 +352,72 @@ A list of Newspapers for a specific state or all states.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | An object specifying the options for this NewspaperList. |
+| options | <code>Object</code> | An object specifying the options for   this NewspaperList. |
+| options.state | <code>[STATES](#Trove.STATES)</code> | The state for which the newspaper   list will be returned (optional). If specified, the request   will be made immediately. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
 
 <a name="Trove.NewspaperList+get"></a>
 #### newspaperList.get(options)
-Get the data from the Trove server. If done or fail are set, they will be copied into the object, overwriting any existing callbacks.
+Get the data from the Trove server. If done or fail are set,
+  they will be copied into the object, overwriting any
+  existing callbacks.
 
 **Kind**: instance method of <code>[NewspaperList](#Trove.NewspaperList)</code>  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Options for the request. |
+| options.state | <code>[STATES](#Trove.STATES)</code> | The state for which to   request data (optional). If not set, or set to ALL,   all states will be returned. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
 
+<a name="Trove.NewspaperTitle"></a>
+### Trove.NewspaperTitle
+**Kind**: static class of <code>[Trove](#Trove)</code>  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| options.state | <code>string</code> | The state for which to request data (optional). If not set, all states will be returned. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
-| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.init | <code>number</code> &#124; <code>string</code> | If specified, will request the data immediately. |
+| id |  | The identifier of the newspaper title. |
+| title |  | Name of the newpaper (or magazine). |
+| state |  | The state in which the newspaper title was primarily published. |
+| issn |  | International Standard Serial Number. |
+| troveURL |  | A link to view the newspaper title in Trove. |
+| startDate |  | The earliest publication date of this newspaper title available in Trove. |
+| endDate |  | The most recent publication date of this newspaper title available in Trove. |
+| year |  | A list of the publication years for this newspaper title that are included in Trove. |
+| year.date |  | A year this newspaper title was published |
+| year.issuecount |  | The number of issues published in this year. |
+| year.issue |  |  |
+| year.issue.id |  |  |
+| year.issue.date |  |  |
+| year.issue.url |  |  |
+
+
+* [.NewspaperTitle](#Trove.NewspaperTitle)
+  * [new NewspaperTitle(options)](#new_Trove.NewspaperTitle_new)
+  * [.get((Number))](#Trove.NewspaperTitle+get)
+
+<a name="new_Trove.NewspaperTitle_new"></a>
+#### new NewspaperTitle(options)
+An object to hold an instance of a newspaper title.
+
+
+| Param | Type |
+| --- | --- |
+| options | <code>Object</code> | 
+
+<a name="Trove.NewspaperTitle+get"></a>
+#### newspaperTitle.get((Number))
+Get information about the specified newspaper title from Trove.
+
+**Kind**: instance method of <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>  
+
+| Param | Description |
+| --- | --- |
+| (Number) | identifier |
 
 <a name="Trove.Person"></a>
 ### Trove.Person
@@ -333,6 +443,11 @@ A class to hold a person
 ### Trove.Picture ⇐ <code>[Work](#Trove.Work)</code>
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Extends:** <code>[Work](#Trove.Work)</code>  
+
+* [.Picture](#Trove.Picture) ⇐ <code>[Work](#Trove.Work)</code>
+  * [new Picture(options)](#new_Trove.Picture_new)
+  * [.get(options)](#Trove.Work+get)
+
 <a name="new_Trove.Picture_new"></a>
 #### new Picture(options)
 A class to hold a picture
@@ -341,6 +456,21 @@ A class to hold a picture
 | Param | Type |
 | --- | --- |
 | options | <code>Object</code> | 
+
+<a name="Trove.Work+get"></a>
+#### picture.get(options)
+Get the Work metadata from the Trove server.
+
+**Kind**: instance method of <code>[Picture](#Trove.Picture)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.Search"></a>
 ### Trove.Search
@@ -491,28 +621,87 @@ Request the previous search results
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Properties**
 
-| Name | Type |
-| --- | --- |
-| options.contributor | <code>Array</code> | 
-| options.identifier | <code>Array</code> | 
-| options.type | <code>Array</code> | 
-| options.holdingsCount | <code>number</code> | 
-| options.versionCount | <code>number</code> | 
-| options.issued | <code>number</code> &#124; <code>string</code> | 
-| options.relevance | <code>Object</code> | 
-| options.id | <code>string</code> | 
-| options.title | <code>string</code> | 
-| options.troveUrl | <code>string</code> | 
-| options.url | <code>string</code> | 
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> |  |
+| url | <code>string</code> |  |
+| troveUrl | <code>string</code> |  |
+| title | <code>string</code> |  |
+| contributor | <code>Array.&lt;string&gt;</code> |  |
+| issued | <code>number</code> &#124; <code>string</code> | When the work was issued |
+| type | <code>Array.&lt;string&gt;</code> | List of work types |
+| isPartOf | <code>string</code> | ? |
+| subject | <code>string</code> | ? |
+| abstract | <code>string</code> | ? |
+| tableOfContents | <code>string</code> | ? |
+| language | <code>Array.&lt;string&gt;</code> | List of languages |
+| wikipedia | <code>string</code> | ? |
+| holdingsCount | <code>number</code> |  |
+| versionCount | <code>number</code> |  |
+| tagCount | <code>number</code> |  |
+| tagCount.level | <code>string</code> |  |
+| commentCount | <code>number</code> |  |
+| commentCount.level | <code>string</code> |  |
+| listCount | <code>number</code> |  |
+| tag | <code>string</code> |  |
+| tag.lastupdated | <code>string</code> |  |
+| comment | <code>string</code> |  |
+| comment.lastupdated | <code>string</code> |  |
+| comment.by | <code>string</code> |  |
+| comment.rating | <code>string</code> |  |
+| list | <code>string</code> |  |
+| list.url | <code>string</code> |  |
+| list.by | <code>string</code> |  |
+| list.lastupdated | <code>string</code> |  |
+| identifier | <code>Array.&lt;Object&gt;</code> |  |
+| identifier.type | <code>string</code> |  |
+| identifier.linktype | <code>string</code> |  |
+| identifier.linktext | <code>string</code> |  |
+| identifier.value | <code>string</code> |  |
+| holding | <code>string</code> |  |
+| holding.nuc | <code>string</code> |  |
+| holding.name | <code>string</code> |  |
+| holding.library | <code>string</code> |  |
+| holding.url | <code>string</code> |  |
+| holding.callNumber | <code>string</code> |  |
+| version | <code>string</code> |  |
+| version.id | <code>string</code> |  |
+| version.record | <code>string</code> |  |
+
+
+* [.Work](#Trove.Work)
+  * [new Work(options)](#new_Trove.Work_new)
+  * [.get(options)](#Trove.Work+get)
 
 <a name="new_Trove.Work_new"></a>
 #### new Work(options)
-A class to hold a work. Work is the super class for other classes
+A class to hold a work. Work is the parent class for other classes
+  (Article, Book, Collection, Map, Music, Picture).
 
 
-| Param | Type |
-| --- | --- |
-| options | <code>Object</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the work. |
+| options.init | <code>number</code> &#124; <code>string</code> | The work identifier for which to retrieve data on construction. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+
+<a name="Trove.Work+get"></a>
+#### work.get(options)
+Get the Work metadata from the Trove server.
+
+**Kind**: instance method of <code>[Work](#Trove.Work)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.ZONE"></a>
 ### Trove.ZONE : <code>enum</code>

@@ -38,7 +38,7 @@
         }
     }
 
-    NewspaperList.prototype.process_get = function(data) {
+    NewspaperList.prototype.process_done = function(data) {
 
         for (var index in data.response.records.newspaper) {
             // console.dir(data.response.records.newspaper[index]);
@@ -99,7 +99,7 @@
             url: Trove.API.NP_TITLES,
             data: query_data,
             context: this
-        }).done(this.process_get).fail(this.process_fail);
+        }).done(this.process_done).fail(this.process_fail);
     };
 
     Trove.NewspaperList = NewspaperList;

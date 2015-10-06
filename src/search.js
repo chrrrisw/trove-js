@@ -34,7 +34,7 @@
 
     }
 
-    Search.prototype.process_results = function(data) {
+    Search.prototype.process_done = function(data) {
         // console.log('Got Search Query');
         var zone_items;
         var zone_name;
@@ -231,7 +231,7 @@
             url: Trove.API.QUERY,
             data: query_data,
             context: this
-        }).done(this.process_results).fail(this.process_fail);
+        }).done(this.process_done).fail(this.process_fail);
 
     };
 
@@ -261,7 +261,7 @@
                 url: Trove.API.QUERY,
                 data: this._last_search,
                 context: this
-            }).done(this.process_results).fail(this.process_fail);
+            }).done(this.process_done).fail(this.process_fail);
         }
     };
 

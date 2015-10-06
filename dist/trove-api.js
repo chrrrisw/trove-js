@@ -276,29 +276,137 @@
     'use strict';
 
     /**
-     * A class to hold a work. Work is the super class for other classes
+     * A class to hold a work. Work is the parent class for other classes
+     *   (Article, Book, Collection, Map, Music, Picture).
      * @class
      * @alias Trove.Work
-     * @param {Object} options
-     * @property {Array} options.contributor
-     * @property {Array} options.identifier
-     * @property {Array} options.type
-     * @property {number} options.holdingsCount
-     * @property {number} options.versionCount
-     * @property {number|string} options.issued
-     * @property {Object} options.relevance
-     * @property {string} options.id
-     * @property {string} options.title
-     * @property {string} options.troveUrl
-     * @property {string} options.url
+     * @param {Object} options The options object for the work.
+     * @param {(number|string)} options.init The work identifier for which to retrieve data on construction.
+     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel
+     * @param {Trove.INCLUDE[]} options.includes
+     * @property {string} id
+     * @property {string} url
+     * @property {string} troveUrl
+     * @property {string} title
+     * @property {string[]} contributor
+     * @property {(number|string)} issued When the work was issued
+     * @property {string[]} type List of work types
+     * @property {string} isPartOf ?
+     * @property {string} subject ?
+     * @property {string} abstract ?
+     * @property {string} tableOfContents ?
+     * @property {string[]} language List of languages
+     * @property {string} wikipedia ?
+     * @property {number} holdingsCount
+     * @property {number} versionCount
+     * @property {number} tagCount
+     * @property {string} tagCount.level
+     * @property {number} commentCount
+     * @property {string} commentCount.level
+     * @property {number} listCount
+     * @property {string} tag
+     * @property {string} tag.lastupdated
+     * @property {string} comment
+     * @property {string} comment.lastupdated
+     * @property {string} comment.by
+     * @property {string} comment.rating
+     * @property {string} list
+     * @property {string} list.url
+     * @property {string} list.by
+     * @property {string} list.lastupdated
+     * @property {Object[]} identifier
+     * @property {string} identifier.type
+     * @property {string} identifier.linktype
+     * @property {string} identifier.linktext
+     * @property {string} identifier.value
+     * @property {string} holding
+     * @property {string} holding.nuc
+     * @property {string} holding.name
+     * @property {string} holding.library
+     * @property {string} holding.url
+     * @property {string} holding.callNumber
+     * @property {string} version
+     * @property {string} version.id
+     * @property {string} version.record
      */
     function Work(options) {
         console.log('Creating Work');
+
+        // Save and remove init from options.
+        var init;
+        if (options.init !== undefined) {
+            init = options.init;
+            delete options.init;
+        }
+
+        // Save all other options in this object.
         $.extend(this, options);
+
+        // If we know the identifier, get the data
+        if (init !== undefined) {
+            this.get({identifier: init});
+        }
+
     }
 
+    Work.prototype.process_done = function(data) {
+        $.extend(this, data.work);
+        if (this.done !== undefined) {
+            this.done(this);
+        }
+    };
+
+    Work.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
+
+    /**
+     * Get the Work metadata from the Trove server.
+     * @param {Object} options The options object for the query.
+     * @param {(number|string)} options.identifier The work ID for which to retrieve data.
+     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel
+     * @param {Trove.INCLUDE[]} options.includes
+     */
     Work.prototype.get = function(options) {
         console.log('Getting work');
+
+        // Override reclevel, includes, done and fail if specified
+        this.reclevel = options.reclevel || this.reclevel;
+        this.includes = options.includes || this.includes;
+        this.done = options.done || this.done;
+        this.fail = options.fail || this.fail;
+
+        var query_data = {
+            key: Trove.trove_key,
+            encoding: 'json'
+        };
+
+        // Full or brief
+        if (this.reclevel !== undefined) {
+            query_data.reclevel = this.reclevel;
+        }
+
+        // What to include
+        if ((this.includes !== undefined) &&
+            (Array.isArray(this.includes)) &&
+            (this.includes.length > 0)) {
+            query_data.include = this.includes.join(',');
+        }
+
+        $.ajax({
+            dataType: "jsonp",
+            url: Trove.API.WORK + options.identifier,
+            data: query_data,
+            context: this
+        }).done(this.process_done).fail(this.process_fail);
     };
 
     Trove.Work = Work;
@@ -343,7 +451,7 @@
 
     }
 
-    Search.prototype.process_results = function(data) {
+    Search.prototype.process_done = function(data) {
         // console.log('Got Search Query');
         var zone_items;
         var zone_name;
@@ -540,7 +648,7 @@
             url: Trove.API.QUERY,
             data: query_data,
             context: this
-        }).done(this.process_results).fail(this.process_fail);
+        }).done(this.process_done).fail(this.process_fail);
 
     };
 
@@ -570,7 +678,7 @@
                 url: Trove.API.QUERY,
                 data: this._last_search,
                 context: this
-            }).done(this.process_results).fail(this.process_fail);
+            }).done(this.process_done).fail(this.process_fail);
         }
     };
 
@@ -853,7 +961,7 @@
      * @property {string} articleText (include=articletext)
      */
     function NewspaperArticle(options) {
-        console.log('Creating NewspaperArticle');
+        // console.log('Creating NewspaperArticle');
 
         // Save and remove init from options.
         var init;
@@ -866,18 +974,30 @@
         $.extend(this, options);
 
         // reclevel
-        console.log(this.reclevel);
+        // console.log(this.reclevel);
         // include
-        console.log(this.includes);
+        // console.log(this.includes);
 
         // If we know the identifier, get the data
         if (init !== undefined) {
-            this.get({
-                identifier: init,
-                done: this.done
-            });
+            this.get({identifier: init});
         }
     }
+
+    NewspaperArticle.prototype.process_done = function(data) {
+        $.extend(this, data.article);
+        if (this.done !== undefined) {
+            this.done(this);
+        }
+    };
+
+    NewspaperArticle.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
 
     /**
      * Retrieve article information from Trove based on identifier.
@@ -891,10 +1011,11 @@
         // console.log('Getting NewspaperArticle');
         // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
 
-        // Override reclevel, includes, and done if specified
+        // Override reclevel, includes, done and fail if specified
         this.reclevel = options.reclevel || this.reclevel;
         this.includes = options.includes || this.includes;
         this.done = options.done || this.done;
+        this.fail = options.fail || this.fail;
 
         var query_data = {
             key: Trove.trove_key,
@@ -918,13 +1039,7 @@
             url: Trove.API.NP_ARTICLE + options.identifier,
             data: query_data,
             context: this
-        }).done(function(data) {
-            // console.log('Got NewspaperArticle');
-            $.extend(this, data.article);
-            if (this.done !== undefined) {
-                this.done(this);
-            }
-        });
+        }).done(this.process_done).fail(this.process_fail);
     };
 
     /**
@@ -1042,27 +1157,37 @@
      * A list of Newspapers for a specific state or all states.
      * @class
      * @alias Trove.NewspaperList
-     * @classdesc The NewspaperList class is a wrapper around the "http://api.trove.nla.gov.au/newspaper/titles" API. If no state is specified on construction, you will have to call the get() method to actually request the data from Trove. If the state is specified on construction, the get() method will be called immediately. The get() method, called without a state, will return the list of all the newpapers digitised by Trove.
-     * @param {Object} options An object specifying the options for this NewspaperList.
-     * @property {string} options.state The state for which the newspaper list will be returned (optional). If specified, the request will be made immediately.
-     * @property {string} options.done The callback on receipt of data (optional).
-     * @property {function} options.fail The callback on failure (optional).
+     * @classdesc The NewspaperList class is a wrapper around the
+     *   "http://api.trove.nla.gov.au/newspaper/titles" API. If no state
+     *   is specified on construction, you will have to call the get()
+     *   method to actually request the data from Trove. If the state
+     *   is specified on construction, the get() method will be
+     *   called immediately.
+     * @param {Object} options An object specifying the options for
+     *   this NewspaperList.
+     * @param {Trove.STATES} options.state The state for which the newspaper
+     *   list will be returned (optional). If specified, the request
+     *   will be made immediately.
+     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @property {Trove.NewspaperTitle[]} newspapers The list of [NewspaperTitles]{@link Trove.NewspaperTitle} returned from the query.
      */
     function NewspaperList(options) {
         // console.log('Creating NewspaperList');
-        // http://api.trove.nla.gov.au/newspaper/titles?state=vic
+
+        // Save the options in the object.
         $.extend(this, options);
 
+        // The list of newspapers, initially empty.
         this.newspapers = [];
 
+        // If state is defined, get the data.
         if (this.state !== undefined) {
-            this.get({
-                state: this.state
-            });
+            this.get();
         }
     }
 
-    NewspaperList.prototype.processGet = function(data) {
+    NewspaperList.prototype.process_done = function(data) {
 
         for (var index in data.response.records.newspaper) {
             // console.dir(data.response.records.newspaper[index]);
@@ -1072,15 +1197,30 @@
         }
 
         // console.log("total = " + data.response.records.total);
-        if (this.done !== undefined) this.done(this);
+        if (this.done !== undefined) {
+            this.done(this);
+        }
     };
 
+    NewspaperList.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
+
+
     /**
-     * Get the data from the Trove server. If done or fail are set, they will be copied into the object, overwriting any existing callbacks.
+     * Get the data from the Trove server. If done or fail are set,
+     *   they will be copied into the object, overwriting any
+     *   existing callbacks.
      * @param {Object} options Options for the request.
-     * @property {string} options.state The state for which to request data (optional). If not set, all states will be returned.
-     * @property {function} options.done The callback on receipt of data (optional).
-     * @property {function} options.fail The callback on failure (optional).
+     * @param {Trove.STATES} options.state The state for which to
+     *   request data (optional). If not set, or set to ALL,
+     *   all states will be returned.
+     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {function} options.fail The callback on failure (optional).
      */
     NewspaperList.prototype.get = function(options) {
         // console.log('Getting NewspaperList');
@@ -1091,15 +1231,15 @@
         // Override the fail callback
         this.fail = options.fail || this.fail;
 
+        // Override the state
+        this.state = options.state || this.state;
+
         var query_data = {
             key: Trove.trove_key,
             encoding: 'json'
         };
 
-        if ((options !== undefined) && (options.state !== undefined)) {
-            query_data.state = options.state;
-        } else if (this.state !== undefined) {
-            // If the state is not in the options, try the object
+        if ((this.state !== undefined) || (this.state != Trove.STATES.ALL)) {
             query_data.state = this.state;
         }
 
@@ -1108,7 +1248,7 @@
             url: Trove.API.NP_TITLES,
             data: query_data,
             context: this
-        }).done(this.processGet);
+        }).done(this.process_done).fail(this.process_fail);
     };
 
     Trove.NewspaperList = NewspaperList;

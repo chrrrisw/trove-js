@@ -57,7 +57,7 @@
      * @property {string} articleText (include=articletext)
      */
     function NewspaperArticle(options) {
-        console.log('Creating NewspaperArticle');
+        // console.log('Creating NewspaperArticle');
 
         // Save and remove init from options.
         var init;
@@ -70,18 +70,30 @@
         $.extend(this, options);
 
         // reclevel
-        console.log(this.reclevel);
+        // console.log(this.reclevel);
         // include
-        console.log(this.includes);
+        // console.log(this.includes);
 
         // If we know the identifier, get the data
         if (init !== undefined) {
-            this.get({
-                identifier: init,
-                done: this.done
-            });
+            this.get({identifier: init});
         }
     }
+
+    NewspaperArticle.prototype.process_done = function(data) {
+        $.extend(this, data.article);
+        if (this.done !== undefined) {
+            this.done(this);
+        }
+    };
+
+    NewspaperArticle.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
 
     /**
      * Retrieve article information from Trove based on identifier.
@@ -95,10 +107,11 @@
         // console.log('Getting NewspaperArticle');
         // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
 
-        // Override reclevel, includes, and done if specified
+        // Override reclevel, includes, done and fail if specified
         this.reclevel = options.reclevel || this.reclevel;
         this.includes = options.includes || this.includes;
         this.done = options.done || this.done;
+        this.fail = options.fail || this.fail;
 
         var query_data = {
             key: Trove.trove_key,
@@ -122,13 +135,7 @@
             url: Trove.API.NP_ARTICLE + options.identifier,
             data: query_data,
             context: this
-        }).done(function(data) {
-            // console.log('Got NewspaperArticle');
-            $.extend(this, data.article);
-            if (this.done !== undefined) {
-                this.done(this);
-            }
-        });
+        }).done(this.process_done).fail(this.process_fail);
     };
 
     /**
