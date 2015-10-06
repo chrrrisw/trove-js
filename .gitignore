@@ -3,3 +3,5 @@ docs/scripts
 docs/styles
 docs/*html
 node_modules
+deprecated
+twistd.*
