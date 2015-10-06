@@ -3,12 +3,15 @@ A JavaScript library to access the National Library of Australia's Trove API
 
 ## If you just want to use the library in your webpage
 1. Get a Trove API key: [see here](#getting_key)
-2. Download dist/trove-api.js
+2. Download dist/trove-api.js or dist/trove-api.min.js
 3. Include it in your web page
 4. Use it
 
 ## Developing the library
-You'll need node/npm and grunt-cli installed.
+
+Source files are in `src`, concatenated and minified distribution files are in `dist`.
+
+You'll need `npm` and `grunt-cli` installed to generate the distribution files.
 
 Clone this repository, and go to the directory created. Type:
 
@@ -16,13 +19,29 @@ Clone this repository, and go to the directory created. Type:
 npm install
 ```
 
-This will install the dependencies for building and testing. To build the dist/trove-api.js file just type:
+This will install the dependencies for building and testing.
+
+There are a number of grunt tasks defined, but be aware that the unit tests will need a Trove API key in the `__key_file__` file.
+
+| Task      | Description
+|:--------- |:-------------
+| default   | Check code style, generate the docs, run unit tests, concatenate and uglify the source files.
+| prepare   | Used to prepare the code for uploading to GitHub (code style, docs, concat and uglify).
+| test      | Checks code style and runs unit tests (you'll need an API key to run the tests).
+
+To build the dist/trove-api.js after modifying a source file just type:
 
 ```bash
 grunt
 ```
 
-Which should check your files for code style and produce a concatenated file, as well as an uglified one.
+to run the default task, or
+
+```bash
+grunt prepare
+```
+
+which should check your files for code style and produce a concatenated file, as well as an uglified one.
 
 ## <a name="getting_key"></a>Getting an API key
 You'll need to get an API key first, by signing up and requesting one. Instructions for doing so are found at [Trove Help](http://help.nla.gov.au/trove/building-with-trove/api).
