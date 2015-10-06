@@ -13,7 +13,8 @@
     * [new Collection(options)](#new_Trove.Collection_new)
     * [.get(options)](#Trove.Work+get)
   * [.List](#Trove.List)
-    * [new List()](#new_Trove.List_new)
+    * [new List(options)](#new_Trove.List_new)
+    * [.get(options)](#Trove.List+get)
   * [.Map](#Trove.Map) ⇐ <code>[Work](#Trove.Work)</code>
     * [new Map(options)](#new_Trove.Map_new)
     * [.get(options)](#Trove.Work+get)
@@ -23,7 +24,7 @@
   * [.NewspaperArticle](#Trove.NewspaperArticle)
     * [new NewspaperArticle(options)](#new_Trove.NewspaperArticle_new)
     * [.get(options)](#Trove.NewspaperArticle+get)
-    * [.get_newspaper(done)](#Trove.NewspaperArticle+get_newspaper) ⇒ <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>
+    * [.get_newspaper(options)](#Trove.NewspaperArticle+get_newspaper) ⇒ <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>
   * [.NewspaperList](#Trove.NewspaperList)
     * [new NewspaperList(options)](#new_Trove.NewspaperList_new)
     * [.get(options)](#Trove.NewspaperList+get)
@@ -32,6 +33,7 @@
     * [.get((Number))](#Trove.NewspaperTitle+get)
   * [.Person](#Trove.Person)
     * [new Person(options)](#new_Trove.Person_new)
+    * [.get(options)](#Trove.Person+get)
   * [.Picture](#Trove.Picture) ⇐ <code>[Work](#Trove.Work)</code>
     * [new Picture(options)](#new_Trove.Picture_new)
     * [.get(options)](#Trove.Work+get)
@@ -85,10 +87,10 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.Book"></a>
@@ -118,10 +120,10 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.Collection"></a>
@@ -151,18 +153,48 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.List"></a>
 ### Trove.List
 **Kind**: static class of <code>[Trove](#Trove)</code>  
+
+* [.List](#Trove.List)
+  * [new List(options)](#new_Trove.List_new)
+  * [.get(options)](#Trove.List+get)
+
 <a name="new_Trove.List_new"></a>
-#### new List()
+#### new List(options)
 A class to hold a list
+
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the list. |
+| options.init | <code>number</code> &#124; <code>string</code> | The list identifier for which   to retrieve data on construction. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+
+<a name="Trove.List+get"></a>
+#### list.get(options)
+Get the List metadata from the Trove server.
+
+**Kind**: instance method of <code>[List](#Trove.List)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The List ID for which   to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.Map"></a>
 ### Trove.Map ⇐ <code>[Work](#Trove.Work)</code>
@@ -191,10 +223,10 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.Music"></a>
@@ -224,10 +256,10 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.NewspaperArticle"></a>
@@ -240,18 +272,18 @@ Get the Work metadata from the Trove server.
 | id | <code>string</code> | (brief) Trove newspaper article ID. |
 | heading | <code>string</code> | (brief) The article heading. |
 | category | <code>string</code> | (brief) The type of article |
-| title | <code>Object</code> | (brief) The name and ID of the newspaper or periodical in which this article is found. |
-| title.id | <code>string</code> | (brief) The Trove ID of the newspaper or periodical. |
-| title.value | <code>string</code> | (brief) The name of the newspaper or periodical. |
-| edition | <code>string</code> | (brief) Name of the special edition of the newspaper or periodical in which this article is found, if applicable. |
-| date | <code>string</code> | (brief) The date of the issue in which this article was published. |
-| page | <code>number</code> | (brief) The page on which this article appeared. |
+| title | <code>Object</code> | (brief) The name and ID of the newspaper   or periodical in which this article is found. |
+| title.id | <code>string</code> | (brief) The Trove ID of the newspaper   or periodical. |
+| title.value | <code>string</code> | (brief) The name of the newspaper   or periodical. |
+| edition | <code>string</code> | (brief) Name of the special edition of   the newspaper or periodical in which this article is found,   if applicable. |
+| date | <code>string</code> | (brief) The date of the issue in which   this article was published. |
+| page | <code>number</code> | (brief) The page on which this article   appeared. |
 | pageSequence | <code>number</code> | (brief) |
 | pageLabel | <code>string</code> | (reclevel=full) |
-| status | <code>string</code> | (brief) Included is the article is not currently available. |
-| relevance | <code>string</code> | (brief, following search) How relevant this article is to the search. |
-| relevance.score | <code>string</code> | (brief, following search) A numeric representation of how relevant this article is to the search. |
-| snippet | <code>string</code> | (brief, following search) A small amount of text containing one or more of the search terms. |
+| status | <code>string</code> | (brief) Included is the article is   not currently available. |
+| relevance | <code>string</code> | (brief, following search) How relevant   this article is to the search. |
+| relevance.score | <code>string</code> | (brief, following search) A   numeric representation of how relevant this article is to the search. |
+| snippet | <code>string</code> | (brief, following search) A small amount   of text containing one or more of the search terms. |
 | troveUrl | <code>string</code> | (brief) |
 | trovePageUrl | <code>string</code> | (brief) |
 | supplement | <code>string</code> | (reclevel=full) |
@@ -284,7 +316,7 @@ Get the Work metadata from the Trove server.
 * [.NewspaperArticle](#Trove.NewspaperArticle)
   * [new NewspaperArticle(options)](#new_Trove.NewspaperArticle_new)
   * [.get(options)](#Trove.NewspaperArticle+get)
-  * [.get_newspaper(done)](#Trove.NewspaperArticle+get_newspaper) ⇒ <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>
+  * [.get_newspaper(options)](#Trove.NewspaperArticle+get_newspaper) ⇒ <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>
 
 <a name="new_Trove.NewspaperArticle_new"></a>
 #### new NewspaperArticle(options)
@@ -294,9 +326,10 @@ A Class to hold newspaper articles.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | An object specifying the default options |
-| options.init | <code>number</code> | The article identifier for which to retrieve data on construction. |
-| options.done | <code>function</code> | The callback called when data has been returned from the Trove servers. |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.init | <code>number</code> | The article identifier for which   to retrieve data on construction. |
+| options.done | <code>function</code> | The callback on receipt of   data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.NewspaperArticle+get"></a>
@@ -308,21 +341,24 @@ Retrieve article information from Trove based on identifier.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> | The article ID for which to retrieve data. |
-| options.done | <code>function</code> | The callback for when data has been returned from the Trove servers. |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief or full record. |
+| options.identifier | <code>number</code> | The article ID for which to   retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.NewspaperArticle+get_newspaper"></a>
-#### newspaperArticle.get_newspaper(done) ⇒ <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>
+#### newspaperArticle.get_newspaper(options) ⇒ <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>
 Retrieve newspaper title information for the article
 
 **Kind**: instance method of <code>[NewspaperArticle](#Trove.NewspaperArticle)</code>  
-**Returns**: <code>[NewspaperTitle](#Trove.NewspaperTitle)</code> - The NewspaperTitle object that contains the NewspaperArticle.  
+**Returns**: <code>[NewspaperTitle](#Trove.NewspaperTitle)</code> - The NewspaperTitle object that
+  contains the NewspaperArticle.  
 
-| Param | Type |
-| --- | --- |
-| done | <code>function</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 
 <a name="Trove.NewspaperList"></a>
 ### Trove.NewspaperList
@@ -338,7 +374,7 @@ The NewspaperList class is a wrapper around the
 
 | Name | Type | Description |
 | --- | --- | --- |
-| newspapers | <code>[Array.&lt;NewspaperTitle&gt;](#Trove.NewspaperTitle)</code> | The list of [NewspaperTitles](#Trove.NewspaperTitle) returned from the query. |
+| newspapers | <code>[Array.&lt;NewspaperTitle&gt;](#Trove.NewspaperTitle)</code> | The list of   [NewspaperTitles](#Trove.NewspaperTitle) returned from the query. |
 
 
 * [.NewspaperList](#Trove.NewspaperList)
@@ -354,7 +390,7 @@ A list of Newspapers for a specific state or all states.
 | --- | --- | --- |
 | options | <code>Object</code> | An object specifying the options for   this NewspaperList. |
 | options.state | <code>[STATES](#Trove.STATES)</code> | The state for which the newspaper   list will be returned (optional). If specified, the request   will be made immediately. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 
 <a name="Trove.NewspaperList+get"></a>
@@ -369,7 +405,7 @@ Get the data from the Trove server. If done or fail are set,
 | --- | --- | --- |
 | options | <code>Object</code> | Options for the request. |
 | options.state | <code>[STATES](#Trove.STATES)</code> | The state for which to   request data (optional). If not set, or set to ALL,   all states will be returned. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 
 <a name="Trove.NewspaperTitle"></a>
@@ -379,17 +415,17 @@ Get the data from the Trove server. If done or fail are set,
 
 | Name | Type | Description |
 | --- | --- | --- |
-| options.init | <code>number</code> &#124; <code>string</code> | If specified, will request the data immediately. |
+| options.init | <code>number</code> &#124; <code>string</code> | If specified, will request   the data immediately. |
 | id |  | The identifier of the newspaper title. |
 | title |  | Name of the newpaper (or magazine). |
-| state |  | The state in which the newspaper title was primarily published. |
+| state |  | The state in which the newspaper title was   primarily published. |
 | issn |  | International Standard Serial Number. |
 | troveURL |  | A link to view the newspaper title in Trove. |
-| startDate |  | The earliest publication date of this newspaper title available in Trove. |
-| endDate |  | The most recent publication date of this newspaper title available in Trove. |
-| year |  | A list of the publication years for this newspaper title that are included in Trove. |
+| startDate |  | The earliest publication date of this newspaper   title available in Trove. |
+| endDate |  | The most recent publication date of this   newspaper title available in Trove. |
+| year |  | A list of the publication years for this newspaper   title that are included in Trove. |
 | year.date |  | A year this newspaper title was published |
-| year.issuecount |  | The number of issues published in this year. |
+| year.issuecount |  | The number of issues published in this   year. |
 | year.issue |  |  |
 | year.issue.id |  |  |
 | year.issue.date |  |  |
@@ -422,22 +458,39 @@ Get information about the specified newspaper title from Trove.
 <a name="Trove.Person"></a>
 ### Trove.Person
 **Kind**: static class of <code>[Trove](#Trove)</code>  
-**Properties**
 
-| Name | Type |
-| --- | --- |
-| options.id | <code>string</code> | 
-| options.troveUrl | <code>string</code> | 
-| options.url | <code>string</code> | 
+* [.Person](#Trove.Person)
+  * [new Person(options)](#new_Trove.Person_new)
+  * [.get(options)](#Trove.Person+get)
 
 <a name="new_Trove.Person_new"></a>
 #### new Person(options)
 A class to hold a person
 
 
-| Param | Type |
-| --- | --- |
-| options | <code>Object</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the Person. |
+| options.init | <code>number</code> &#124; <code>string</code> | The Person identifier for which   to retrieve data on construction. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+
+<a name="Trove.Person+get"></a>
+#### person.get(options)
+Get the Person metadata from the Trove server.
+
+**Kind**: instance method of <code>[Person](#Trove.Person)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The person ID for which   to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.Picture"></a>
 ### Trove.Picture ⇐ <code>[Work](#Trove.Work)</code>
@@ -466,10 +519,10 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.Search"></a>
@@ -479,10 +532,10 @@ Get the Work metadata from the Trove server.
 
 | Name | Type | Description |
 | --- | --- | --- |
-| options.zones | <code>string</code> &#124; <code>Array</code> | The default zone or list of zones to search |
-| options.done | <code>function</code> | The callback called on receipt of data |
-| options.fail | <code>function</code> | The callback called on a failed query |
-| options.terms | <code>string</code> | The default search terms |
+| response | <code>Object</code> | The raw response from the server. |
+| items | <code>Array.&lt;Object&gt;</code> | The object containing the items created from   the raw response. |
+| facets | <code>[Array.&lt;FACETS&gt;](#Trove.FACETS)</code> | The list of facets to include in   the data returned. |
+| limits | <code>Object</code> | The limits imposed on the search. |
 
 
 * [.Search](#Trove.Search)
@@ -503,7 +556,11 @@ An object to perform searches
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | An object specifying the options for this Search |
+| options | <code>Object</code> | An object specifying the options for this   Search |
+| options.zones | <code>[Array.&lt;ZONE&gt;](#Trove.ZONE)</code> | The list of zones to search |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.terms | <code>string</code> | The search terms |
 
 <a name="Trove.Search+remove_facet"></a>
 #### search.remove_facet(facet)
@@ -513,7 +570,7 @@ Remove the named facet.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| facet | <code>string</code> | The name of the facet to remove |
+| facet | <code>[FACETS](#Trove.FACETS)</code> | The name of the facet to remove |
 
 <a name="Trove.Search+add_facet"></a>
 #### search.add_facet(facet)
@@ -523,7 +580,7 @@ Add the named facet.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| facet | <code>string</code> | The name of the facet to add |
+| facet | <code>[FACETS](#Trove.FACETS)</code> | The name of the facet to add |
 
 <a name="Trove.Search+clear_date_range_limit"></a>
 #### search.clear_date_range_limit()
@@ -538,7 +595,7 @@ Set the limits on the date range returned
 
 | Param | Type | Description |
 | --- | --- | --- |
-| start | <code>string</code> | The date limit, one of: YYY for decade, YYYY for year, or YYYY-MM for month |
+| start | <code>string</code> | The date limit, one of: YYY for decade,   YYYY for year, or YYYY-MM for month |
 
 <a name="Trove.Search+query"></a>
 #### search.query(options)
@@ -548,21 +605,18 @@ Query the Trove database.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| options | <code>Object</code> | An object containing, at least, the terms to search for. |
-
-**Properties**
-
-| Name | Type | Description |
-| --- | --- | --- |
-| options.zones | <code>string</code> &#124; <code>Array</code> | The default zone or list of zones to search |
-| options.terms | <code>string</code> | The default search terms |
+| options | <code>Object</code> | An object containing, at least, the terms to   search for. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.zones | <code>[Array.&lt;ZONE&gt;](#Trove.ZONE)</code> | The list of zones to search |
+| options.terms | <code>string</code> | The search terms |
 | options.start | <code>number</code> |  |
 | options.number | <code>number</code> |  |
-| options.sort | <code>string</code> |  |
-| options.reclevel | <code>string</code> |  |
-| options.includes | <code>string</code> &#124; <code>Array</code> |  |
-| options.limits | <code>string</code> &#124; <code>Array</code> |  |
-| options.facets | <code>string</code> &#124; <code>Array</code> |  |
+| options.sort | <code>[SORTBY](#Trove.SORTBY)</code> |  |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
+| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.limits | <code>[Array.&lt;LIMITS&gt;](#Trove.LIMITS)</code> |  |
+| options.facets | <code>[Array.&lt;FACETS&gt;](#Trove.FACETS)</code> |  |
 
 <a name="Trove.Search+requery"></a>
 #### search.requery(options, delta)
@@ -573,14 +627,9 @@ Repeat the last query, with a delta applied to the start.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Options to be applied to the query |
-| delta | <code>number</code> | The change to be applied to the start number (positive or negative). |
-
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| options.done | <code>function</code> | 
-| options.fail | <code>function</code> | 
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| delta | <code>number</code> | The change to be applied to the start number   (positive or negative). |
 
 <a name="Trove.Search+next"></a>
 #### search.next(options)
@@ -591,13 +640,8 @@ Request the next search results
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Options to be applied to the query |
-
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| options.done | <code>function</code> | 
-| options.fail | <code>function</code> | 
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
 
 <a name="Trove.Search+previous"></a>
 #### search.previous(options)
@@ -608,13 +652,8 @@ Request the previous search results
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | Options to be applied to the query |
-
-**Properties**
-
-| Name | Type |
-| --- | --- |
-| options.done | <code>function</code> | 
-| options.fail | <code>function</code> | 
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
 
 <a name="Trove.Work"></a>
 ### Trove.Work
@@ -682,10 +721,10 @@ A class to hold a work. Work is the parent class for other classes
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the work. |
-| options.init | <code>number</code> &#124; <code>string</code> | The work identifier for which to retrieve data on construction. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.init | <code>number</code> &#124; <code>string</code> | The work identifier for which   to retrieve data on construction. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.Work+get"></a>
@@ -697,10 +736,10 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The work ID for which to retrieve data. |
-| options.done | <code>function</code> | The callback on receipt of data (optional). |
+| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> |  |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
 <a name="Trove.ZONE"></a>
@@ -874,5 +913,5 @@ Enumeration for NewspaperArticle categories. Returned as part of the brief recor
 
 | Param | Type | Description |
 | --- | --- | --- |
-| key | <code>string</code> | The Trove API key given to you by the National Library of Australia. This function should be called before any queries are made to the Trove servers. |
+| key | <code>string</code> | The Trove API key given to you by the National   Library of Australia. This function should be called before any queries are made to the   Trove servers. |
 

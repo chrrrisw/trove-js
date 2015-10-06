@@ -56,38 +56,39 @@ QUnit.test("book test", function(assert) {
     });
 });
 
-// QUnit.test("book zone search test", function(assert) {
-//     var search_done = assert.async();
-//     var terms = 'periwinkle';
-//     var zones = [Trove.ZONE.BOOK];
-//     search.query({
-//         terms: terms,
-//         zones: zones,
-//         number: num_records,
-//         reclevel: Trove.RECLEVEL.FULL,
-//         done: function(s) {
-//             // console.log(s._last_search);
-//             assert.equal(s._last_search.zone, zones.join(','), "Checking zone");
-//             assert.equal(s._last_search.q, terms, "Checking query terms");
-//             assert.equal(s._last_search.s, 0, "Checking start");
-//             assert.equal(s._last_search.n, num_records, "Checking number");
-//             var skeys = Object.keys(s.items);
-//             var items;
-//             for (var index in skeys) {
-//                 items = s.items[skeys[index]];
-//                 for (var item_index in items) {
-//                     // var ikeys = Object.keys(items[item_index]);
-//                     console.log(JSON.stringify(items[item_index], null, '\t'));
-//                 }
-//             }
-//             search_done();
-//         },
-//         fail: function(s) {
-//             console.error('Failed');
-//             search_done();
-//         }
-//     });
-// });
+QUnit.test("book and newspaper zone search test", function(assert) {
+    var search_done = assert.async();
+    var terms = 'periwinkle';
+    var zones = [Trove.ZONE.BOOK, Trove.ZONE.NEWSPAPER];
+    search.limit_date_range('188');
+    search.query({
+        terms: terms,
+        zones: zones,
+        number: num_records,
+        reclevel: Trove.RECLEVEL.FULL,
+        done: function(s) {
+            // console.log(s._last_search);
+            assert.equal(s._last_search.zone, zones.join(','), "Checking zone");
+            assert.equal(s._last_search.q, terms, "Checking query terms");
+            assert.equal(s._last_search.s, 0, "Checking start");
+            assert.equal(s._last_search.n, num_records, "Checking number");
+            var skeys = Object.keys(s.items);
+            var items;
+            for (var index in skeys) {
+                items = s.items[skeys[index]];
+                for (var item_index in items) {
+                    // var ikeys = Object.keys(items[item_index]);
+                    console.log(JSON.stringify(items[item_index], null, '\t'));
+                }
+            }
+            search_done();
+        },
+        fail: function(s) {
+            console.error('Failed');
+            search_done();
+        }
+    });
+});
 
 // QUnit.test("default zone search test", function(assert) {
 //     var search_done = assert.async();

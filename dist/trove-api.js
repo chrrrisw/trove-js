@@ -9,9 +9,11 @@
 
     /**
      * @alias Trove.init
-     * @param {string} key The Trove API key given to you by the National Library of Australia.
+     * @param {string} key The Trove API key given to you by the National
+     *   Library of Australia.
      *
-     * This function should be called before any queries are made to the Trove servers.
+     * This function should be called before any queries are made to the
+     *   Trove servers.
      */
     Trove.init = function(key) {
         Trove.trove_key = key;
@@ -278,14 +280,20 @@
     /**
      * A class to hold a work. Work is the parent class for other classes
      *   (Article, Book, Collection, Map, Music, Picture).
+     *
      * @class
      * @alias Trove.Work
+     *
      * @param {Object} options The options object for the work.
-     * @param {(number|string)} options.init The work identifier for which to retrieve data on construction.
-     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {(number|string)} options.init The work identifier for which
+     *   to retrieve data on construction.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
      * @param {Trove.INCLUDE[]} options.includes
+     *
      * @property {string} id
      * @property {string} url
      * @property {string} troveUrl
@@ -369,10 +377,13 @@
     /**
      * Get the Work metadata from the Trove server.
      * @param {Object} options The options object for the query.
-     * @param {(number|string)} options.identifier The work ID for which to retrieve data.
-     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {(number|string)} options.identifier The Work ID for which
+     *   to retrieve data.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
      * @param {Trove.INCLUDE[]} options.includes
      */
     Work.prototype.get = function(options) {
@@ -425,11 +436,20 @@
      * An object to perform searches
      * @class
      * @alias Trove.Search
-     * @param {Object} options An object specifying the options for this Search
-     * @property {string|Array} options.zones The default zone or list of zones to search
-     * @property {Function} options.done The callback called on receipt of data
-     * @property {Function} options.fail The callback called on a failed query
-     * @property {string} options.terms The default search terms
+     * @param {Object} options An object specifying the options for this
+     *   Search
+     * @param {Trove.ZONE[]} options.zones The list of zones to search
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {string} options.terms The search terms
+     *
+     * @property {Object} response The raw response from the server.
+     * @property {Object[]} items The object containing the items created from
+     *   the raw response.
+     * @property {Trove.FACETS[]} facets The list of facets to include in
+     *   the data returned.
+     * @property {Object} limits The limits imposed on the search.
      */
     function Search(options) {
         // console.log('Creating Search');
@@ -465,10 +485,12 @@
 
             this.items[zone_name] = []; // Create an empty list for this zone
 
-            zone_items = this.response.zone[zone_num].records[Trove.SEARCH_RECORDS[zone_name]];
+            zone_items = this.response.zone[zone_num].records[
+                Trove.SEARCH_RECORDS[zone_name]];
 
             for (var item_num in zone_items) {
-                this.items[zone_name].push(new Trove.CONSTRUCTORS[zone_name](zone_items[item_num]));
+                this.items[zone_name].push(new Trove.CONSTRUCTORS[
+                    zone_name](zone_items[item_num]));
             }
         }
 
@@ -487,7 +509,7 @@
 
     /**
      * Remove the named facet.
-     * @param {string} facet The name of the facet to remove
+     * @param {Trove.FACETS} facet The name of the facet to remove
      */
     Search.prototype.remove_facet = function(facet) {
         if (this.facets.indexOf(facet) != -1) {
@@ -497,7 +519,7 @@
 
     /**
      * Add the named facet.
-     * @param {string} facet The name of the facet to add
+     * @param {Trove.FACETS} facet The name of the facet to add
      */
     Search.prototype.add_facet = function(facet) {
         this.facets.push(facet);
@@ -514,7 +536,8 @@
 
     /**
      * Set the limits on the date range returned
-     * @param {string} start The date limit, one of: YYY for decade, YYYY for year, or YYYY-MM for month
+     * @param {string} start The date limit, one of: YYY for decade,
+     *   YYYY for year, or YYYY-MM for month
      */
     Search.prototype.limit_date_range = function(start) {
         var split_start = start.split('-');
@@ -536,16 +559,22 @@
 
     /**
      * Query the Trove database.
-     * @param {Object} options An object containing, at least, the terms to search for.
-     * @property {string|Array} options.zones The default zone or list of zones to search
-     * @property {string} options.terms The default search terms
-     * @property {number} options.start
-     * @property {number} options.number
-     * @property {string} options.sort
-     * @property {string} options.reclevel
-     * @property {string|Array} options.includes
-     * @property {string|Array} options.limits
-     * @property {string|Array} options.facets
+     *
+     * @param {Object} options An object containing, at least, the terms to
+     *   search for.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.ZONE[]} options.zones The list of zones to search
+     * @param {string} options.terms The search terms
+     * @param {number} options.start
+     * @param {number} options.number
+     * @param {Trove.SORTBY} options.sort
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
+     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.LIMITS[]} options.limits
+     * @param {Trove.FACETS[]} options.facets
      */
     Search.prototype.query = function(options) {
 
@@ -556,25 +585,21 @@
             return;
         }
 
-        // Override the done callback
+        // Override reclevel, includes, done and fail if specified
+        this.reclevel = options.reclevel || this.reclevel;
+        this.includes = options.includes || this.includes;
         this.done = options.done || this.done;
-
-        // Override the fail callback
         this.fail = options.fail || this.fail;
 
-        //  http://api.trove.nla.gov.au/result?key=<INSERT KEY>&zone=<ZONE NAME>&q=<YOUR SEARCH TERMS>
+        // Override zones, terms and facets if specified.
+        this.zones = options.zones || this.zones;
+        this.terms = options.terms || this.terms;
+        this.facets = options.facets || this.facets;
 
         // Get the zone or zones for the query.
-        // Preference is given to the zone(s) in the options passed but will
-        // fallback to the options specified in the construction of the Search object. The default is ZONE.ALL.
+        // The default is ZONE.ALL.
         var zones = Trove.ZONE.ALL;
-        if (typeof options.zones == 'string') {
-            zones = options.zones;
-        } else if (Array.isArray(options.zones)) {
-            zones = options.zones.join(',');
-        } else if (typeof this.zones == 'string') {
-            zones = this.zones;
-        } else if (Array.isArray(this.zones)) {
+        if (Array.isArray(this.zones)) {
             zones = this.zones.join(',');
         }
 
@@ -582,7 +607,7 @@
             key: Trove.trove_key,
             encoding: 'json',
             zone: zones,
-            q: options.terms || this.terms,
+            q: this.terms,
             s: 0,
             n: 20
         };
@@ -608,20 +633,16 @@
         }
 
         // What to include
-        if (typeof options.includes == 'string') {
-            query_data.include = options.includes;
-        } else if (Array.isArray(options.includes)) {
-            query_data.include = options.includes.join(',');
-        } else if (typeof this.includes == 'string') {
-            query_data.include = this.includes;
-        } else if (Array.isArray(this.includes)) {
+        if ((this.includes !== undefined) &&
+            (Array.isArray(this.includes)) &&
+            (this.includes.length > 0)) {
             query_data.include = this.includes.join(',');
         }
 
         // What facets of the data to return
-        if ((options.facets !== undefined) && (Array.isArray(options.facets))) {
-            query_data.facet = options.facets.join(',');
-        } else if (this.facets.length > 0) {
+        if ((this.facets !== undefined) &&
+            (Array.isArray(this.facets)) &&
+            (this.facets.length > 0)) {
             query_data.facet = this.facets.join(',');
         }
 
@@ -637,7 +658,8 @@
         }
         if (limit_keys.length > 0) {
             for (var index in limit_keys) {
-                query_data['l-' + limit_keys[index]] = limits[limit_keys[index]];
+                query_data['l-' + limit_keys[index]] =
+                    limits[limit_keys[index]];
             }
         }
 
@@ -655,9 +677,11 @@
     /**
      * Repeat the last query, with a delta applied to the start.
      * @param {Object} options Options to be applied to the query
-     * @property {function} options.done
-     * @property {function} options.fail
-     * @param {number} delta The change to be applied to the start number (positive or negative).
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {number} delta The change to be applied to the start number
+     *   (positive or negative).
      */
     Search.prototype.requery = function(options, delta) {
 
@@ -685,8 +709,9 @@
     /**
      * Request the next search results
      * @param {Object} options Options to be applied to the query
-     * @property {function} options.done
-     * @property {function} options.fail
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
      */
     Search.prototype.next = function(options) {
         if (this._last_search !== undefined) {
@@ -697,8 +722,9 @@
     /**
      * Request the previous search results
      * @param {Object} options Options to be applied to the query
-     * @property {function} options.done
-     * @property {function} options.fail
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
      */
     Search.prototype.previous = function(options) {
         if (this._last_search !== undefined) {
@@ -725,10 +751,99 @@
      * A class to hold a list
      * @class
      * @alias Trove.List
+     *
+     * @param {Object} options The options object for the list.
+     * @param {(number|string)} options.init The list identifier for which
+     *   to retrieve data on construction.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
+     * @param {Trove.INCLUDE[]} options.includes
+     *
      */
     function List(options) {
+        console.log('Creating List');
+
+        // Save and remove init from options.
+        var init;
+        if (options.init !== undefined) {
+            init = options.init;
+            delete options.init;
+        }
+
+        // Save all other options in this object.
         $.extend(this, options);
+
+        // If we know the identifier, get the data
+        if (init !== undefined) {
+            this.get({identifier: init});
+        }
+
     }
+
+    List.prototype.process_done = function(data) {
+        $.extend(this, data.list);
+        if (this.done !== undefined) {
+            this.done(this);
+        }
+    };
+
+    List.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
+
+    /**
+     * Get the List metadata from the Trove server.
+     * @param {Object} options The options object for the query.
+     * @param {(number|string)} options.identifier The List ID for which
+     *   to retrieve data.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
+     * @param {Trove.INCLUDE[]} options.includes
+     */
+    List.prototype.get = function(options) {
+        console.log('Getting list');
+
+        // Override reclevel, includes, done and fail if specified
+        this.reclevel = options.reclevel || this.reclevel;
+        this.includes = options.includes || this.includes;
+        this.done = options.done || this.done;
+        this.fail = options.fail || this.fail;
+
+        var query_data = {
+            key: Trove.trove_key,
+            encoding: 'json'
+        };
+
+        // Full or brief
+        if (this.reclevel !== undefined) {
+            query_data.reclevel = this.reclevel;
+        }
+
+        // What to include
+        if ((this.includes !== undefined) &&
+            (Array.isArray(this.includes)) &&
+            (this.includes.length > 0)) {
+            query_data.include = this.includes.join(',');
+        }
+
+        $.ajax({
+            dataType: "jsonp",
+            url: Trove.API.LIST + options.identifier,
+            data: query_data,
+            context: this
+        }).done(this.process_done).fail(this.process_fail);
+    };
+
     Trove.List = List;
     Trove.CONSTRUCTORS.list = List;
 
@@ -744,15 +859,100 @@
      * A class to hold a person
      * @class
      * @alias Trove.Person
-     * @param {Object} options
-     * @property {string} options.id
-     * @property {string} options.troveUrl
-     * @property {string} options.url
+     *
+     * @param {Object} options The options object for the Person.
+     * @param {(number|string)} options.init The Person identifier for which
+     *   to retrieve data on construction.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
+     * @param {Trove.INCLUDE[]} options.includes
+     *
      */
     function Person(options) {
-        // console.log('Creating Person');
+        console.log('Creating Person');
+
+        // Save and remove init from options.
+        var init;
+        if (options.init !== undefined) {
+            init = options.init;
+            delete options.init;
+        }
+
+        // Save all other options in this object.
         $.extend(this, options);
+
+        // If we know the identifier, get the data
+        if (init !== undefined) {
+            this.get({identifier: init});
+        }
+
     }
+
+    Person.prototype.process_done = function(data) {
+        $.extend(this, data.people);
+        if (this.done !== undefined) {
+            this.done(this);
+        }
+    };
+
+    Person.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
+
+    /**
+     * Get the Person metadata from the Trove server.
+     * @param {Object} options The options object for the query.
+     * @param {(number|string)} options.identifier The person ID for which
+     *   to retrieve data.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
+     * @param {Trove.INCLUDE[]} options.includes
+     */
+    Person.prototype.get = function(options) {
+        console.log('Getting person');
+
+        // Override reclevel, includes, done and fail if specified
+        this.reclevel = options.reclevel || this.reclevel;
+        this.includes = options.includes || this.includes;
+        this.done = options.done || this.done;
+        this.fail = options.fail || this.fail;
+
+        var query_data = {
+            key: Trove.trove_key,
+            encoding: 'json'
+        };
+
+        // Full or brief
+        if (this.reclevel !== undefined) {
+            query_data.reclevel = this.reclevel;
+        }
+
+        // What to include
+        if ((this.includes !== undefined) &&
+            (Array.isArray(this.includes)) &&
+            (this.includes.length > 0)) {
+            query_data.include = this.includes.join(',');
+        }
+
+        $.ajax({
+            dataType: "jsonp",
+            url: Trove.API.PERSON + options.identifier,
+            data: query_data,
+            context: this
+        }).done(this.process_done).fail(this.process_fail);
+    };
+
+
     Trove.Person = Person;
     Trove.CONSTRUCTORS.people = Person;
 
@@ -910,28 +1110,46 @@
 
     /**
      * A Class to hold newspaper articles.
+     *
      * @class
      * @alias Trove.NewspaperArticle
+     *
      * @param {Object} options An object specifying the default options
-     * @param {number} options.init The article identifier for which to retrieve data on construction.
-     * @param {function} options.done The callback called when data has been returned from the Trove servers.
-     * @param {Trove.RECLEVEL} options.reclevel
+     * @param {number} options.init The article identifier for which
+     *   to retrieve data on construction.
+     * @param {function} options.done The callback on receipt of
+     *   data (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
      * @param {Trove.INCLUDE[]} options.includes
+     *
      * @property {string} id (brief) Trove newspaper article ID.
      * @property {string} heading (brief) The article heading.
      * @property {string} category (brief) The type of article
-     * @property {Object} title (brief) The name and ID of the newspaper or periodical in which this article is found.
-     * @property {string} title.id (brief) The Trove ID of the newspaper or periodical.
-     * @property {string} title.value (brief) The name of the newspaper or periodical.
-     * @property {string} edition (brief) Name of the special edition of the newspaper or periodical in which this article is found, if applicable.
-     * @property {string} date (brief) The date of the issue in which this article was published.
-     * @property {number} page (brief) The page on which this article appeared.
+     * @property {Object} title (brief) The name and ID of the newspaper
+     *   or periodical in which this article is found.
+     * @property {string} title.id (brief) The Trove ID of the newspaper
+     *   or periodical.
+     * @property {string} title.value (brief) The name of the newspaper
+     *   or periodical.
+     * @property {string} edition (brief) Name of the special edition of
+     *   the newspaper or periodical in which this article is found,
+     *   if applicable.
+     * @property {string} date (brief) The date of the issue in which
+     *   this article was published.
+     * @property {number} page (brief) The page on which this article
+     *   appeared.
      * @property {number} pageSequence (brief)
      * @property {string} pageLabel (reclevel=full)
-     * @property {string} status (brief) Included is the article is not currently available.
-     * @property {string} relevance (brief, following search) How relevant this article is to the search.
-     * @property {string} relevance.score (brief, following search) A numeric representation of how relevant this article is to the search.
-     * @property {string} snippet (brief, following search) A small amount of text containing one or more of the search terms.
+     * @property {string} status (brief) Included is the article is
+     *   not currently available.
+     * @property {string} relevance (brief, following search) How relevant
+     *   this article is to the search.
+     * @property {string} relevance.score (brief, following search) A
+     *   numeric representation of how relevant this article is to the search.
+     * @property {string} snippet (brief, following search) A small amount
+     *   of text containing one or more of the search terms.
      * @property {string} troveUrl (brief)
      * @property {string} trovePageUrl (brief)
      * @property {string} supplement (reclevel=full)
@@ -973,11 +1191,6 @@
         // Save all other options in this object.
         $.extend(this, options);
 
-        // reclevel
-        // console.log(this.reclevel);
-        // include
-        // console.log(this.includes);
-
         // If we know the identifier, get the data
         if (init !== undefined) {
             this.get({identifier: init});
@@ -991,7 +1204,9 @@
         }
     };
 
-    NewspaperArticle.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+    NewspaperArticle.prototype.process_fail = function(
+            jqXHR, textStatus, errorThrown) {
+
         console.error(textStatus);
 
         if (this.fail !== undefined) {
@@ -1001,10 +1216,15 @@
 
     /**
      * Retrieve article information from Trove based on identifier.
+     *
      * @param {Object} options The options object for the query.
-     * @param {number} options.identifier The article ID for which to retrieve data.
-     * @param {function} options.done The callback for when data has been returned from the Trove servers.
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief or full record.
+     * @param {number} options.identifier The article ID for which to
+     *   retrieve data.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
      * @param {Trove.INCLUDE[]} options.includes
      */
     NewspaperArticle.prototype.get = function(options) {
@@ -1044,8 +1264,12 @@
 
     /**
      * Retrieve newspaper title information for the article
-     * @param {function} done
-     * @returns {Trove.NewspaperTitle} The NewspaperTitle object that contains the NewspaperArticle.
+     *
+     * @param {Object} options The options object for the query.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @returns {Trove.NewspaperTitle} The NewspaperTitle object that
+     *   contains the NewspaperArticle.
      */
     NewspaperArticle.prototype.get_newspaper = function(options) {
         // console.log('Get NewspaperTitle for Article');
@@ -1075,17 +1299,23 @@
      * @class
      * @alias Trove.NewspaperTitle
      * @param {Object} options
-     * @property {(number|string)} options.init If specified, will request the data immediately.
+     * @property {(number|string)} options.init If specified, will request
+     *   the data immediately.
      * @property {} id The identifier of the newspaper title.
      * @property {} title Name of the newpaper (or magazine).
-     * @property {} state The state in which the newspaper title was primarily published.
+     * @property {} state The state in which the newspaper title was
+     *   primarily published.
      * @property {} issn International Standard Serial Number.
      * @property {} troveURL A link to view the newspaper title in Trove.
-     * @property {} startDate The earliest publication date of this newspaper title available in Trove.
-     * @property {} endDate The most recent publication date of this newspaper title available in Trove.
-     * @property {} year A list of the publication years for this newspaper title that are included in Trove.
+     * @property {} startDate The earliest publication date of this newspaper
+     *   title available in Trove.
+     * @property {} endDate The most recent publication date of this
+     *   newspaper title available in Trove.
+     * @property {} year A list of the publication years for this newspaper
+     *   title that are included in Trove.
      * @property {} year.date A year this newspaper title was published
-     * @property {} year.issuecount The number of issues published in this year.
+     * @property {} year.issuecount The number of issues published in this
+     *   year.
      * @property {} year.issue
      * @property {} year.issue.id
      * @property {} year.issue.date
@@ -1168,9 +1398,11 @@
      * @param {Trove.STATES} options.state The state for which the newspaper
      *   list will be returned (optional). If specified, the request
      *   will be made immediately.
-     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @property {Trove.NewspaperTitle[]} newspapers The list of [NewspaperTitles]{@link Trove.NewspaperTitle} returned from the query.
+     * @property {Trove.NewspaperTitle[]} newspapers The list of
+     *   [NewspaperTitles]{@link Trove.NewspaperTitle} returned from the query.
      */
     function NewspaperList(options) {
         // console.log('Creating NewspaperList');
@@ -1202,7 +1434,9 @@
         }
     };
 
-    NewspaperList.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+    NewspaperList.prototype.process_fail = function(
+            jqXHR, textStatus, errorThrown) {
+
         console.error(textStatus);
 
         if (this.fail !== undefined) {
@@ -1219,7 +1453,8 @@
      * @param {Trove.STATES} options.state The state for which to
      *   request data (optional). If not set, or set to ALL,
      *   all states will be returned.
-     * @param {function} options.done The callback on receipt of data (optional).
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
      * @param {function} options.fail The callback on failure (optional).
      */
     NewspaperList.prototype.get = function(options) {

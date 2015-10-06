@@ -15,6 +15,13 @@
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
      * @param {string} options.terms The search terms
+     *
+     * @property {Object} response The raw response from the server.
+     * @property {Object[]} items The object containing the items created from
+     *   the raw response.
+     * @property {Trove.FACETS[]} facets The list of facets to include in
+     *   the data returned.
+     * @property {Object} limits The limits imposed on the search.
      */
     function Search(options) {
         // console.log('Creating Search');
