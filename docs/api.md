@@ -39,6 +39,7 @@
     * [.get(options)](#Trove.Work+get)
   * [.Search](#Trove.Search)
     * [new Search(options)](#new_Trove.Search_new)
+    * [.zone_list(zone)](#Trove.Search+zone_list) ⇒ <code>Array.&lt;Object&gt;</code>
     * [.remove_facet(facet)](#Trove.Search+remove_facet)
     * [.add_facet(facet)](#Trove.Search+add_facet)
     * [.clear_date_range_limit()](#Trove.Search+clear_date_range_limit)
@@ -50,14 +51,18 @@
   * [.Work](#Trove.Work)
     * [new Work(options)](#new_Trove.Work_new)
     * [.get(options)](#Trove.Work+get)
-  * [.ZONE](#Trove.ZONE) : <code>enum</code>
+  * [.ZONES](#Trove.ZONES) : <code>enum</code>
+  * [.FORMATS](#Trove.FORMATS) : <code>enum</code>
+  * [.AVAILABILITIES](#Trove.AVAILABILITIES) : <code>enum</code>
+  * [.VENDORS](#Trove.VENDORS) : <code>enum</code>
+  * [.AUDIENCES](#Trove.AUDIENCES) : <code>enum</code>
+  * [.CATEGORIES](#Trove.CATEGORIES) : <code>enum</code>
   * [.FACETS](#Trove.FACETS) : <code>enum</code>
   * [.LIMITS](#Trove.LIMITS) : <code>enum</code>
   * [.SORTBY](#Trove.SORTBY) : <code>enum</code>
   * [.RECLEVEL](#Trove.RECLEVEL) : <code>enum</code>
   * [.INCLUDE](#Trove.INCLUDE) : <code>enum</code>
   * [.STATES](#Trove.STATES) : <code>enum</code>
-  * [.CATEGORIES](#Trove.CATEGORIES) : <code>enum</code>
   * [.init(key)](#Trove.init)
 
 <a name="Trove.Article"></a>
@@ -465,7 +470,8 @@ Get information about the specified newspaper title from Trove.
 
 <a name="new_Trove.Person_new"></a>
 #### new Person(options)
-A class to hold a person
+A class to hold a person.
+Please note that the Trove API does not currently support People.
 
 
 | Param | Type | Description |
@@ -540,6 +546,7 @@ Get the Work metadata from the Trove server.
 
 * [.Search](#Trove.Search)
   * [new Search(options)](#new_Trove.Search_new)
+  * [.zone_list(zone)](#Trove.Search+zone_list) ⇒ <code>Array.&lt;Object&gt;</code>
   * [.remove_facet(facet)](#Trove.Search+remove_facet)
   * [.add_facet(facet)](#Trove.Search+add_facet)
   * [.clear_date_range_limit()](#Trove.Search+clear_date_range_limit)
@@ -557,10 +564,21 @@ An object to perform searches
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | An object specifying the options for this   Search |
-| options.zones | <code>[Array.&lt;ZONE&gt;](#Trove.ZONE)</code> | The list of zones to search |
+| options.zones | <code>[Array.&lt;ZONES&gt;](#Trove.ZONES)</code> | The list of zones to search |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.terms | <code>string</code> | The search terms |
+
+<a name="Trove.Search+zone_list"></a>
+#### search.zone_list(zone) ⇒ <code>Array.&lt;Object&gt;</code>
+Return the array of items returned by the most recent query
+  in the specified zone.
+
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| zone | <code>[ZONES](#Trove.ZONES)</code> | The zone for which the array should be   returned. |
 
 <a name="Trove.Search+remove_facet"></a>
 #### search.remove_facet(facet)
@@ -608,14 +626,14 @@ Query the Trove database.
 | options | <code>Object</code> | An object containing, at least, the terms to   search for. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.zones | <code>[Array.&lt;ZONE&gt;](#Trove.ZONE)</code> | The list of zones to search |
-| options.terms | <code>string</code> | The search terms |
-| options.start | <code>number</code> |  |
-| options.number | <code>number</code> |  |
-| options.sort | <code>[SORTBY](#Trove.SORTBY)</code> |  |
+| options.zones | <code>[Array.&lt;ZONES&gt;](#Trove.ZONES)</code> | The list of zones to search   (mandatory). |
+| options.terms | <code>string</code> | The search terms (mandatory). |
+| options.start | <code>number</code> | Return records starting at this point  (optional, default=0). |
+| options.number | <code>number</code> | Return this number of records   (max. 100, optional, default=20). |
+| options.sort | <code>[SORTBY](#Trove.SORTBY)</code> | Sort the results according to this   parameter (optional, default=[SORTBY](#Trove.SORTBY).RELEVANCE). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
-| options.limits | <code>[Array.&lt;LIMITS&gt;](#Trove.LIMITS)</code> |  |
+| options.limits | <code>[Array.&lt;LIMITS&gt;](#Trove.LIMITS)</code> | Limit the search results   (optional). |
 | options.facets | <code>[Array.&lt;FACETS&gt;](#Trove.FACETS)</code> |  |
 
 <a name="Trove.Search+requery"></a>
@@ -742,8 +760,8 @@ Get the Work metadata from the Trove server.
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
 
-<a name="Trove.ZONE"></a>
-### Trove.ZONE : <code>enum</code>
+<a name="Trove.ZONES"></a>
+### Trove.ZONES : <code>enum</code>
 Enumeration for zones, can include multiple as a list
 
 **Kind**: static enum property of <code>[Trove](#Trove)</code>  
@@ -762,9 +780,10 @@ Enumeration for zones, can include multiple as a list
 | LIST | <code>string</code> | <code>&quot;list&quot;</code> | The zone for lists |
 | ALL | <code>string</code> | <code>&quot;all&quot;</code> | All of the above |
 
-<a name="Trove.FACETS"></a>
-### Trove.FACETS : <code>enum</code>
-Enumeration for facets
+<a name="Trove.FORMATS"></a>
+### Trove.FORMATS : <code>enum</code>
+Enumeration for formats.
+  Used for facets and limits.
 
 **Kind**: static enum property of <code>[Trove](#Trove)</code>  
 **Read only**: true  
@@ -772,29 +791,147 @@ Enumeration for facets
 
 | Name | Type | Default |
 | --- | --- | --- |
-| FORMAT | <code>string</code> | <code>&quot;format&quot;</code> | 
-| DECADE | <code>string</code> | <code>&quot;decade&quot;</code> | 
-| YEAR | <code>string</code> | <code>&quot;year&quot;</code> | 
-| MONTH | <code>string</code> | <code>&quot;month&quot;</code> | 
-| LANGUAGE | <code>string</code> | <code>&quot;language&quot;</code> | 
-| AVAILABILITY | <code>string</code> | <code>&quot;availability&quot;</code> | 
-| AUSTRALIAN | <code>string</code> | <code>&quot;australian&quot;</code> | 
-| OCCUPATION | <code>string</code> | <code>&quot;occupation&quot;</code> | 
-| ZOOM | <code>string</code> | <code>&quot;zoom&quot;</code> | 
-| VENDORDB | <code>string</code> | <code>&quot;vendordb&quot;</code> | 
-| VENDOR | <code>string</code> | <code>&quot;vendor&quot;</code> | 
-| AUDIENCE | <code>string</code> | <code>&quot;audience&quot;</code> | 
-| TITLE | <code>string</code> | <code>&quot;title&quot;</code> | 
-| CATEGORY | <code>string</code> | <code>&quot;category&quot;</code> | 
-| ILLUSTRATED | <code>string</code> | <code>&quot;illustrated&quot;</code> | 
-| ILLTYPE | <code>string</code> | <code>&quot;illtype&quot;</code> | 
-| WORD | <code>string</code> | <code>&quot;word&quot;</code> | 
-| ALL | <code>string</code> | <code>&quot;all&quot;</code> | 
+| WEBSITE | <code>string</code> | <code>&quot;Archived website&quot;</code> | 
+| ARTWORK | <code>string</code> | <code>&quot;Art work&quot;</code> | 
+| ARTICLE | <code>string</code> | <code>&quot;Article&quot;</code> | 
+| ARTICLEABSTRACT | <code>string</code> | <code>&quot;Article/Abstract&quot;</code> | 
+| ARTICLECHAPTER | <code>string</code> | <code>&quot;Article/Book chapter&quot;</code> | 
+| ARTICLEPAPER | <code>string</code> | <code>&quot;Article/Conference paper&quot;</code> | 
+| ARTICLEJOURNAL | <code>string</code> | <code>&quot;Article/Journal or magazine article&quot;</code> | 
+| ARTICLEOTHER | <code>string</code> | <code>&quot;Article/Other article&quot;</code> | 
+| ARTICLEREPORT | <code>string</code> | <code>&quot;Article/Report&quot;</code> | 
+| ARTICLEREVIEW | <code>string</code> | <code>&quot;Article/Review&quot;</code> | 
+| ARTICLEWORKING | <code>string</code> | <code>&quot;Article/Working paper&quot;</code> | 
+| AUDIOBOOK | <code>string</code> | <code>&quot;Audio book&quot;</code> | 
+| BOOK | <code>string</code> | <code>&quot;Book&quot;</code> | 
+| BOOKBRAILLE | <code>string</code> | <code>&quot;Book/Braille&quot;</code> | 
+| BOOKILLUSTRATED | <code>string</code> | <code>&quot;Book/Illustrated&quot;</code> | 
+| BOOKLARGEPRINT | <code>string</code> | <code>&quot;Book/Large print&quot;</code> | 
+| PROCEEDINGS | <code>string</code> | <code>&quot;Conference Proceedings&quot;</code> | 
+| DATASET | <code>string</code> | <code>&quot;Data set&quot;</code> | 
+| MAP | <code>string</code> | <code>&quot;Map&quot;</code> | 
+| MAPAERIAL | <code>string</code> | <code>&quot;Map/Aerial photograph&quot;</code> | 
+| MAPATLAS | <code>string</code> | <code>&quot;Map/Atlas&quot;</code> | 
+| MAPBRAILLE | <code>string</code> | <code>&quot;Map/Braille&quot;</code> | 
+| MAPELECTRONIC | <code>string</code> | <code>&quot;Map/Electronic&quot;</code> | 
+| MAPGLOBE | <code>string</code> | <code>&quot;Map/Globe or object&quot;</code> | 
+| MAPLARGE | <code>string</code> | <code>&quot;Map/Large print&quot;</code> | 
+| MAPSERIES | <code>string</code> | <code>&quot;Map/Map series&quot;</code> | 
+| MAPMICROFORM | <code>string</code> | <code>&quot;Map/Microform&quot;</code> | 
+| MAPSINGLE | <code>string</code> | <code>&quot;Map/Single map&quot;</code> | 
+| OBJECT | <code>string</code> | <code>&quot;Object&quot;</code> | 
+| PERIODICAL | <code>string</code> | <code>&quot;Periodical&quot;</code> | 
+| PERIODICALJOURNAL | <code>string</code> | <code>&quot;Periodical/Journal, magazine, other&quot;</code> | 
+| PERIODICALNEWSPAPER | <code>string</code> | <code>&quot;Periodical/Newspaper&quot;</code> | 
+| PHOTO | <code>string</code> | <code>&quot;Photograph&quot;</code> | 
+| POSTER | <code>string</code> | <code>&quot;Poster, chart, other&quot;</code> | 
+| PUBLISHED | <code>string</code> | <code>&quot;Published&quot;</code> | 
+| SHEETMUSIC | <code>string</code> | <code>&quot;Sheet music&quot;</code> | 
+| SOUND | <code>string</code> | <code>&quot;Sound&quot;</code> | 
+| SOUNDTALK | <code>string</code> | <code>&quot;Sound/Interview, lecture, talk&quot;</code> | 
+| SOUNDOTHER | <code>string</code> | <code>&quot;Sound/Other sound&quot;</code> | 
+| SOUNDMUSIC | <code>string</code> | <code>&quot;Sound/Recorded music&quot;</code> | 
+| THESIS | <code>string</code> | <code>&quot;Thesis&quot;</code> | 
+| UNPUBLISHED | <code>string</code> | <code>&quot;Unpublished&quot;</code> | 
+| VIDEO | <code>string</code> | <code>&quot;Video&quot;</code> | 
+| VIDEOCAPTIONED | <code>string</code> | <code>&quot;Video/Captioned&quot;</code> | 
+
+<a name="Trove.AVAILABILITIES"></a>
+### Trove.AVAILABILITIES : <code>enum</code>
+Enumeration for availability.
+Used for facets and limits.
+
+**Kind**: static enum property of <code>[Trove](#Trove)</code>  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| ONLINE | <code>string</code> | <code>&quot;y&quot;</code> | Online. |
+| FREE_ACCESS | <code>string</code> | <code>&quot;y/f&quot;</code> | Freely accessible online. |
+| MEMBERSHIP | <code>string</code> | <code>&quot;y/r&quot;</code> | Payment, subscription or membership required. |
+| SUBSCRIPTION | <code>string</code> | <code>&quot;y/s&quot;</code> | Subscription required. |
+| POSSIBLY | <code>string</code> | <code>&quot;y/u&quot;</code> | Possibly online. |
+
+<a name="Trove.VENDORS"></a>
+### Trove.VENDORS : <code>enum</code>
+Used for facets and limits.
+
+**Kind**: static enum property of <code>[Trove](#Trove)</code>  
+**Read only**: true  
+<a name="Trove.AUDIENCES"></a>
+### Trove.AUDIENCES : <code>enum</code>
+Used for facets and limits.
+
+**Kind**: static enum property of <code>[Trove](#Trove)</code>  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Default |
+| --- | --- | --- |
+| TRADE | <code>string</code> | <code>&quot;Trade&quot;</code> | 
+| GENERAL | <code>string</code> | <code>&quot;General&quot;</code> | 
+| ACADEMIC | <code>string</code> | <code>&quot;Academic&quot;</code> | 
+| PROFESSIONAL | <code>string</code> | <code>&quot;Professional&quot;</code> | 
+| CHILDREN | <code>string</code> | <code>&quot;Children&#x27;s&quot;</code> | 
+| CHILDRENUPPER | <code>string</code> | <code>&quot;Children&#x27;s - Upper elementry&quot;</code> | 
+| CHILDRENLOWER | <code>string</code> | <code>&quot;Children&#x27;s - Lower elementry&quot;</code> | 
+
+<a name="Trove.CATEGORIES"></a>
+### Trove.CATEGORIES : <code>enum</code>
+Enumeration for NewspaperArticle categories. Returned as part of the
+  brief record for NewspaperArticle, and may also be used to limit
+  the results of a search using [LIMITS](#Trove.LIMITS).CATEGORY.
+  Used for facets and limits.
+
+**Kind**: static enum property of <code>[Trove](#Trove)</code>  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| ARTICLE | <code>string</code> | <code>&quot;Article&quot;</code> | Classified as an article. |
+| ADVERTISING | <code>string</code> | <code>&quot;Advertising&quot;</code> | Classified as advertising. |
+| LISTS | <code>string</code> | <code>&quot;Detailed lists, results, guides&quot;</code> | Classified as a list. |
+| FAMILY_NOTICES | <code>string</code> | <code>&quot;Family Notices&quot;</code> | Classified as family notices. |
+| LITERATURE | <code>string</code> | <code>&quot;Literature&quot;</code> | Classified as literature. |
+
+<a name="Trove.FACETS"></a>
+### Trove.FACETS : <code>enum</code>
+Enumeration for facets.
+Facets are categories that describe the results for your search. For
+  example, if you ask for the decade facet, the response will include
+  the list of decades your results span across, and how many results
+  are found in each decade.
+
+**Kind**: static enum property of <code>[Trove](#Trove)</code>  
+**Read only**: true  
+**Properties**
+
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| FORMAT | <code>string</code> | <code>&quot;format&quot;</code> | (book, picture, article, music, map, collection)   The format of the resource. For example, is it a book or a   piece of sheet music? See [FORMATS](#Trove.FORMATS). |
+| DECADE | <code>string</code> | <code>&quot;decade&quot;</code> | (book, picture, article, music, map, collection, newspaper, list)   Publication decade. e.g 199 represents 1990 – 1999. |
+| YEAR | <code>string</code> | <code>&quot;year&quot;</code> | (book, picture, article, music, map, collection, newspaper, list)   Publication year. For newspapers, only available if the decade   facet is also applied. |
+| MONTH | <code>string</code> | <code>&quot;month&quot;</code> | (newspaper)   Publication month. Only available if the year facet is also   applied |
+| LANGUAGE | <code>string</code> | <code>&quot;language&quot;</code> | (book, picture, article, music, map, collection) |
+| AVAILABILITY | <code>string</code> | <code>&quot;availability&quot;</code> | (book, picture, article, music, map, collection, list)   Whether the item is online or not. See   [AVAILABILITIES](#Trove.AVAILABILITIES). |
+| AUSTRALIAN | <code>string</code> | <code>&quot;australian&quot;</code> | (book, picture, article, music, map, collection)   Works identified as published primarily in Australia, or   written by Australians |
+| OCCUPATION | <code>string</code> | <code>&quot;occupation&quot;</code> | (collection) |
+| ZOOM | <code>string</code> | <code>&quot;zoom&quot;</code> | (map) Map scale |
+| VENDORDB | <code>string</code> | <code>&quot;vendordb&quot;</code> | (article) Database code |
+| VENDOR | <code>string</code> | <code>&quot;vendor&quot;</code> | (article) The vendor who sells subscriptions to access a database   containing these articles. See [VENDORS](#Trove.VENDORS). |
+| AUDIENCE | <code>string</code> | <code>&quot;audience&quot;</code> | (article) Only applies to articles from Gale. See   [AUDIENCES](#Trove.AUDIENCES). |
+| TITLE | <code>string</code> | <code>&quot;title&quot;</code> | (newspaper) The newspaper title id. |
+| CATEGORY | <code>string</code> | <code>&quot;category&quot;</code> | (newspaper) Newspaper article category. See   [CATEGORIES](#Trove.CATEGORIES). |
+| ILLUSTRATED | <code>string</code> | <code>&quot;illustrated&quot;</code> | (newspaper) Is a newspaper article illustrated? |
+| ILLTYPE | <code>string</code> | <code>&quot;illtype&quot;</code> | (newspaper) Type of illustration for newspaper article. Only available if illustrated facet is applied |
+| WORD | <code>string</code> | <code>&quot;word&quot;</code> | (newspaper) Newspaper article word count. |
+| ALL | <code>string</code> | <code>&quot;all&quot;</code> | All of the above. |
 
 <a name="Trove.LIMITS"></a>
 ### Trove.LIMITS : <code>enum</code>
-Enumeration for limits.
-Use these to limit the results of a search.
+Enumeration for limiting the results of a search.
 
 **Kind**: static enum property of <code>[Trove](#Trove)</code>  
 **Read only**: true  
@@ -823,17 +960,17 @@ Use these to limit the results of a search.
 
 <a name="Trove.SORTBY"></a>
 ### Trove.SORTBY : <code>enum</code>
-Enumeration for sort order
+Enumeration for sort order.
 
 **Kind**: static enum property of <code>[Trove](#Trove)</code>  
 **Read only**: true  
 **Properties**
 
-| Name | Type | Default |
-| --- | --- | --- |
-| DATEDESC | <code>string</code> | <code>&quot;datedesc&quot;</code> | 
-| DATEASC | <code>string</code> | <code>&quot;dateasc&quot;</code> | 
-| RELEVANCE | <code>string</code> | <code>&quot;relevance&quot;</code> | 
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| DATEDESC | <code>string</code> | <code>&quot;datedesc&quot;</code> | Sort by date (descending). |
+| DATEASC | <code>string</code> | <code>&quot;dateasc&quot;</code> | Sort by date (ascending). |
+| RELEVANCE | <code>string</code> | <code>&quot;relevance&quot;</code> | Sort by relevance. |
 
 <a name="Trove.RECLEVEL"></a>
 ### Trove.RECLEVEL : <code>enum</code>
@@ -843,10 +980,10 @@ Enumeration for record level
 **Read only**: true  
 **Properties**
 
-| Name | Type | Default |
-| --- | --- | --- |
-| FULL | <code>string</code> | <code>&quot;full&quot;</code> | 
-| BRIEF | <code>string</code> | <code>&quot;brief&quot;</code> | 
+| Name | Type | Default | Description |
+| --- | --- | --- | --- |
+| FULL | <code>string</code> | <code>&quot;full&quot;</code> | Get the full metadata (excluding all links, version level records,   tags and comments). |
+| BRIEF | <code>string</code> | <code>&quot;brief&quot;</code> | Get the brief metadata. |
 
 <a name="Trove.INCLUDE"></a>
 ### Trove.INCLUDE : <code>enum</code>
@@ -890,22 +1027,6 @@ Enumeration for Australian states. Used to specify a state for which to return [
 | VIC | <code>string</code> | <code>&quot;vic&quot;</code> | Victoria. |
 | NATIONAL | <code>string</code> | <code>&quot;national&quot;</code> | National newspapers (not the same as all states). |
 | ALL | <code>string</code> | <code>&quot;&quot;</code> | All states. |
-
-<a name="Trove.CATEGORIES"></a>
-### Trove.CATEGORIES : <code>enum</code>
-Enumeration for NewspaperArticle categories. Returned as part of the brief record for NewspaperArticle, and may also be used to limit the results of a search using [LIMITS](#Trove.LIMITS).CATEGORY.
-
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
-**Properties**
-
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| ARTICLE | <code>string</code> | <code>&quot;Article&quot;</code> | Classified as an article. |
-| ADVERTISING | <code>string</code> | <code>&quot;Advertising&quot;</code> | Classified as advertising. |
-| LISTS | <code>string</code> | <code>&quot;Detailed lists, results, guides&quot;</code> | Classified as a list. |
-| FAMILY_NOTICES | <code>string</code> | <code>&quot;Family Notices&quot;</code> | Classified as family notices. |
-| LITERATURE | <code>string</code> | <code>&quot;Literature&quot;</code> | Classified as literature. |
 
 <a name="Trove.init"></a>
 ### Trove.init(key)

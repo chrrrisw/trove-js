@@ -10,7 +10,7 @@
      * @alias Trove.Search
      * @param {Object} options An object specifying the options for this
      *   Search
-     * @param {Trove.ZONE[]} options.zones The list of zones to search
+     * @param {Trove.ZONES[]} options.zones The list of zones to search
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
@@ -46,7 +46,7 @@
     /**
      * Return the array of items returned by the most recent query
      *   in the specified zone.
-     * @param {Trove.ZONE} zone The zone for which the array should be
+     * @param {Trove.ZONES} zone The zone for which the array should be
      *   returned.
      * @returns {Object[]}
      */
@@ -151,7 +151,7 @@
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.ZONE[]} options.zones The list of zones to search
+     * @param {Trove.ZONES[]} options.zones The list of zones to search
      *   (mandatory).
      * @param {string} options.terms The search terms (mandatory).
      * @param {number} options.start Return records starting at this point
@@ -188,8 +188,8 @@
         this.facets = options.facets || this.facets;
 
         // Get the zone or zones for the query.
-        // The default is ZONE.ALL.
-        var zones = Trove.ZONE.ALL;
+        // The default is ZONES.ALL.
+        var zones = Trove.ZONES.ALL;
         if (Array.isArray(this.zones)) {
             zones = this.zones.join(',');
         }

@@ -23,11 +23,11 @@
 
     /**
      * Enumeration for zones, can include multiple as a list
-     * @alias Trove.ZONE
+     * @alias Trove.ZONES
      * @readonly
      * @enum {string}
      */
-    var ZONE = {
+    var ZONES = {
         /** The zone for books */
         BOOK: 'book',
         /** The zone for pictures */
@@ -47,7 +47,7 @@
         /** All of the above */
         ALL: 'all'
     };
-    Trove.ZONE = ZONE;
+    Trove.ZONES = ZONES;
 
     /**
      * Enumeration for formats.

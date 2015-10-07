@@ -42,7 +42,7 @@ function test_trove (key) {
     // var act_newspapers = new Trove.NewspaperList({state: 'act'});
 
     demo_search = new Trove.Search({
-        zones: [Trove.ZONE.NEWSPAPER, Trove.ZONE.PICTURE],
+        zones: [Trove.ZONES.NEWSPAPER, Trove.ZONES.PICTURE],
         done: function(s) {
             console.dir(s.response);
         }
@@ -194,8 +194,8 @@ function documentReady(jQuery) {
 
     // Fill in and initialise the zones dropdown
     zone_dropdown = $('.ui.zones.dropdown');
-    for (z in Trove.ZONE) {
-        zone_dropdown.append('<option value="' + Trove.ZONE[z] + '">' + Trove.ZONE[z].capitalize() + '</option>');
+    for (z in Trove.ZONES) {
+        zone_dropdown.append('<option value="' + Trove.ZONES[z] + '">' + Trove.ZONES[z].capitalize() + '</option>');
     }
     zone_dropdown.dropdown();
 
