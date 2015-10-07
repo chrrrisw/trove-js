@@ -43,6 +43,20 @@
 
     }
 
+    /**
+     * Return the array of items returned by the most recent query
+     *   in the specified zone.
+     * @param {Trove.ZONE} zone The zone for which the array should be
+     *   returned.
+     * @returns {Object[]}
+     */
+    Search.prototype.zone_list = function(zone) {
+        return this.items[zone] || [];
+    };
+
+    /*
+     * Process the returned data, creating an object for each item.
+     */
     Search.prototype.process_done = function(data) {
         // console.log('Got Search Query');
         var zone_items;
@@ -138,14 +152,19 @@
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.ZONE[]} options.zones The list of zones to search
-     * @param {string} options.terms The search terms
-     * @param {number} options.start
-     * @param {number} options.number
-     * @param {Trove.SORTBY} options.sort
+     *   (mandatory).
+     * @param {string} options.terms The search terms (mandatory).
+     * @param {number} options.start Return records starting at this point
+     *  (optional, default=0).
+     * @param {number} options.number Return this number of records
+     *   (max. 100, optional, default=20).
+     * @param {Trove.SORTBY} options.sort Sort the results according to this
+     *   parameter (optional, default={@link Trove.SORTBY}.RELEVANCE).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
      * @param {Trove.INCLUDE[]} options.includes
-     * @param {Trove.LIMITS[]} options.limits
+     * @param {Trove.LIMITS[]} options.limits Limit the search results
+     *   (optional).
      * @param {Trove.FACETS[]} options.facets
      */
     Search.prototype.query = function(options) {
