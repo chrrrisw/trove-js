@@ -63,6 +63,7 @@ var categories_dropdown;
 var started = false;
 var settings_sidebar;
 var results_accordion;
+var newspaper_modal;
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -166,7 +167,29 @@ function search_done(s) {
     }
 }
 
+function get_newspapers(evt) {
+    console.log('Getting newspaper list');
+    $('.ui.request.newspaper.button').addClass('loading');
+}
+
+function apply_newspapers(dlg) {
+    console.log('apply');
+}
+
+function cancel_newspapers(dlg) {
+    console.log('cancel');
+}
+
 function documentReady(jQuery) {
+
+    // Initialise the newspaper modal
+    newspaper_modal = $('.ui.newspaper.modal');
+    newspaper_modal.modal({
+        onApprove: apply_newspapers,
+        onDeny: cancel_newspapers
+    });
+    newspaper_modal.modal('attach events', '.ui.newspaper.button', 'show');
+    $('.ui.request.newspaper.button').on('click', get_newspapers);
 
     // Initialise the sidebar
     settings_sidebar = $('.ui.sidebar');
@@ -199,10 +222,10 @@ function documentReady(jQuery) {
     }
     zone_dropdown.dropdown();
 
-    $('.sidebar-form').on('submit', function(){
-        console.log('Form submitted');
-        return false;
-    });
+    // $('.sidebar-form').on('submit', function(){
+    //     console.log('Form submitted');
+    //     return false;
+    // });
 
     // Create a Search object
     demo_search = new Trove.Search({
