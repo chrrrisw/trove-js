@@ -1,5 +1,6 @@
 /**
  * @namespace Trove
+ * @copyright Chris Willoughby 2015
  */
 (function(Trove, $, undefined) {
     'use strict';
@@ -362,11 +363,22 @@
      * @enum {string}
      */
     var INCLUDES = {
-        /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public tags on this item. */
+        /**
+         * (Book, Picture, Article, Music, Map, Collection, NewspaperArticle,
+         *   List)
+         *   Include any public tags on this item.
+         */
         TAGS: 'tags',
-        /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public comments on this item. */
+        /**
+         * (Book, Picture, Article, Music, Map, Collection, NewspaperArticle,
+         *   List)
+         *   Include any public comments on this item.
+         */
         COMMENTS: 'comments',
-        /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle) Include the name and ID of any public lists this item belongs to. */
+        /**
+         * (Book, Picture, Article, Music, Map, Collection, NewspaperArticle)
+         *   Include the name and ID of any public lists this item belongs to.
+         */
         LISTS: 'lists',
         /** (Book, Picture, Article, Music, Map, Collection) Include information on which organisations have a copy of this item or version. */
         HOLDINGS: 'holdings',
@@ -382,13 +394,20 @@
         YEARS: 'years',
         /** (List only) Include the brief works, articles, people, external websites that belong to this list. */
         LISTITEMS: 'listitems',
-        /** (All) Include all of the above. */
+        /**
+         * (All) Include all of the above.
+         */
         ALL: 'all'
     };
     Trove.INCLUDES = INCLUDES;
 
     /**
-     * Enumeration for Australian states. Used to specify a state for which to return {@link Trove.Newspaper} titles using the {@link Trove.NewspaperList} class. To return all [Newspapers]{@link Trove.Newspaper} for all states, do not specify a state when making the query via {@link Trove.NewspaperList} or use ALL.
+     * Enumeration for Australian states. Used to specify a state for which
+     *   to return {@link Trove.Newspaper} titles using the
+     *   {@link Trove.NewspaperList} class. To return all
+     *   [Newspapers]{@link Trove.Newspaper} for all states, do not specify
+     *   a state when making the query via {@link Trove.NewspaperList} or
+     *   use ALL.
      * @alias Trove.STATES
      * @readonly
      * @enum {string}
