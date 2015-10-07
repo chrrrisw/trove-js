@@ -142,6 +142,14 @@
 
     };
 
+    Search.prototype.clear_category_limit = function () {
+        if (this.limits.category !== undefined) delete this.limits.category;
+    };
+
+    Search.prototype.limit_category = function(category) {
+        this.limits.category = category;
+    };
+
 
     /**
      * Query the Trove database.
@@ -163,8 +171,8 @@
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
      * @param {Trove.INCLUDES[]} options.includes
-     * @param {Trove.LIMITS[]} options.limits Limit the search results
-     *   (optional).
+     * @param {Object} options.limits Limit the search results
+     *   (optional, see {@link Trove.LIMITS}).
      * @param {Trove.FACETS[]} options.facets
      */
     Search.prototype.query = function(options) {
