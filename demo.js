@@ -69,7 +69,7 @@ String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
 };
 
-function search(terms) {
+function init_trove() {
 
     // If we haven't initialised yet, do so
     // Show the sidebar if the user hasn't entered a key
@@ -84,6 +84,11 @@ function search(terms) {
         }
     }
 
+}
+
+function search(terms) {
+
+    init_trove();
     if (started) {
         settings_sidebar.sidebar('hide');
 
@@ -169,7 +174,17 @@ function search_done(s) {
 
 function get_newspapers(evt) {
     console.log('Getting newspaper list');
+    init_trove();
     $('.ui.request.newspaper.button').addClass('loading');
+    var newspaper_list = new Trove.NewspaperList({
+        state: Trove.STATES.ALL,
+        done: function (nl) {
+            $('.ui.request.newspaper.button').removeClass('loading');
+        },
+        fail: function (nl) {
+            $('.ui.request.newspaper.button').removeClass('loading');
+        }
+    });
 }
 
 function apply_newspapers(dlg) {
@@ -183,6 +198,10 @@ function cancel_newspapers(dlg) {
 function documentReady(jQuery) {
 
     // Initialise the newspaper modal
+    var state_buttons = $('#state-buttons');
+    for (var s in Trove.STATES) {
+        state_buttons.append('<button class="ui compact toggle button">' + s + '</button>');
+    }
     newspaper_modal = $('.ui.newspaper.modal');
     newspaper_modal.modal({
         onApprove: apply_newspapers,
