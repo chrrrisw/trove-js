@@ -110,4 +110,12 @@ module.exports = function(grunt) {
     grunt.registerTask('prepare', ['jshint', 'jsdoc', 'concat', 'uglify']);
     grunt.registerTask('default', ['jshint', 'jsdoc', 'connect', 'qunit', 'concat', 'uglify']);
 
+    grunt.event.on('qunit.testStart', function (name) {
+      grunt.log.ok("\nRunning test: " + name);
+    });
+
+    grunt.event.on('qunit.testDone', function (name, failed, passed, total, duration) {
+        grunt.log.ok(failed);
+    });
+
 };
