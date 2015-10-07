@@ -633,7 +633,7 @@ Query the Trove database.
 | options.sort | <code>[SORTBY](#Trove.SORTBY)</code> | Sort the results according to this   parameter (optional, default=[SORTBY](#Trove.SORTBY).RELEVANCE). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 | options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
-| options.limits | <code>[Array.&lt;LIMITS&gt;](#Trove.LIMITS)</code> | Limit the search results   (optional). |
+| options.limits | <code>Object</code> | Limit the search results   (optional, see [LIMITS](#Trove.LIMITS)). |
 | options.facets | <code>[Array.&lt;FACETS&gt;](#Trove.FACETS)</code> |  |
 
 <a name="Trove.Search+requery"></a>

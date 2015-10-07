@@ -21,7 +21,7 @@
      *
      */
     function List(options) {
-        console.log('Creating List');
+        // console.log('Creating List');
 
         // Save and remove init from options.
         var init;
@@ -68,7 +68,7 @@
      * @param {Trove.INCLUDES[]} options.includes
      */
     List.prototype.get = function(options) {
-        console.log('Getting list');
+        // console.log('Getting list');
 
         // Override reclevel, includes, done and fail if specified
         this.reclevel = options.reclevel || this.reclevel;

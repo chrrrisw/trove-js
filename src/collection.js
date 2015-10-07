@@ -12,7 +12,7 @@
      * @param {Object} options
      */
     function Collection(options) {
-        console.log('Creating Collection');
+        // console.log('Creating Collection');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Collection.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);

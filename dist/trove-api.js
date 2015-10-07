@@ -526,7 +526,7 @@
      * @property {string} version.record
      */
     function Work(options) {
-        console.log('Creating Work');
+        // console.log('Creating Work');
 
         // Save and remove init from options.
         var init;
@@ -573,13 +573,15 @@
      * @param {Trove.INCLUDES[]} options.includes
      */
     Work.prototype.get = function(options) {
-        console.log('Getting work');
+        // console.log('Getting work');
 
         // Override reclevel, includes, done and fail if specified
-        this.reclevel = options.reclevel || this.reclevel;
-        this.includes = options.includes || this.includes;
-        this.done = options.done || this.done;
-        this.fail = options.fail || this.fail;
+        if (options) {
+            this.reclevel = options.reclevel || this.reclevel;
+            this.includes = options.includes || this.includes;
+            this.done = options.done || this.done;
+            this.fail = options.fail || this.fail;
+        }
 
         var query_data = {
             key: Trove.trove_key,
@@ -756,6 +758,14 @@
 
     };
 
+    Search.prototype.clear_category_limit = function () {
+        if (this.limits.category !== undefined) delete this.limits.category;
+    };
+
+    Search.prototype.limit_category = function(category) {
+        this.limits.category = category;
+    };
+
 
     /**
      * Query the Trove database.
@@ -777,8 +787,8 @@
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
      * @param {Trove.INCLUDES[]} options.includes
-     * @param {Trove.LIMITS[]} options.limits Limit the search results
-     *   (optional).
+     * @param {Object} options.limits Limit the search results
+     *   (optional, see {@link Trove.LIMITS}).
      * @param {Trove.FACETS[]} options.facets
      */
     Search.prototype.query = function(options) {
@@ -969,7 +979,7 @@
      *
      */
     function List(options) {
-        console.log('Creating List');
+        // console.log('Creating List');
 
         // Save and remove init from options.
         var init;
@@ -1016,7 +1026,7 @@
      * @param {Trove.INCLUDES[]} options.includes
      */
     List.prototype.get = function(options) {
-        console.log('Getting list');
+        // console.log('Getting list');
 
         // Override reclevel, includes, done and fail if specified
         this.reclevel = options.reclevel || this.reclevel;
@@ -1078,7 +1088,7 @@
      *
      */
     function Person(options) {
-        console.log('Creating Person');
+        // console.log('Creating Person');
 
         // Save and remove init from options.
         var init;
@@ -1125,7 +1135,7 @@
      * @param {Trove.INCLUDES[]} options.includes
      */
     Person.prototype.get = function(options) {
-        console.log('Getting person');
+        // console.log('Getting person');
 
         // Override reclevel, includes, done and fail if specified
         this.reclevel = options.reclevel || this.reclevel;
@@ -1178,7 +1188,7 @@
      * @param {Object} options
      */
     function Article(options) {
-        console.log('Creating Article');
+        // console.log('Creating Article');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Article.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
@@ -1202,7 +1212,7 @@
      * @param {Object} options
      */
     function Picture(options) {
-        console.log('Creating Picture');
+        // console.log('Creating Picture');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Picture.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
@@ -1226,7 +1236,7 @@
      * @param {Object} options
      */
     function Book(options) {
-        console.log('Creating Book');
+        // console.log('Creating Book');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Book.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
@@ -1250,7 +1260,7 @@
      * @param {Object} options
      */
     function Map(options) {
-        console.log('Creating Map');
+        // console.log('Creating Map');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Map.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
@@ -1274,7 +1284,7 @@
      * @param {Object} options
      */
     function Music(options) {
-        console.log('Creating Music');
+        // console.log('Creating Music');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Music.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
@@ -1298,7 +1308,7 @@
      * @param {Object} options
      */
     function Collection(options) {
-        console.log('Creating Collection');
+        // console.log('Creating Collection');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Collection.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
@@ -1666,14 +1676,16 @@
     NewspaperList.prototype.get = function(options) {
         // console.log('Getting NewspaperList');
 
-        // Override the done callback
-        this.done = options.done || this.done;
+        if (options) {
+            // Override the done callback
+            this.done = options.done || this.done;
 
-        // Override the fail callback
-        this.fail = options.fail || this.fail;
+            // Override the fail callback
+            this.fail = options.fail || this.fail;
 
-        // Override the state
-        this.state = options.state || this.state;
+            // Override the state
+            this.state = options.state || this.state;
+        }
 
         var query_data = {
             key: Trove.trove_key,

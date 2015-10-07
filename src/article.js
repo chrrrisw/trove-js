@@ -12,7 +12,7 @@
      * @param {Object} options
      */
     function Article(options) {
-        console.log('Creating Article');
+        // console.log('Creating Article');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Article.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);

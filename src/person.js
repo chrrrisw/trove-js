@@ -22,7 +22,7 @@
      *
      */
     function Person(options) {
-        console.log('Creating Person');
+        // console.log('Creating Person');
 
         // Save and remove init from options.
         var init;
@@ -69,7 +69,7 @@
      * @param {Trove.INCLUDES[]} options.includes
      */
     Person.prototype.get = function(options) {
-        console.log('Getting person');
+        // console.log('Getting person');
 
         // Override reclevel, includes, done and fail if specified
         this.reclevel = options.reclevel || this.reclevel;

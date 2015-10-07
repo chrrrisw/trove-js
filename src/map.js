@@ -12,7 +12,7 @@
      * @param {Object} options
      */
     function Map(options) {
-        console.log('Creating Map');
+        // console.log('Creating Map');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Map.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);

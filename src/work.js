@@ -67,7 +67,7 @@
      * @property {string} version.record
      */
     function Work(options) {
-        console.log('Creating Work');
+        // console.log('Creating Work');
 
         // Save and remove init from options.
         var init;
@@ -114,13 +114,15 @@
      * @param {Trove.INCLUDES[]} options.includes
      */
     Work.prototype.get = function(options) {
-        console.log('Getting work');
+        // console.log('Getting work');
 
         // Override reclevel, includes, done and fail if specified
-        this.reclevel = options.reclevel || this.reclevel;
-        this.includes = options.includes || this.includes;
-        this.done = options.done || this.done;
-        this.fail = options.fail || this.fail;
+        if (options) {
+            this.reclevel = options.reclevel || this.reclevel;
+            this.includes = options.includes || this.includes;
+            this.done = options.done || this.done;
+            this.fail = options.fail || this.fail;
+        }
 
         var query_data = {
             key: Trove.trove_key,

@@ -12,7 +12,7 @@
      * @param {Object} options
      */
     function Picture(options) {
-        console.log('Creating Picture');
+        // console.log('Creating Picture');
         Trove.CONSTRUCTORS.work.call(this, options);
     }
     Picture.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
