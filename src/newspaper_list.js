@@ -40,7 +40,10 @@
         }
     }
 
-    NewspaperList.prototype.process_done = function(data) {
+    NewspaperList.prototype.process_done = function(
+        data, textStatus, jqXHR) {
+
+        console.log(jqXHR.status);
 
         for (var index in data.response.records.newspaper) {
             // console.dir(data.response.records.newspaper[index]);
@@ -56,7 +59,7 @@
     };
 
     NewspaperList.prototype.process_fail = function(
-            jqXHR, textStatus, errorThrown) {
+        jqXHR, textStatus, errorThrown) {
 
         console.error(textStatus);
 
@@ -97,7 +100,7 @@
             encoding: 'json'
         };
 
-        if ((this.state !== undefined) || (this.state != Trove.STATES.ALL)) {
+        if ((this.state !== undefined) && (this.state != Trove.STATES.ALL)) {
             query_data.state = this.state;
         }
 
