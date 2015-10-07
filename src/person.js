@@ -5,7 +5,8 @@
     'use strict';
 
     /**
-     * A class to hold a person
+     * A class to hold a person.
+     * Please note that the Trove API does not currently support People.
      * @class
      * @alias Trove.Person
      *
