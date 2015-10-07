@@ -81,14 +81,16 @@
     NewspaperList.prototype.get = function(options) {
         // console.log('Getting NewspaperList');
 
-        // Override the done callback
-        this.done = options.done || this.done;
+        if (options) {
+            // Override the done callback
+            this.done = options.done || this.done;
 
-        // Override the fail callback
-        this.fail = options.fail || this.fail;
+            // Override the fail callback
+            this.fail = options.fail || this.fail;
 
-        // Override the state
-        this.state = options.state || this.state;
+            // Override the state
+            this.state = options.state || this.state;
+        }
 
         var query_data = {
             key: Trove.trove_key,
