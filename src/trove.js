@@ -357,11 +357,11 @@
 
     /**
      * Enumeration for includes, can include multiple as a list.
-     * @alias Trove.INCLUDE
+     * @alias Trove.INCLUDES
      * @readonly
      * @enum {string}
      */
-    var INCLUDE = {
+    var INCLUDES = {
         /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public tags on this item. */
         TAGS: 'tags',
         /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public comments on this item. */
@@ -385,7 +385,7 @@
         /** (All) Include all of the above. */
         ALL: 'all'
     };
-    Trove.INCLUDE = INCLUDE;
+    Trove.INCLUDES = INCLUDES;
 
     /**
      * Enumeration for Australian states. Used to specify a state for which to return {@link Trove.Newspaper} titles using the {@link Trove.NewspaperList} class. To return all [Newspapers]{@link Trove.Newspaper} for all states, do not specify a state when making the query via {@link Trove.NewspaperList} or use ALL.

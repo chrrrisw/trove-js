@@ -19,7 +19,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      *
      * @property {string} id
      * @property {string} url
@@ -111,7 +111,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      */
     Work.prototype.get = function(options) {
         console.log('Getting work');

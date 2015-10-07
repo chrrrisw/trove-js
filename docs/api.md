@@ -61,7 +61,7 @@
   * [.LIMITS](#Trove.LIMITS) : <code>enum</code>
   * [.SORTBY](#Trove.SORTBY) : <code>enum</code>
   * [.RECLEVEL](#Trove.RECLEVEL) : <code>enum</code>
-  * [.INCLUDE](#Trove.INCLUDE) : <code>enum</code>
+  * [.INCLUDES](#Trove.INCLUDES) : <code>enum</code>
   * [.STATES](#Trove.STATES) : <code>enum</code>
   * [.init(key)](#Trove.init)
 
@@ -96,7 +96,7 @@ Get the Work metadata from the Trove server.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.Book"></a>
 ### Trove.Book ⇐ <code>[Work](#Trove.Work)</code>
@@ -129,7 +129,7 @@ Get the Work metadata from the Trove server.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.Collection"></a>
 ### Trove.Collection ⇐ <code>[Work](#Trove.Work)</code>
@@ -162,7 +162,7 @@ Get the Work metadata from the Trove server.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.List"></a>
 ### Trove.List
@@ -184,7 +184,7 @@ A class to hold a list
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.List+get"></a>
 #### list.get(options)
@@ -199,7 +199,7 @@ Get the List metadata from the Trove server.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.Map"></a>
 ### Trove.Map ⇐ <code>[Work](#Trove.Work)</code>
@@ -232,7 +232,7 @@ Get the Work metadata from the Trove server.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.Music"></a>
 ### Trove.Music ⇐ <code>[Work](#Trove.Work)</code>
@@ -265,7 +265,7 @@ Get the Work metadata from the Trove server.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.NewspaperArticle"></a>
 ### Trove.NewspaperArticle
@@ -335,7 +335,7 @@ A Class to hold newspaper articles.
 | options.done | <code>function</code> | The callback on receipt of   data (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.NewspaperArticle+get"></a>
 #### newspaperArticle.get(options)
@@ -350,7 +350,7 @@ Retrieve article information from Trove based on identifier.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.NewspaperArticle+get_newspaper"></a>
 #### newspaperArticle.get_newspaper(options) ⇒ <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>
@@ -481,7 +481,7 @@ Please note that the Trove API does not currently support People.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.Person+get"></a>
 #### person.get(options)
@@ -496,7 +496,7 @@ Get the Person metadata from the Trove server.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.Picture"></a>
 ### Trove.Picture ⇐ <code>[Work](#Trove.Work)</code>
@@ -529,7 +529,7 @@ Get the Work metadata from the Trove server.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.Search"></a>
 ### Trove.Search
@@ -632,7 +632,7 @@ Query the Trove database.
 | options.number | <code>number</code> | Return this number of records   (max. 100, optional, default=20). |
 | options.sort | <code>[SORTBY](#Trove.SORTBY)</code> | Sort the results according to this   parameter (optional, default=[SORTBY](#Trove.SORTBY).RELEVANCE). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 | options.limits | <code>[Array.&lt;LIMITS&gt;](#Trove.LIMITS)</code> | Limit the search results   (optional). |
 | options.facets | <code>[Array.&lt;FACETS&gt;](#Trove.FACETS)</code> |  |
 
@@ -743,7 +743,7 @@ A class to hold a work. Work is the parent class for other classes
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.Work+get"></a>
 #### work.get(options)
@@ -758,7 +758,7 @@ Get the Work metadata from the Trove server.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
-| options.includes | <code>[Array.&lt;INCLUDE&gt;](#Trove.INCLUDE)</code> |  |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> |  |
 
 <a name="Trove.ZONES"></a>
 ### Trove.ZONES : <code>enum</code>
@@ -985,8 +985,8 @@ Enumeration for record level
 | FULL | <code>string</code> | <code>&quot;full&quot;</code> | Get the full metadata (excluding all links, version level records,   tags and comments). |
 | BRIEF | <code>string</code> | <code>&quot;brief&quot;</code> | Get the brief metadata. |
 
-<a name="Trove.INCLUDE"></a>
-### Trove.INCLUDE : <code>enum</code>
+<a name="Trove.INCLUDES"></a>
+### Trove.INCLUDES : <code>enum</code>
 Enumeration for includes, can include multiple as a list.
 
 **Kind**: static enum property of <code>[Trove](#Trove)</code>  

@@ -162,7 +162,7 @@
      *   parameter (optional, default={@link Trove.SORTBY}.RELEVANCE).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      * @param {Trove.LIMITS[]} options.limits Limit the search results
      *   (optional).
      * @param {Trove.FACETS[]} options.facets

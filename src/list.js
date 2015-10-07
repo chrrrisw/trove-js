@@ -17,7 +17,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      *
      */
     function List(options) {
@@ -65,7 +65,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      */
     List.prototype.get = function(options) {
         console.log('Getting list');

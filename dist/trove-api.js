@@ -357,11 +357,11 @@
 
     /**
      * Enumeration for includes, can include multiple as a list.
-     * @alias Trove.INCLUDE
+     * @alias Trove.INCLUDES
      * @readonly
      * @enum {string}
      */
-    var INCLUDE = {
+    var INCLUDES = {
         /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public tags on this item. */
         TAGS: 'tags',
         /** (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public comments on this item. */
@@ -385,7 +385,7 @@
         /** (All) Include all of the above. */
         ALL: 'all'
     };
-    Trove.INCLUDE = INCLUDE;
+    Trove.INCLUDES = INCLUDES;
 
     /**
      * Enumeration for Australian states. Used to specify a state for which to return {@link Trove.Newspaper} titles using the {@link Trove.NewspaperList} class. To return all [Newspapers]{@link Trove.Newspaper} for all states, do not specify a state when making the query via {@link Trove.NewspaperList} or use ALL.
@@ -478,7 +478,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      *
      * @property {string} id
      * @property {string} url
@@ -570,7 +570,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      */
     Work.prototype.get = function(options) {
         console.log('Getting work');
@@ -776,7 +776,7 @@
      *   parameter (optional, default={@link Trove.SORTBY}.RELEVANCE).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      * @param {Trove.LIMITS[]} options.limits Limit the search results
      *   (optional).
      * @param {Trove.FACETS[]} options.facets
@@ -965,7 +965,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      *
      */
     function List(options) {
@@ -1013,7 +1013,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      */
     List.prototype.get = function(options) {
         console.log('Getting list');
@@ -1074,7 +1074,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      *
      */
     function Person(options) {
@@ -1122,7 +1122,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      */
     Person.prototype.get = function(options) {
         console.log('Getting person');
@@ -1328,7 +1328,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      *
      * @property {string} id (brief) Trove newspaper article ID.
      * @property {string} heading (brief) The article heading.
@@ -1431,7 +1431,7 @@
      * @param {function} options.fail The callback on failure (optional).
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDE[]} options.includes
+     * @param {Trove.INCLUDES[]} options.includes
      */
     NewspaperArticle.prototype.get = function(options) {
         // console.log('Getting NewspaperArticle');
