@@ -146,6 +146,26 @@ var item_template =
 '        <td><a href="%trove_url%">See here</a></td>' +
 '    </tr>';
 
+
+var toggle_button_template =
+'    <button class="ui compact toggle button">' +
+'        %text%' +
+'    </button>';
+
+var checkbox_template =
+'    <div class="ui %class% checkbox">' +
+'        <input type="checkbox" class="hidden" name="%name%">' +
+'        <label>%text%</label>' +
+'    </div>';
+
+var radio_template =
+'    <div class="field">' +
+'        <div class="ui radio checkbox">' +
+'            <input type="radio" name="%name%" tabindex="0" class="hidden">' +
+'            <label>%text%</label>' +
+'        </div>' +
+'    </div>';
+
 function search_done(s) {
     var zone_items;
     var zone_name;
@@ -175,11 +195,20 @@ function search_done(s) {
 function get_newspapers(evt) {
     console.log('Getting newspaper list');
     init_trove();
+    var table = $('#np-list');
     $('.ui.request.newspaper.button').addClass('loading');
     var newspaper_list = new Trove.NewspaperList({
         state: Trove.STATES.ALL,
         done: function (nl) {
             $('.ui.request.newspaper.button').removeClass('loading');
+            for (var index in nl.newspapers) {
+                table.append(
+                    '<tr><td>' +
+                    nl.newspapers[index].id +
+                    '</td><td>' +
+                    nl.newspapers[index].title +
+                    '</td></tr>');
+            }
         },
         fail: function (nl) {
             $('.ui.request.newspaper.button').removeClass('loading');
@@ -197,13 +226,39 @@ function cancel_newspapers(dlg) {
 
 function documentReady(jQuery) {
 
+    key_field = $('#key_id');
+    date_field = $('#date-range');
+
+    // Get the key_file
+    $.get('/__key_file__', function(data) {
+        data = data.replace(/(\r\n|\n|\r)/gm, '');
+        key_field.val(data);
+        Trove.init(data);
+        started = true;
+    });
+
     // Initialise the newspaper modal
     var state_buttons = $('#state-buttons');
+    var state;
     for (var s in Trove.STATES) {
-        state_buttons.append('<button class="ui compact toggle button">' + s + '</button>');
+        state = checkbox_template
+            .replace('%name%', s)
+            .replace('%class%', 'np-state')
+            .replace('%text%', s);
+        state_buttons.append(state);
     }
+    $('.ui.np-state.checkbox').checkbox({
+        onChecked: function () {
+            console.log('Checked', this.name);
+        },
+        onUnchecked: function () {
+            console.log('Unchecked', this.name);
+        }
+    });
+
     newspaper_modal = $('.ui.newspaper.modal');
     newspaper_modal.modal({
+        observeChanges: true,
         onApprove: apply_newspapers,
         onDeny: cancel_newspapers
     });
@@ -251,8 +306,6 @@ function documentReady(jQuery) {
         done: search_done
     });
 
-    key_field = $('#key_id');
-    date_field = $('#date-range');
 }
 
 $(document).ready(documentReady);

@@ -102,19 +102,28 @@
                     Newspapers
                 </div>
                 <div class='content'>
-                    <div class='ui internally celled grid'>
+                    <div class='ui grid'>
                         <div class='one column centred row'>
                             <div class='column'>
                                 <button class='ui basic request newspaper button'>Request newspaper list</button>
                             </div>
                         </div>
                         <div class='row'>
-                            <div class='four wide column'>
-                                <div class='ui vertical buttons' id='state-buttons'>
+                            <div class='two wide column'>
+                                <div class='ui form'>
+                                    <div class='grouped fields' id='state-buttons'>
+                                    </div>
                                 </div>
                             </div>
-                            <div class='twelve wide column'>
-                                Newspaper
+                            <div class='fourteen wide column'>
+                                <table class='ui very compact table'>
+                                    <thead>
+                                        <tr><th>ID</th><th>Title</th></tr>
+                                    </thead>
+                                    <tbody id='np-list'>
+
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </div>
