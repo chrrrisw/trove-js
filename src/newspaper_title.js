@@ -4,17 +4,30 @@
 (function(Trove, $, undefined) {
     'use strict';
 
+    var STATEABBR = {
+        'ACT': 'ACT',
+        'National': 'NATIONAL',
+        'New South Wales': 'NSW',
+        'Northern Territory': 'NT',
+        'Queensland': 'QLD',
+        'South Australia': 'SA',
+        'Tasmania': 'TAS',
+        'Victoria': 'VIC',
+        'Western Australia': 'WA'
+    };
+
     /**
      * An object to hold an instance of a newspaper title.
      * @class
      * @alias Trove.NewspaperTitle
      * @param {Object} options
-     * @property {(number|string)} options.init If specified, will request
+     * @param {(number|string)} options.init If specified, will request
      *   the data immediately.
      * @property {} id The identifier of the newspaper title.
      * @property {} title Name of the newpaper (or magazine).
-     * @property {} state The state in which the newspaper title was
+     * @property {string} state The state in which the newspaper title was
      *   primarily published.
+     * @property {string} stateabbr The abbreviated state.
      * @property {} issn International Standard Serial Number.
      * @property {} troveURL A link to view the newspaper title in Trove.
      * @property {} startDate The earliest publication date of this newspaper
@@ -43,6 +56,7 @@
 
         // Save all other options as part of this object.
         $.extend(this, options);
+        if (this.state) this.stateabbr = STATEABBR[this.state];
 
         // If init was specified, treat it as the identifier.
         if (init !== undefined) {
@@ -74,6 +88,7 @@
         }).done(function(data) {
             // console.log('Got NewspaperTitle');
             $.extend(this, data.newspaper);
+            if (this.state) this.stateabbr = STATEABBR[this.state];
             if (options.done !== undefined) {
                 options.done(this);
             } else if (this.done !== undefined) {
