@@ -16,12 +16,19 @@ QUnit.test("newspaper list test", function(assert) {
     var nl = new Trove.NewspaperList({
         state: Trove.STATES.ACT,
         done: function(n) {
-            // console.dir(n.newspapers);
+            // console.log('number of newspapers', n.newspapers.length);
             for (var np in n.newspapers) {
                 // console.log(JSON.stringify(n.newspapers[np], null, '\t'));
             }
             assert.ok(n.newspapers.length > 0, "Checking newspapers > 0");
-            list_done();
+            n.newspapers[0].get({
+                includes: [Trove.INCLUDES.YEARS],
+                range: '19250101-19251231',
+                done: function(np) {
+                    console.log(JSON.stringify(np, null, '\t'));
+                    list_done();
+                }
+            });
         }
     });
 });
