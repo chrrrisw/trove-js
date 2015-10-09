@@ -35,7 +35,7 @@
 
         // If we know the identifier, get the data
         if (init !== undefined) {
-            this.get({identifier: init});
+            this.get({id: init});
         }
 
     }
@@ -58,7 +58,7 @@
     /**
      * Get the List metadata from the Trove server.
      * @param {Object} options The options object for the query.
-     * @param {(number|string)} options.identifier The List ID for which
+     * @param {(number|string)} options.id The List ID for which
      *   to retrieve data.
      * @param {function} options.done The callback on receipt of data
      *   (optional).
@@ -71,10 +71,13 @@
         // console.log('Getting list');
 
         // Override reclevel, includes, done and fail if specified
-        this.reclevel = options.reclevel || this.reclevel;
-        this.includes = options.includes || this.includes;
-        this.done = options.done || this.done;
-        this.fail = options.fail || this.fail;
+        if (options) {
+            this.id = options.id || this.id;
+            this.reclevel = options.reclevel || this.reclevel;
+            this.includes = options.includes || this.includes;
+            this.done = options.done || this.done;
+            this.fail = options.fail || this.fail;
+        }
 
         var query_data = {
             key: Trove.trove_key,
@@ -95,7 +98,7 @@
 
         $.ajax({
             dataType: "jsonp",
-            url: Trove.API.LIST + options.identifier,
+            url: Trove.API.LIST + this.id,
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);

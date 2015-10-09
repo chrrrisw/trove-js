@@ -81,7 +81,7 @@
 
         // If we know the identifier, get the data
         if (init !== undefined) {
-            this.get({identifier: init});
+            this.get({id: init});
         }
 
     }
@@ -104,7 +104,7 @@
     /**
      * Get the Work metadata from the Trove server.
      * @param {Object} options The options object for the query.
-     * @param {(number|string)} options.identifier The Work ID for which
+     * @param {(number|string)} options.id The Work ID for which
      *   to retrieve data.
      * @param {function} options.done The callback on receipt of data
      *   (optional).
@@ -118,6 +118,7 @@
 
         // Override reclevel, includes, done and fail if specified
         if (options) {
+            this.id = options.id || this.id;
             this.reclevel = options.reclevel || this.reclevel;
             this.includes = options.includes || this.includes;
             this.done = options.done || this.done;
@@ -143,7 +144,7 @@
 
         $.ajax({
             dataType: "jsonp",
-            url: Trove.API.WORK + options.identifier,
+            url: Trove.API.WORK + this.id,
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);

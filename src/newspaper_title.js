@@ -86,8 +86,8 @@
 
         if (options) {
             this.id = options.id || this.id;
-            this.includes = options.includes || this.includes;
             this.range = options.range || this.range;
+            this.includes = options.includes || this.includes;
             this.done = options.done || this.done;
             this.fail = options.fail || this.fail;
         }

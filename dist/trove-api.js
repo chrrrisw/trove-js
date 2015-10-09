@@ -559,7 +559,7 @@
 
         // If we know the identifier, get the data
         if (init !== undefined) {
-            this.get({identifier: init});
+            this.get({id: init});
         }
 
     }
@@ -582,7 +582,7 @@
     /**
      * Get the Work metadata from the Trove server.
      * @param {Object} options The options object for the query.
-     * @param {(number|string)} options.identifier The Work ID for which
+     * @param {(number|string)} options.id The Work ID for which
      *   to retrieve data.
      * @param {function} options.done The callback on receipt of data
      *   (optional).
@@ -596,6 +596,7 @@
 
         // Override reclevel, includes, done and fail if specified
         if (options) {
+            this.id = options.id || this.id;
             this.reclevel = options.reclevel || this.reclevel;
             this.includes = options.includes || this.includes;
             this.done = options.done || this.done;
@@ -621,7 +622,7 @@
 
         $.ajax({
             dataType: "jsonp",
-            url: Trove.API.WORK + options.identifier,
+            url: Trove.API.WORK + this.id,
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);
@@ -1012,7 +1013,7 @@
 
         // If we know the identifier, get the data
         if (init !== undefined) {
-            this.get({identifier: init});
+            this.get({id: init});
         }
 
     }
@@ -1035,7 +1036,7 @@
     /**
      * Get the List metadata from the Trove server.
      * @param {Object} options The options object for the query.
-     * @param {(number|string)} options.identifier The List ID for which
+     * @param {(number|string)} options.id The List ID for which
      *   to retrieve data.
      * @param {function} options.done The callback on receipt of data
      *   (optional).
@@ -1048,10 +1049,13 @@
         // console.log('Getting list');
 
         // Override reclevel, includes, done and fail if specified
-        this.reclevel = options.reclevel || this.reclevel;
-        this.includes = options.includes || this.includes;
-        this.done = options.done || this.done;
-        this.fail = options.fail || this.fail;
+        if (options) {
+            this.id = options.id || this.id;
+            this.reclevel = options.reclevel || this.reclevel;
+            this.includes = options.includes || this.includes;
+            this.done = options.done || this.done;
+            this.fail = options.fail || this.fail;
+        }
 
         var query_data = {
             key: Trove.trove_key,
@@ -1072,7 +1076,7 @@
 
         $.ajax({
             dataType: "jsonp",
-            url: Trove.API.LIST + options.identifier,
+            url: Trove.API.LIST + this.id,
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);
@@ -1121,7 +1125,7 @@
 
         // If we know the identifier, get the data
         if (init !== undefined) {
-            this.get({identifier: init});
+            this.get({id: init});
         }
 
     }
@@ -1144,7 +1148,7 @@
     /**
      * Get the Person metadata from the Trove server.
      * @param {Object} options The options object for the query.
-     * @param {(number|string)} options.identifier The person ID for which
+     * @param {(number|string)} options.id The person ID for which
      *   to retrieve data.
      * @param {function} options.done The callback on receipt of data
      *   (optional).
@@ -1157,10 +1161,13 @@
         // console.log('Getting person');
 
         // Override reclevel, includes, done and fail if specified
-        this.reclevel = options.reclevel || this.reclevel;
-        this.includes = options.includes || this.includes;
-        this.done = options.done || this.done;
-        this.fail = options.fail || this.fail;
+        if (options) {
+            this.id = options.id || this.id;
+            this.reclevel = options.reclevel || this.reclevel;
+            this.includes = options.includes || this.includes;
+            this.done = options.done || this.done;
+            this.fail = options.fail || this.fail;
+        }
 
         var query_data = {
             key: Trove.trove_key,
@@ -1181,7 +1188,7 @@
 
         $.ajax({
             dataType: "jsonp",
-            url: Trove.API.PERSON + options.identifier,
+            url: Trove.API.PERSON + this.id,
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);
@@ -1428,7 +1435,7 @@
 
         // If we know the identifier, get the data
         if (init !== undefined) {
-            this.get({identifier: init});
+            this.get({id: init});
         }
     }
 
@@ -1453,7 +1460,7 @@
      * Retrieve article information from Trove based on identifier.
      *
      * @param {Object} options The options object for the query.
-     * @param {number} options.identifier The article ID for which to
+     * @param {number} options.id The article ID for which to
      *   retrieve data.
      * @param {function} options.done The callback on receipt of data
      *   (optional).
@@ -1467,10 +1474,13 @@
         // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
 
         // Override reclevel, includes, done and fail if specified
-        this.reclevel = options.reclevel || this.reclevel;
-        this.includes = options.includes || this.includes;
-        this.done = options.done || this.done;
-        this.fail = options.fail || this.fail;
+        if (options) {
+            this.id = options.id || this.id;
+            this.reclevel = options.reclevel || this.reclevel;
+            this.includes = options.includes || this.includes;
+            this.done = options.done || this.done;
+            this.fail = options.fail || this.fail;
+        }
 
         var query_data = {
             key: Trove.trove_key,
@@ -1491,7 +1501,7 @@
 
         $.ajax({
             dataType: "jsonp",
-            url: Trove.API.NP_ARTICLE + options.identifier,
+            url: Trove.API.NP_ARTICLE + this.id,
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);
@@ -1611,8 +1621,8 @@
 
         if (options) {
             this.id = options.id || this.id;
-            this.includes = options.includes || this.includes;
             this.range = options.range || this.range;
+            this.includes = options.includes || this.includes;
             this.done = options.done || this.done;
             this.fail = options.fail || this.fail;
         }
