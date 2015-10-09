@@ -1,6 +1,7 @@
 <a name="Trove"></a>
 ## Trove : <code>object</code>
 **Kind**: global namespace  
+**Copyright**: Chris Willoughby 2015  
 
 * [Trove](#Trove) : <code>object</code>
   * [.Article](#Trove.Article) ⇐ <code>[Work](#Trove.Work)</code>
@@ -30,7 +31,7 @@
     * [.get(options)](#Trove.NewspaperList+get)
   * [.NewspaperTitle](#Trove.NewspaperTitle)
     * [new NewspaperTitle(options)](#new_Trove.NewspaperTitle_new)
-    * [.get((Number))](#Trove.NewspaperTitle+get)
+    * [.get(options)](#Trove.NewspaperTitle+get)
   * [.Person](#Trove.Person)
     * [new Person(options)](#new_Trove.Person_new)
     * [.get(options)](#Trove.Person+get)
@@ -374,6 +375,11 @@ The NewspaperList class is a wrapper around the
   is specified on construction, the get() method will be
   called immediately.
 
+  Currently the Trove servers only give basic information on
+  each newspaper title returned. If you want the list of years and
+  issues, you'll have to call the [NewspaperTitle](#Trove.NewspaperTitle).get()
+  method directly, specifying includes and range.
+
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Properties**
 
@@ -415,50 +421,59 @@ Get the data from the Trove server. If done or fail are set,
 
 <a name="Trove.NewspaperTitle"></a>
 ### Trove.NewspaperTitle
+The NewspaperTitle class is a wrapper around the
+  "http://api.trove.nla.gov.au/newspaper/title" API.
+  The [NewspaperList](#Trove.NewspaperList) class will return a list of
+  these objects for a state (or all states).
+
 **Kind**: static class of <code>[Trove](#Trove)</code>  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| options.init | <code>number</code> &#124; <code>string</code> | If specified, will request   the data immediately. |
-| id |  | The identifier of the newspaper title. |
-| title |  | Name of the newpaper (or magazine). |
-| state |  | The state in which the newspaper title was   primarily published. |
-| issn |  | International Standard Serial Number. |
-| troveURL |  | A link to view the newspaper title in Trove. |
-| startDate |  | The earliest publication date of this newspaper   title available in Trove. |
-| endDate |  | The most recent publication date of this   newspaper title available in Trove. |
-| year |  | A list of the publication years for this newspaper   title that are included in Trove. |
-| year.date |  | A year this newspaper title was published |
-| year.issuecount |  | The number of issues published in this   year. |
-| year.issue |  |  |
-| year.issue.id |  |  |
-| year.issue.date |  |  |
-| year.issue.url |  |  |
+| id | <code>string</code> | The Trove identifier for the newspaper title. |
+| title | <code>string</code> | Name of the newpaper (or magazine). |
+| state | <code>string</code> | The state in which the newspaper title was   published. |
+| stateabbr | <code>string</code> | An abbreviation for the state. |
+| issn | <code>number</code> | International Standard Serial Number. |
+| troveURL | <code>string</code> | A link to view the newspaper title in Trove. |
+| startDate | <code>string</code> | The earliest publication date of this   newspaper title available in Trove. |
+| endDate | <code>string</code> | The most recent publication date of this   newspaper title available in Trove. |
+| year | <code>Array.&lt;Object&gt;</code> | A list of the publication years for this newspaper   title that are included in Trove. |
+| year.date | <code>string</code> | A year this newspaper title was published |
+| year.issuecount | <code>string</code> | The number of issues published in this   year. |
+| year.issue | <code>Array.&lt;Object&gt;</code> | List of issues within the specified range. |
+| year.issue.id | <code>string</code> | The Trove issue identifier. |
+| year.issue.date | <code>string</code> | The data of the issue. |
+| year.issue.url | <code>string</code> | The Trove URL for the issue. |
 
 
 * [.NewspaperTitle](#Trove.NewspaperTitle)
   * [new NewspaperTitle(options)](#new_Trove.NewspaperTitle_new)
-  * [.get((Number))](#Trove.NewspaperTitle+get)
+  * [.get(options)](#Trove.NewspaperTitle+get)
 
 <a name="new_Trove.NewspaperTitle_new"></a>
 #### new NewspaperTitle(options)
-An object to hold an instance of a newspaper title.
+A class to hold an instance of a newspaper title.
 
 
-| Param | Type |
-| --- | --- |
-| options | <code>Object</code> | 
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options used on construction. Every   object property can be set on construction through this parameter. |
+| options.init | <code>number</code> &#124; <code>string</code> | If specified, will request   the data immediately. |
 
 <a name="Trove.NewspaperTitle+get"></a>
-#### newspaperTitle.get((Number))
+#### newspaperTitle.get(options)
 Get information about the specified newspaper title from Trove.
 
 **Kind**: instance method of <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>  
 
-| Param | Description |
-| --- | --- |
-| (Number) | identifier |
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> |  |
+| options.id | <code>number</code> &#124; <code>string</code> | The identifier of the newspaper   title to retrieve. If not specified, will fall back to the id set   on construction. (optional) |
+| options.includes | <code>[Array.&lt;INCLUDES&gt;](#Trove.INCLUDES)</code> | The data to include in   the results. Trove currently only supports   [INCLUDES](#Trove.INCLUDES).YEARS. |
+| options.range | <code>string</code> | If YEARS is included, return a list of   publication dates in the given range. Of the form: YYYYMMDD-YYYYMMDD. |
 
 <a name="Trove.Person"></a>
 ### Trove.Person
@@ -995,9 +1010,9 @@ Enumeration for includes, can include multiple as a list.
 
 | Name | Type | Default | Description |
 | --- | --- | --- | --- |
-| TAGS | <code>string</code> | <code>&quot;tags&quot;</code> | (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public tags on this item. |
-| COMMENTS | <code>string</code> | <code>&quot;comments&quot;</code> | (Book, Picture, Article, Music, Map, Collection, NewspaperArticle, List) Include any public comments on this item. |
-| LISTS | <code>string</code> | <code>&quot;lists&quot;</code> | (Book, Picture, Article, Music, Map, Collection, NewspaperArticle) Include the name and ID of any public lists this item belongs to. |
+| TAGS | <code>string</code> | <code>&quot;tags&quot;</code> | (Book, Picture, Article, Music, Map, Collection, NewspaperArticle,   List)   Include any public tags on this item. |
+| COMMENTS | <code>string</code> | <code>&quot;comments&quot;</code> | (Book, Picture, Article, Music, Map, Collection, NewspaperArticle,   List)   Include any public comments on this item. |
+| LISTS | <code>string</code> | <code>&quot;lists&quot;</code> | (Book, Picture, Article, Music, Map, Collection, NewspaperArticle)   Include the name and ID of any public lists this item belongs to. |
 | HOLDINGS | <code>string</code> | <code>&quot;holdings&quot;</code> | (Book, Picture, Article, Music, Map, Collection) Include information on which organisations have a copy of this item or version. |
 | LINKS | <code>string</code> | <code>&quot;links&quot;</code> | (Book, Picture, Article, Music, Map, Collection) Include the URLs for the item. |
 | SUBSCRIBINGLIBS | <code>string</code> | <code>&quot;subscribinglibs&quot;</code> | (Book, Picture, Article, Music, Map, Collection) Include the subsribing organisation NUC ID and links. |
@@ -1009,7 +1024,12 @@ Enumeration for includes, can include multiple as a list.
 
 <a name="Trove.STATES"></a>
 ### Trove.STATES : <code>enum</code>
-Enumeration for Australian states. Used to specify a state for which to return [Trove.Newspaper](Trove.Newspaper) titles using the [NewspaperList](#Trove.NewspaperList) class. To return all [Newspapers](Trove.Newspaper) for all states, do not specify a state when making the query via [NewspaperList](#Trove.NewspaperList) or use ALL.
+Enumeration for Australian states. Used to specify a state for which
+  to return [Trove.Newspaper](Trove.Newspaper) titles using the
+  [NewspaperList](#Trove.NewspaperList) class. To return all
+  [Newspapers](Trove.Newspaper) for all states, do not specify
+  a state when making the query via [NewspaperList](#Trove.NewspaperList) or
+  use ALL.
 
 **Kind**: static enum property of <code>[Trove](#Trove)</code>  
 **Read only**: true  
