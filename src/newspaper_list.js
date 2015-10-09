@@ -14,6 +14,11 @@
      *   method to actually request the data from Trove. If the state
      *   is specified on construction, the get() method will be
      *   called immediately.
+     *
+     *   Currently the Trove servers only give basic information on
+     *   each newspaper title returned. If you want the list of years and
+     *   issues, you'll have to call the {@link Trove.NewspaperTitle}.get()
+     *   method directly, specifying includes and range.
      * @param {Object} options An object specifying the options for
      *   this NewspaperList.
      * @param {Trove.STATES} options.state The state for which the newspaper
@@ -43,7 +48,7 @@
     NewspaperList.prototype.process_done = function(
         data, textStatus, jqXHR) {
 
-        console.log(jqXHR.status);
+        // console.log('status', jqXHR.status);
 
         for (var index in data.response.records.newspaper) {
             // console.dir(data.response.records.newspaper[index]);
