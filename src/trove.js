@@ -462,7 +462,8 @@
     var RECORD_TYPE = {
         WORK: 'work/',
         NEWS: 'newspaper/',
-        LIST: 'list/'
+        LIST: 'list/',
+        PEOPLE: 'people/'
     };
     Trove.RECORD_TYPE = RECORD_TYPE;
 
@@ -472,6 +473,7 @@
         NP_ARTICLE: API_ADDRESS + RECORD_TYPE.NEWS,
         NP_TITLE: API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
         NP_TITLES: API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
+        PEOPLE: API_ADDRESS + RECORD_TYPE.PEOPLE,
         QUERY: API_ADDRESS + 'result'
     };
     Trove.API = API;

@@ -462,7 +462,8 @@
     var RECORD_TYPE = {
         WORK: 'work/',
         NEWS: 'newspaper/',
-        LIST: 'list/'
+        LIST: 'list/',
+        PEOPLE: 'people/'
     };
     Trove.RECORD_TYPE = RECORD_TYPE;
 
@@ -472,6 +473,7 @@
         NP_ARTICLE: API_ADDRESS + RECORD_TYPE.NEWS,
         NP_TITLE: API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
         NP_TITLES: API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
+        PEOPLE: API_ADDRESS + RECORD_TYPE.PEOPLE,
         QUERY: API_ADDRESS + 'result'
     };
     Trove.API = API;
@@ -1097,7 +1099,8 @@
 
     /**
      * A class to hold a person.
-     * Please note that the Trove API does not currently support People.
+     * Please note that the Trove API does not currently support People
+     * except as a result of a search.
      * @class
      * @alias Trove.Person
      *
@@ -1144,7 +1147,7 @@
     };
 
     Person.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
-        console.error(textStatus);
+        console.error('Error getting person:', textStatus);
 
         if (this.fail !== undefined) {
             this.fail(this);
@@ -1153,6 +1156,7 @@
 
     /**
      * Get the Person metadata from the Trove server.
+     * Currently not supported by Trove.
      * @param {Object} options The options object for the query.
      * @param {(number|string)} options.id The person ID for which
      *   to retrieve data.
@@ -1194,7 +1198,7 @@
 
         $.ajax({
             dataType: "jsonp",
-            url: Trove.API.PERSON + this.id,
+            url: Trove.API.PEOPLE + this.id,
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);

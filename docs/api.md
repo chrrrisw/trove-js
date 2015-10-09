@@ -494,7 +494,8 @@ Get information about the specified newspaper title from Trove.
 <a name="new_Trove.Person_new"></a>
 #### new Person(options)
 A class to hold a person.
-Please note that the Trove API does not currently support People.
+Please note that the Trove API does not currently support People
+except as a result of a search.
 
 
 | Param | Type | Description |
@@ -509,6 +510,7 @@ Please note that the Trove API does not currently support People.
 <a name="Trove.Person+get"></a>
 #### person.get(options)
 Get the Person metadata from the Trove server.
+Currently not supported by Trove.
 
 **Kind**: instance method of <code>[Person](#Trove.Person)</code>  
 
