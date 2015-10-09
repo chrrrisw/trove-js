@@ -50,6 +50,9 @@
 
         // console.log('status', jqXHR.status);
 
+        // Clear the previous results.
+        this.newspapers = [];
+
         for (var index in data.response.records.newspaper) {
             // console.dir(data.response.records.newspaper[index]);
             this.newspapers.push(new Trove.CONSTRUCTORS.newspaper_title(
