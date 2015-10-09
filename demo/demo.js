@@ -222,7 +222,7 @@ function documentReady(jQuery) {
                 .replace('%count%', '0');
             np_accordion.append(state);
             state = np_content_template
-                .replace('%id%', 'state-table-' + s)
+                .replace('%id%', 'state-table-' + s);
             np_accordion.append(state);
         }
     }
