@@ -46,6 +46,9 @@ which should check your files for code style and produce a concatenated file, as
 ## <a name="getting_key"></a>Getting an API key
 You'll need to get an API key first, by signing up and requesting one. Instructions for doing so are found at [Trove Help](http://help.nla.gov.au/trove/building-with-trove/api).
 
+Both the unit tests and the demo page will load a key from the `__key_file__` file. So if you want to run the tests or
+try out the demo page, put your key in this file (__DON'T commit and push this change to GitHub__).
+
 Please comply with the conditions of use, an put "powered by trove" somewhere on your site.
 
 ## Library initialisation
