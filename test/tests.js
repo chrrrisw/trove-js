@@ -116,10 +116,22 @@ QUnit.test("default zone search test", function(assert) {
             assert.equal(s._last_search.q, terms, "Checking query terms");
             assert.equal(s._last_search.s, 0, "Checking start");
             assert.equal(s._last_search.n, num_records, "Checking number");
-            search_done();
             for (var zone in Trove.ZONES) {
                 // console.log(Trove.ZONES[zone], s.zone_list(Trove.ZONES[zone]).length);
             }
+            console.log(JSON.stringify(s.zone_list(Trove.ZONES.PEOPLE)[0], null, '\t'));
+            // s.zone_list(Trove.ZONES.PEOPLE)[0].get({
+            //     // reclevel: Trove.RECLEVEL.FULL,
+            //     // includes: [Trove.INCLUDES.ALL],
+            //     done: function(p) {
+            //         console.log(JSON.stringify(p, null, '\t'));
+            //         search_done();
+            //     },
+            //     fail: function(p) {
+            //         search_done();
+            //     }
+            // });
+            search_done();
         },
         fail: function(s) {
             console.error('Failed');
