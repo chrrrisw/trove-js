@@ -1,60 +1,3 @@
-function test_trove (key) {
-    console.log('testing...');
-    $('.sidebar-form').on('submit', function(){
-        console.log('Form submitted');
-        return false;
-    });
-
-    var newspaper_table = $('#newspaper');
-    var article_div = $('#article');
-
-    Trove.init(key);
-
-    var n = new Trove.Newspaper({
-        identifier: 35,
-        done: function(np) {
-            console.dir(np);
-        }
-    });
-    // n.get(35);
-
-    var a = new Trove.NewspaperArticle({
-        identifier :18342701,
-        done : function (article) {
-            var n = article.get_newspaper({
-                done: function (newspaper) {
-                    for (var k in newspaper) {
-                        if (typeof(newspaper[k]) != 'function') {
-                            newspaper_table.append(
-                                '<tr>' +
-                                '<td>' + k + '</td>' +
-                                '<td>' + newspaper[k] + '</td>' +
-                                '</tr>');
-                        }
-                    }
-                    article_div.append('<p>' + article.heading + '</p>');
-                }
-            });
-        }
-    });
-
-
-    // var act_newspapers = new Trove.NewspaperList({state: 'act'});
-
-    demo_search = new Trove.Search({
-        zones: [Trove.ZONES.NEWSPAPER, Trove.ZONES.PICTURE],
-        done: function(s) {
-            console.dir(s.response);
-        }
-    });
-
-    demo_search.query({
-        terms: 'willoughby',
-        start: 40,
-        number: 4
-    });
-}
-
 var demo_search;
 var key_field;
 var date_field;
@@ -64,6 +7,7 @@ var started = false;
 var settings_sidebar;
 var results_accordion;
 var newspaper_modal;
+var np_accordion;
 
 String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1);
@@ -123,19 +67,30 @@ function search_next() {
 // }
 
 var title_template =
-'    <div class="title">' +
+'    <div class="title" id="%id%">' +
 '        <i class="dropdown icon"></i>' +
 '        %title% (%count%)' +
 '    </div>';
 
 var content_template =
 '    <div class="content">' +
-'        <table class="ui celled table">' +
+'        <table class="ui celled very compact table">' +
 '            <thead>' +
 '                <tr><th>ID</th><th>Trove URL</th></tr>' +
 '            </thead>' +
 '            <tbody>' +
 '                %items%' +
+'            </tbody>' +
+'        </table>' +
+'    </div>';
+
+var np_content_template =
+'    <div class="content">' +
+'        <table class="ui very compact table">' +
+'            <thead>' +
+'                <tr><th>ID</th><th>Title</th></tr>' +
+'            </thead>' +
+'            <tbody class="newspapers" id="%id%">' +
 '            </tbody>' +
 '        </table>' +
 '    </div>';
@@ -177,15 +132,18 @@ function search_done(s) {
         zone_items = s.items[zone_name];
 
         // Add a title
-        temp1 = title_template.replace('%title%', zone_name);
-        temp1 = temp1.replace('%count%', zone_items.length);
+        temp1 = title_template
+            .replace('%id%', 'zone-' + zone_name)
+            .replace('%title%', zone_name)
+            .replace('%count%', zone_items.length);
         results_accordion.append(temp1);
 
         // Add the contents
         temp2 = '';
         for (var item_num in zone_items) {
-            temp1 = item_template.replace('%identifier%', zone_items[item_num].id);
-            temp1 = temp1.replace('%trove_url%', zone_items[item_num].troveUrl);
+            temp1 = item_template
+                .replace('%identifier%', zone_items[item_num].id)
+                .replace('%trove_url%', zone_items[item_num].troveUrl);
             temp2 = temp2 + temp1;
         }
         results_accordion.append(content_template.replace('%items%', temp2));
@@ -195,13 +153,18 @@ function search_done(s) {
 function get_newspapers(evt) {
     console.log('Getting newspaper list');
     init_trove();
-    var table = $('#np-list');
+    var table;
     $('.ui.request.newspaper.button').addClass('loading');
     var newspaper_list = new Trove.NewspaperList({
         state: Trove.STATES.ALL,
+        includes: [Trove.INCLUDES.YEARS],
         done: function (nl) {
             $('.ui.request.newspaper.button').removeClass('loading');
+            // np_accordion.empty();
+            console.log(JSON.stringify(nl.newspapers[0], null, '\t'));
             for (var index in nl.newspapers) {
+                // console.log(nl.newspapers[index].stateabbr);
+                table = $('#state-table-' + nl.newspapers[index].stateabbr);
                 table.append(
                     '<tr><td>' +
                     nl.newspapers[index].id +
@@ -228,6 +191,13 @@ function documentReady(jQuery) {
 
     key_field = $('#key_id');
     date_field = $('#date-range');
+    newspaper_modal = $('.ui.newspaper.modal');
+    settings_sidebar = $('.ui.sidebar');
+    results_accordion = $('#results-accordion');
+    categories_dropdown = $('.ui.categories.dropdown');
+    zone_dropdown = $('.ui.zones.dropdown');
+    np_accordion = $('#np-accordion');
+    var state_buttons = $('#state-buttons');
 
     // Get the key_file
     $.get('/__key_file__', function(data) {
@@ -238,7 +208,6 @@ function documentReady(jQuery) {
     });
 
     // Initialise the newspaper modal
-    var state_buttons = $('#state-buttons');
     var state;
     for (var s in Trove.STATES) {
         state = checkbox_template
@@ -246,6 +215,16 @@ function documentReady(jQuery) {
             .replace('%class%', 'np-state')
             .replace('%text%', s);
         state_buttons.append(state);
+        if (s != 'ALL') {
+            state = title_template
+                .replace('%id%', 'state-' + s)
+                .replace('%title%', s)
+                .replace('%count%', '0');
+            np_accordion.append(state);
+            state = np_content_template
+                .replace('%id%', 'state-table-' + s)
+            np_accordion.append(state);
+        }
     }
     $('.ui.np-state.checkbox').checkbox({
         onChecked: function () {
@@ -256,7 +235,6 @@ function documentReady(jQuery) {
         }
     });
 
-    newspaper_modal = $('.ui.newspaper.modal');
     newspaper_modal.modal({
         observeChanges: true,
         onApprove: apply_newspapers,
@@ -266,14 +244,13 @@ function documentReady(jQuery) {
     $('.ui.request.newspaper.button').on('click', get_newspapers);
 
     // Initialise the sidebar
-    settings_sidebar = $('.ui.sidebar');
     settings_sidebar.sidebar('attach events', '.searchlimits');
 
-    results_accordion = $('#results-accordion');
+    // Initialise the accordions
     results_accordion.accordion();
+    np_accordion.accordion();
 
     // Fill in and initiliase the categories dropdown
-    categories_dropdown = $('.ui.categories.dropdown');
     for (var z in Trove.CATEGORIES) {
         categories_dropdown.append('<option value="' + Trove.CATEGORIES[z] + '">' + Trove.CATEGORIES[z].capitalize() + '</option>');
     }
@@ -290,7 +267,6 @@ function documentReady(jQuery) {
     $('#search-next').on('click', search_next);
 
     // Fill in and initialise the zones dropdown
-    zone_dropdown = $('.ui.zones.dropdown');
     for (z in Trove.ZONES) {
         zone_dropdown.append('<option value="' + Trove.ZONES[z] + '">' + Trove.ZONES[z].capitalize() + '</option>');
     }

@@ -81,57 +81,41 @@
         <div class='pusher'>
             <div class='ui main text container'>
 
-                <table class='ui celled table'>
-                    <thead>
-                        <tr><th>Name</th><th>Value</th></tr>
-                    </thead>
-                    <tbody id='newspaper'>
-                    </tbody>
-                </table>
-
-                <div id='article'>
-                </div>
-
                 <div id='results-accordion' class='ui styled accordion'>
                 </div>
             </div>
 
-            <div class='ui newspaper modal'>
-                <i class='close icon'></i>
-                <div class='header'>
-                    Newspapers
-                </div>
-                <div class='content'>
-                    <div class='ui grid'>
-                        <div class='one column centred row'>
-                            <div class='column'>
-                                <button class='ui basic request newspaper button'>Request newspaper list</button>
-                            </div>
+        </div>
+
+        <div class='ui newspaper modal'>
+            <i class='close icon'></i>
+            <div class='header'>
+                Newspapers
+            </div>
+            <div class='content'>
+                <div class='ui grid'>
+                    <div class='one column centred row'>
+                        <div class='column'>
+                            <button class='ui basic request newspaper button'>Request newspaper list</button>
                         </div>
-                        <div class='row'>
-                            <div class='two wide column'>
-                                <div class='ui form'>
-                                    <div class='grouped fields' id='state-buttons'>
-                                    </div>
+                    </div>
+                    <div class='row'>
+                        <div class='two wide column'>
+                            <div class='ui form'>
+                                <div class='grouped fields' id='state-buttons'>
                                 </div>
                             </div>
-                            <div class='fourteen wide column'>
-                                <table class='ui very compact table'>
-                                    <thead>
-                                        <tr><th>ID</th><th>Title</th></tr>
-                                    </thead>
-                                    <tbody id='np-list'>
-
-                                    </tbody>
-                                </table>
+                        </div>
+                        <div class='fourteen wide column'>
+                            <div id='np-accordion' class='ui styled accordion'>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class='actions'>
-                    <div class="ui ok button">OK</div>
-                    <div class="ui cancel button">Cancel</div>
-                </div>
+            </div>
+            <div class='actions'>
+                <div class="ui ok button">OK</div>
+                <div class="ui cancel button">Cancel</div>
             </div>
         </div>
 
