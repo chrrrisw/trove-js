@@ -45,6 +45,8 @@
         NEWSPAPER: 'newspaper',
         /** The zone for lists */
         LIST: 'list',
+        /** The zone for people */
+        PEOPLE: 'people',
         /** All of the above */
         ALL: 'all'
     };
@@ -1108,6 +1110,10 @@
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
      * @param {Trove.INCLUDES[]} options.includes
+     *
+     * @property {string} id The Trove identifier for the person
+     * @property {string} troveUrl The full URL for the person
+     * @property {string} url The relative URL for the person
      *
      */
     function Person(options) {

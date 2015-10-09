@@ -45,6 +45,8 @@
         NEWSPAPER: 'newspaper',
         /** The zone for lists */
         LIST: 'list',
+        /** The zone for people */
+        PEOPLE: 'people',
         /** All of the above */
         ALL: 'all'
     };

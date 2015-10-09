@@ -93,7 +93,7 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.id | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -126,7 +126,7 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.id | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -159,7 +159,7 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.id | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -196,7 +196,7 @@ Get the List metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The List ID for which   to retrieve data. |
+| options.id | <code>number</code> &#124; <code>string</code> | The List ID for which   to retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -229,7 +229,7 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.id | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -262,7 +262,7 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.id | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -347,7 +347,7 @@ Retrieve article information from Trove based on identifier.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> | The article ID for which to   retrieve data. |
+| options.id | <code>number</code> | The article ID for which to   retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -478,6 +478,14 @@ Get information about the specified newspaper title from Trove.
 <a name="Trove.Person"></a>
 ### Trove.Person
 **Kind**: static class of <code>[Trove](#Trove)</code>  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The Trove identifier for the person |
+| troveUrl | <code>string</code> | The full URL for the person |
+| url | <code>string</code> | The relative URL for the person |
+
 
 * [.Person](#Trove.Person)
   * [new Person(options)](#new_Trove.Person_new)
@@ -507,7 +515,7 @@ Get the Person metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The person ID for which   to retrieve data. |
+| options.id | <code>number</code> &#124; <code>string</code> | The person ID for which   to retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -540,7 +548,7 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.id | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -769,7 +777,7 @@ Get the Work metadata from the Trove server.
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.identifier | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
+| options.id | <code>number</code> &#124; <code>string</code> | The Work ID for which   to retrieve data. |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
@@ -793,6 +801,7 @@ Enumeration for zones, can include multiple as a list
 | COLLECTION | <code>string</code> | <code>&quot;collection&quot;</code> | The zone for collections |
 | NEWSPAPER | <code>string</code> | <code>&quot;newspaper&quot;</code> | The zone for newspapers |
 | LIST | <code>string</code> | <code>&quot;list&quot;</code> | The zone for lists |
+| PEOPLE | <code>string</code> | <code>&quot;people&quot;</code> | The zone for people |
 | ALL | <code>string</code> | <code>&quot;all&quot;</code> | All of the above |
 
 <a name="Trove.FORMATS"></a>
