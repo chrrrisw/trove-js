@@ -1,1 +1,0 @@
-Trove.init('test');
