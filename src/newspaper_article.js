@@ -172,11 +172,15 @@
      */
     NewspaperArticle.prototype.get_newspaper = function(options) {
         // console.log('Get NewspaperTitle for Article');
+
+        var done;
+        if (options) done = options.done || this.done;
+
         if (this.title !== undefined) {
             if (this.title.id !== undefined) {
                 return new Trove.CONSTRUCTORS.newspaper_title({
                     init: this.title.id,
-                    done: options.done || this.done
+                    done: done || this.done
                 });
             }
         }
