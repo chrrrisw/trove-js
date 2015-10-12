@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="UTF-8">
+    <title>Trove-js by chrrrisw</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+  </head>
+  <body>
+    <section class="page-header">
+      <h1 class="project-name">Trove-js</h1>
+      <h2 class="project-tagline">A JavaScript library to access the National Library of Australia&#39;s Trove API</h2>
+      <a href="https://github.com/chrrrisw/trove-js" class="btn">View on GitHub</a>
+      <a href="https://github.com/chrrrisw/trove-js/zipball/master" class="btn">Download .zip</a>
+      <a href="https://github.com/chrrrisw/trove-js/tarball/master" class="btn">Download .tar.gz</a>
+    </section>
+
+    <section class="main-content">
+      <h1>
+<a id="trove-js" class="anchor" href="#trove-js" aria-hidden="true"><span class="octicon octicon-link"></span></a>trove-js</h1>
+
+<p>A JavaScript library to access the National Library of Australia's (NLA) Trove API.</p>
+
+<p>The Trove website can be found at: <a href="http://trove.nla.gov.au">http://trove.nla.gov.au</a></p>
+
+<p>Trove's API is documented at: <a href="http://help.nla.gov.au/trove/building-with-trove/api-technical-guide">http://help.nla.gov.au/trove/building-with-trove/api-technical-guide</a></p>
+
+<p>This library works with: <a href="http://api.trove.nla.gov.au">http://api.trove.nla.gov.au</a></p>
+
+<h2>
+<a id="if-you-just-want-to-use-the-library-in-your-webpage" class="anchor" href="#if-you-just-want-to-use-the-library-in-your-webpage" aria-hidden="true"><span class="octicon octicon-link"></span></a>If you just want to use the library in your webpage</h2>
+
+<ol>
+<li>Get a Trove API key: <a href="#getting_key">see here</a>
+</li>
+<li>Download dist/trove-api.js or dist/trove-api.min.js</li>
+<li>Include it in your web page</li>
+<li>Use it</li>
+</ol>
+
+<h2>
+<a id="developing-the-library" class="anchor" href="#developing-the-library" aria-hidden="true"><span class="octicon octicon-link"></span></a>Developing the library</h2>
+
+<p>Source files are in <code>src</code>, concatenated and minified distribution files are in <code>dist</code>.</p>
+
+<p>You'll need <code>npm</code> and <code>grunt-cli</code> installed to generate the distribution files.</p>
+
+<p>Clone this repository, and go to the directory created. Type:</p>
+
+<div class="highlight highlight-source-shell"><pre>npm install</pre></div>
+
+<p>This will install the dependencies for building and testing.</p>
+
+<p>There are a number of grunt tasks defined, but be aware that the unit tests will need a Trove API key in the <code>__key_file__</code> file.</p>
+
+<table>
+<thead>
+<tr>
+<th align="left">Task</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td align="left">default</td>
+<td align="left">Check code style, generate the docs, run unit tests, concatenate and uglify the source files.</td>
+</tr>
+<tr>
+<td align="left">prepare</td>
+<td align="left">Used to prepare the code for uploading to GitHub (code style, docs, concat and uglify).</td>
+</tr>
+<tr>
+<td align="left">test</td>
+<td align="left">Checks code style and runs unit tests (you'll need an API key to run the tests).</td>
+</tr>
+</tbody>
+</table>
+
+<p>To build the dist/trove-api.js after modifying a source file just type:</p>
+
+<div class="highlight highlight-source-shell"><pre>grunt</pre></div>
+
+<p>to run the default task, or</p>
+
+<div class="highlight highlight-source-shell"><pre>grunt prepare</pre></div>
+
+<p>which should check your files for code style and produce a concatenated file, as well as an uglified one.</p>
+
+<h2>
+<a id="getting-an-api-key" class="anchor" href="#getting-an-api-key" aria-hidden="true"><span class="octicon octicon-link"></span></a><a name="getting_key"></a>Getting an API key</h2>
+
+<p>You'll need to get an API key first, by signing up and requesting one. Instructions for doing so are found at <a href="http://help.nla.gov.au/trove/building-with-trove/api">Trove Help</a>.</p>
+
+<p>Both the unit tests and the demo page will load a key from the <code>__key_file__</code> file. So if you want to run the tests or
+try out the demo page, put your key in this file (<strong>DON'T commit and push this change to GitHub</strong>).</p>
+
+<p>Please comply with the conditions of use, an put "powered by trove" somewhere on your site.</p>
+
+<h2>
+<a id="library-initialisation" class="anchor" href="#library-initialisation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Library initialisation</h2>
+
+<p>In your JavaScript, initialise the library first giving it your key:</p>
+
+<div class="highlight highlight-source-js"><pre>Trove.init(your_key);</pre></div>
+
+<h2>
+<a id="asynchrony" class="anchor" href="#asynchrony" aria-hidden="true"><span class="octicon octicon-link"></span></a>Asynchrony</h2>
+
+<p>Remember that each time you make a call for data, the data will not be available until the Trove servers respond. For example, if you were to write:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> article <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Trove.NewspaperArticle</span>({
+    init<span class="pl-k">:</span> <span class="pl-c1">18342701</span>
+});
+<span class="pl-en">console</span>.<span class="pl-c1">log</span>(article.heading);</pre></div>
+
+<p>you would, more than likely, see 'undefined' at the console.  For this reason, the API provides a parameter for a function to be called when the request completes:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">var</span> article <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Trove.NewspaperArticle</span>({
+    init<span class="pl-k">:</span> <span class="pl-c1">18342701</span>,
+    <span class="pl-en">done</span><span class="pl-k">:</span> <span class="pl-k">function</span> (<span class="pl-smi">a</span>) {<span class="pl-en">console</span>.<span class="pl-c1">log</span>(a.heading)};
+});</pre></div>
+
+<p>You could also write:</p>
+
+<div class="highlight highlight-source-js"><pre><span class="pl-k">function</span> <span class="pl-en">done_callback</span>(<span class="pl-smi">a</span>) {
+    <span class="pl-en">console</span>.<span class="pl-c1">log</span>(a.heading);
+}
+
+<span class="pl-k">var</span> article <span class="pl-k">=</span> <span class="pl-k">new</span> <span class="pl-en">Trove.NewspaperArticle</span>({
+    init<span class="pl-k">:</span> <span class="pl-c1">18342701</span>,
+    done<span class="pl-k">:</span> done_callback
+});</pre></div>
+
+<p>to get the same result. The parameter to the called function is the object that has been updated by the request.</p>
+
+<h2>
+<a id="examples-and-documentation" class="anchor" href="#examples-and-documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples and Documentation</h2>
+
+<p>Please see the <a href="https://github.com/chrrrisw/trove-js/wiki">wiki</a> for examples</p>
+
+<p>There are API docs <a href="https://github.com/chrrrisw/trove-js/blob/master/docs/api.md">here</a> and you can build HTML API pages using <code>grunt jsdoc</code>.</p>
+
+      <footer class="site-footer">
+        <span class="site-footer-owner"><a href="https://github.com/chrrrisw/trove-js">Trove-js</a> is maintained by <a href="https://github.com/chrrrisw">chrrrisw</a>.</span>
+
+        <span class="site-footer-credits">This page was generated by <a href="https://pages.github.com">GitHub Pages</a> using the <a href="https://github.com/jasonlong/cayman-theme">Cayman theme</a> by <a href="https://twitter.com/jasonlong">Jason Long</a>.</span>
+      </footer>
+
+    </section>
+
+  
+  </body>
+</html>
