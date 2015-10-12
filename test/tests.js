@@ -33,6 +33,32 @@ QUnit.test("newspaper list test", function(assert) {
     });
 });
 
+QUnit.test("contributor list test", function(assert) {
+    var list_done = assert.async();
+    var my_cl = new Trove.ContributorList({
+        // terms: 'light horse',
+        done: function(cl) {
+            // console.log('number of contributors', cl.contributors.length);
+            for (var c in cl.contributors) {
+                // console.log(JSON.stringify(cl.contributors[c], null, '\t'));
+            }
+            assert.ok(cl.contributors.length > 0, "Checking contributors > 0");
+            cl.contributors[0].get({
+                reclevel: Trove.RECLEVEL.FULL,
+                done: function(c) {
+                    console.log(JSON.stringify(c, null, '\t'));
+                    list_done();
+                }
+            });
+        },
+        fail: function(cl) {
+            console.error('oops');
+            list_done();
+        }
+    });
+    my_cl.get();
+});
+
 QUnit.test("newspaper article test", function(assert) {
     var article_done = assert.async();
     var identifier = 73194857;
@@ -116,10 +142,13 @@ QUnit.test("default zone search test", function(assert) {
             assert.equal(s._last_search.q, terms, "Checking query terms");
             assert.equal(s._last_search.s, 0, "Checking start");
             assert.equal(s._last_search.n, num_records, "Checking number");
-            for (var zone in Trove.ZONES) {
-                // console.log(Trove.ZONES[zone], s.zone_list(Trove.ZONES[zone]).length);
-            }
-            console.log(JSON.stringify(s.zone_list(Trove.ZONES.PEOPLE)[0], null, '\t'));
+
+            // for (var zone in Trove.ZONES) {
+            //     console.log(Trove.ZONES[zone], s.zone_list(Trove.ZONES[zone]).length);
+            // }
+
+            // console.log(JSON.stringify(s.zone_list(Trove.ZONES.PEOPLE)[0], null, '\t'));
+
             // s.zone_list(Trove.ZONES.PEOPLE)[0].get({
             //     // reclevel: Trove.RECLEVEL.FULL,
             //     // includes: [Trove.INCLUDES.ALL],
@@ -131,6 +160,7 @@ QUnit.test("default zone search test", function(assert) {
             //         search_done();
             //     }
             // });
+
             search_done();
         },
         fail: function(s) {
