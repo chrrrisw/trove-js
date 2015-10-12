@@ -1,7 +1,7 @@
 <a name="Trove"></a>
 ## Trove : <code>object</code>
-**Kind**: global namespace  
-**Copyright**: Chris Willoughby 2015  
+**Kind**: global namespace
+**Copyright**: Chris Willoughby 2015
 
 * [Trove](#Trove) : <code>object</code>
   * [.Article](#Trove.Article) ⇐ <code>[Work](#Trove.Work)</code>
@@ -15,6 +15,7 @@
     * [.get(options)](#Trove.Work+get)
   * [.Contributor](#Trove.Contributor)
     * [new Contributor(options)](#new_Trove.Contributor_new)
+    * [.get_parent()](#Trove.Contributor+get_parent) ⇒ <code>[Contributor](#Trove.Contributor)</code>
     * [.get(options)](#Trove.Contributor+get)
   * [.ContributorList](#Trove.ContributorList)
     * [new ContributorList(options)](#new_Trove.ContributorList_new)
@@ -74,8 +75,8 @@
 
 <a name="Trove.Article"></a>
 ### Trove.Article ⇐ <code>[Work](#Trove.Work)</code>
-**Kind**: static class of <code>[Trove](#Trove)</code>  
-**Extends:** <code>[Work](#Trove.Work)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
+**Extends:** <code>[Work](#Trove.Work)</code>
 
 * [.Article](#Trove.Article) ⇐ <code>[Work](#Trove.Work)</code>
   * [new Article(options)](#new_Trove.Article_new)
@@ -88,13 +89,13 @@ A class to hold a journal article
 
 | Param | Type |
 | --- | --- |
-| options | <code>Object</code> | 
+| options | <code>Object</code> |
 
 <a name="Trove.Work+get"></a>
 #### article.get(options)
 Get the Work metadata from the Trove server.
 
-**Kind**: instance method of <code>[Article](#Trove.Article)</code>  
+**Kind**: instance method of <code>[Article](#Trove.Article)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -107,8 +108,8 @@ Get the Work metadata from the Trove server.
 
 <a name="Trove.Book"></a>
 ### Trove.Book ⇐ <code>[Work](#Trove.Work)</code>
-**Kind**: static class of <code>[Trove](#Trove)</code>  
-**Extends:** <code>[Work](#Trove.Work)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
+**Extends:** <code>[Work](#Trove.Work)</code>
 
 * [.Book](#Trove.Book) ⇐ <code>[Work](#Trove.Work)</code>
   * [new Book(options)](#new_Trove.Book_new)
@@ -121,13 +122,13 @@ A class to hold a book
 
 | Param | Type |
 | --- | --- |
-| options | <code>Object</code> | 
+| options | <code>Object</code> |
 
 <a name="Trove.Work+get"></a>
 #### book.get(options)
 Get the Work metadata from the Trove server.
 
-**Kind**: instance method of <code>[Book](#Trove.Book)</code>  
+**Kind**: instance method of <code>[Book](#Trove.Book)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -140,8 +141,8 @@ Get the Work metadata from the Trove server.
 
 <a name="Trove.Collection"></a>
 ### Trove.Collection ⇐ <code>[Work](#Trove.Work)</code>
-**Kind**: static class of <code>[Trove](#Trove)</code>  
-**Extends:** <code>[Work](#Trove.Work)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
+**Extends:** <code>[Work](#Trove.Work)</code>
 
 * [.Collection](#Trove.Collection) ⇐ <code>[Work](#Trove.Work)</code>
   * [new Collection(options)](#new_Trove.Collection_new)
@@ -154,13 +155,13 @@ A class to hold a collection
 
 | Param | Type |
 | --- | --- |
-| options | <code>Object</code> | 
+| options | <code>Object</code> |
 
 <a name="Trove.Work+get"></a>
 #### collection.get(options)
 Get the Work metadata from the Trove server.
 
-**Kind**: instance method of <code>[Collection](#Trove.Collection)</code>  
+**Kind**: instance method of <code>[Collection](#Trove.Collection)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -173,27 +174,28 @@ Get the Work metadata from the Trove server.
 
 <a name="Trove.Contributor"></a>
 ### Trove.Contributor
-**Kind**: static class of <code>[Trove](#Trove)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
 **Properties**
 
-| Name | Type |
-| --- | --- |
-| id | <code>string</code> | 
-| url | <code>string</code> | 
-| name | <code>string</code> | 
-| nuc | <code>Array.&lt;string&gt;</code> | 
-| shortname | <code>string</code> | 
-| totalholdings | <code>number</code> | 
-| accesspolicy | <code>string</code> | 
-| algentry | <code>string</code> | 
-| parent | <code>Object</code> | 
-| parent.id | <code>string</code> | 
-| parent.url | <code>string</code> | 
-| parent.value | <code>string</code> | 
+| Name | Type | Description |
+| --- | --- | --- |
+| id | <code>string</code> | The Trove identifier for the contributor. |
+| url | <code>string</code> | The Trove-relative URL. |
+| name | <code>string</code> | The name of the contributor. |
+| nuc | <code>Array.&lt;string&gt;</code> | The list of NUCs for the contributor. |
+| shortname | <code>string</code> | The short name of the contributor. |
+| totalholdings | <code>number</code> | The number of holdings for the contributor. |
+| accesspolicy | <code>string</code> | The access policy for the contributor. |
+| algentry | <code>string</code> |  |
+| parent | <code>Object</code> | An object holding the parents of this contributor |
+| parent.id | <code>string</code> |  |
+| parent.url | <code>string</code> |  |
+| parent.value | <code>string</code> |  |
 
 
 * [.Contributor](#Trove.Contributor)
   * [new Contributor(options)](#new_Trove.Contributor_new)
+  * [.get_parent()](#Trove.Contributor+get_parent) ⇒ <code>[Contributor](#Trove.Contributor)</code>
   * [.get(options)](#Trove.Contributor+get)
 
 <a name="new_Trove.Contributor_new"></a>
@@ -209,11 +211,16 @@ A class to hold a contributor
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 
+<a name="Trove.Contributor+get_parent"></a>
+#### contributor.get_parent() ⇒ <code>[Contributor](#Trove.Contributor)</code>
+Get the parent Contributor for this Contributor.
+
+**Kind**: instance method of <code>[Contributor](#Trove.Contributor)</code>
 <a name="Trove.Contributor+get"></a>
 #### contributor.get(options)
 Get the Contributor metadata from the Trove server.
 
-**Kind**: instance method of <code>[Contributor](#Trove.Contributor)</code>  
+**Kind**: instance method of <code>[Contributor](#Trove.Contributor)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -232,7 +239,7 @@ The ContributorList class is a wrapper around the
   are specified on construction, the get() method will be
   called immediately.
 
-**Kind**: static class of <code>[Trove](#Trove)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
 **Properties**
 
 | Name | Type | Description |
@@ -263,7 +270,7 @@ Get the data from the Trove server. If done or fail are set,
   they will be copied into the object, overwriting any
   existing callbacks.
 
-**Kind**: instance method of <code>[ContributorList](#Trove.ContributorList)</code>  
+**Kind**: instance method of <code>[ContributorList](#Trove.ContributorList)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -275,7 +282,7 @@ Get the data from the Trove server. If done or fail are set,
 
 <a name="Trove.List"></a>
 ### Trove.List
-**Kind**: static class of <code>[Trove](#Trove)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
 
 * [.List](#Trove.List)
   * [new List(options)](#new_Trove.List_new)
@@ -299,7 +306,7 @@ A class to hold a list
 #### list.get(options)
 Get the List metadata from the Trove server.
 
-**Kind**: instance method of <code>[List](#Trove.List)</code>  
+**Kind**: instance method of <code>[List](#Trove.List)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -312,8 +319,8 @@ Get the List metadata from the Trove server.
 
 <a name="Trove.Map"></a>
 ### Trove.Map ⇐ <code>[Work](#Trove.Work)</code>
-**Kind**: static class of <code>[Trove](#Trove)</code>  
-**Extends:** <code>[Work](#Trove.Work)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
+**Extends:** <code>[Work](#Trove.Work)</code>
 
 * [.Map](#Trove.Map) ⇐ <code>[Work](#Trove.Work)</code>
   * [new Map(options)](#new_Trove.Map_new)
@@ -326,13 +333,13 @@ A class to hold a map
 
 | Param | Type |
 | --- | --- |
-| options | <code>Object</code> | 
+| options | <code>Object</code> |
 
 <a name="Trove.Work+get"></a>
 #### map.get(options)
 Get the Work metadata from the Trove server.
 
-**Kind**: instance method of <code>[Map](#Trove.Map)</code>  
+**Kind**: instance method of <code>[Map](#Trove.Map)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -345,8 +352,8 @@ Get the Work metadata from the Trove server.
 
 <a name="Trove.Music"></a>
 ### Trove.Music ⇐ <code>[Work](#Trove.Work)</code>
-**Kind**: static class of <code>[Trove](#Trove)</code>  
-**Extends:** <code>[Work](#Trove.Work)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
+**Extends:** <code>[Work](#Trove.Work)</code>
 
 * [.Music](#Trove.Music) ⇐ <code>[Work](#Trove.Work)</code>
   * [new Music(options)](#new_Trove.Music_new)
@@ -359,13 +366,13 @@ A class to hold music
 
 | Param | Type |
 | --- | --- |
-| options | <code>Object</code> | 
+| options | <code>Object</code> |
 
 <a name="Trove.Work+get"></a>
 #### music.get(options)
 Get the Work metadata from the Trove server.
 
-**Kind**: instance method of <code>[Music](#Trove.Music)</code>  
+**Kind**: instance method of <code>[Music](#Trove.Music)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -378,7 +385,7 @@ Get the Work metadata from the Trove server.
 
 <a name="Trove.NewspaperArticle"></a>
 ### Trove.NewspaperArticle
-**Kind**: static class of <code>[Trove](#Trove)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
 **Properties**
 
 | Name | Type | Description |
@@ -450,7 +457,7 @@ A Class to hold newspaper articles.
 #### newspaperArticle.get(options)
 Retrieve article information from Trove based on identifier.
 
-**Kind**: instance method of <code>[NewspaperArticle](#Trove.NewspaperArticle)</code>  
+**Kind**: instance method of <code>[NewspaperArticle](#Trove.NewspaperArticle)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -465,9 +472,9 @@ Retrieve article information from Trove based on identifier.
 #### newspaperArticle.get_newspaper(options) ⇒ <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>
 Retrieve newspaper title information for the article
 
-**Kind**: instance method of <code>[NewspaperArticle](#Trove.NewspaperArticle)</code>  
+**Kind**: instance method of <code>[NewspaperArticle](#Trove.NewspaperArticle)</code>
 **Returns**: <code>[NewspaperTitle](#Trove.NewspaperTitle)</code> - The NewspaperTitle object that
-  contains the NewspaperArticle.  
+  contains the NewspaperArticle.
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -488,7 +495,7 @@ The NewspaperList class is a wrapper around the
   issues, you'll have to call the [NewspaperTitle](#Trove.NewspaperTitle).get()
   method directly, specifying includes and range.
 
-**Kind**: static class of <code>[Trove](#Trove)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
 **Properties**
 
 | Name | Type | Description |
@@ -518,7 +525,7 @@ Get the data from the Trove server. If done or fail are set,
   they will be copied into the object, overwriting any
   existing callbacks.
 
-**Kind**: instance method of <code>[NewspaperList](#Trove.NewspaperList)</code>  
+**Kind**: instance method of <code>[NewspaperList](#Trove.NewspaperList)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -534,7 +541,7 @@ The NewspaperTitle class is a wrapper around the
   The [NewspaperList](#Trove.NewspaperList) class will return a list of
   these objects for a state (or all states).
 
-**Kind**: static class of <code>[Trove](#Trove)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
 **Properties**
 
 | Name | Type | Description |
@@ -574,7 +581,7 @@ A class to hold an instance of a newspaper title.
 #### newspaperTitle.get(options)
 Get information about the specified newspaper title from Trove.
 
-**Kind**: instance method of <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>  
+**Kind**: instance method of <code>[NewspaperTitle](#Trove.NewspaperTitle)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -585,7 +592,7 @@ Get information about the specified newspaper title from Trove.
 
 <a name="Trove.Person"></a>
 ### Trove.Person
-**Kind**: static class of <code>[Trove](#Trove)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
 **Properties**
 
 | Name | Type | Description |
@@ -620,7 +627,7 @@ except as a result of a search.
 Get the Person metadata from the Trove server.
 Currently not supported by Trove.
 
-**Kind**: instance method of <code>[Person](#Trove.Person)</code>  
+**Kind**: instance method of <code>[Person](#Trove.Person)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -633,8 +640,8 @@ Currently not supported by Trove.
 
 <a name="Trove.Picture"></a>
 ### Trove.Picture ⇐ <code>[Work](#Trove.Work)</code>
-**Kind**: static class of <code>[Trove](#Trove)</code>  
-**Extends:** <code>[Work](#Trove.Work)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
+**Extends:** <code>[Work](#Trove.Work)</code>
 
 * [.Picture](#Trove.Picture) ⇐ <code>[Work](#Trove.Work)</code>
   * [new Picture(options)](#new_Trove.Picture_new)
@@ -647,13 +654,13 @@ A class to hold a picture
 
 | Param | Type |
 | --- | --- |
-| options | <code>Object</code> | 
+| options | <code>Object</code> |
 
 <a name="Trove.Work+get"></a>
 #### picture.get(options)
 Get the Work metadata from the Trove server.
 
-**Kind**: instance method of <code>[Picture](#Trove.Picture)</code>  
+**Kind**: instance method of <code>[Picture](#Trove.Picture)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -666,7 +673,7 @@ Get the Work metadata from the Trove server.
 
 <a name="Trove.Search"></a>
 ### Trove.Search
-**Kind**: static class of <code>[Trove](#Trove)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
 **Properties**
 
 | Name | Type | Description |
@@ -707,7 +714,7 @@ An object to perform searches
 Return the array of items returned by the most recent query
   in the specified zone.
 
-**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -717,7 +724,7 @@ Return the array of items returned by the most recent query
 #### search.remove_facet(facet)
 Remove the named facet.
 
-**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -727,7 +734,7 @@ Remove the named facet.
 #### search.add_facet(facet)
 Add the named facet.
 
-**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -737,12 +744,12 @@ Add the named facet.
 #### search.clear_date_range_limit()
 Clear the date range limits.
 
-**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>
 <a name="Trove.Search+limit_date_range"></a>
 #### search.limit_date_range(start)
 Set the limits on the date range returned
 
-**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -752,7 +759,7 @@ Set the limits on the date range returned
 #### search.query(options)
 Query the Trove database.
 
-**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -773,7 +780,7 @@ Query the Trove database.
 #### search.requery(options, delta)
 Repeat the last query, with a delta applied to the start.
 
-**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -786,7 +793,7 @@ Repeat the last query, with a delta applied to the start.
 #### search.next(options)
 Request the next search results
 
-**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -798,7 +805,7 @@ Request the next search results
 #### search.previous(options)
 Request the previous search results
 
-**Kind**: instance method of <code>[Search](#Trove.Search)</code>  
+**Kind**: instance method of <code>[Search](#Trove.Search)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -808,7 +815,7 @@ Request the previous search results
 
 <a name="Trove.Work"></a>
 ### Trove.Work
-**Kind**: static class of <code>[Trove](#Trove)</code>  
+**Kind**: static class of <code>[Trove](#Trove)</code>
 **Properties**
 
 | Name | Type | Description |
@@ -882,7 +889,7 @@ A class to hold a work. Work is the parent class for other classes
 #### work.get(options)
 Get the Work metadata from the Trove server.
 
-**Kind**: instance method of <code>[Work](#Trove.Work)</code>  
+**Kind**: instance method of <code>[Work](#Trove.Work)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
@@ -897,8 +904,8 @@ Get the Work metadata from the Trove server.
 ### Trove.ZONES : <code>enum</code>
 Enumeration for zones, can include multiple as a list
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default | Description |
@@ -919,64 +926,64 @@ Enumeration for zones, can include multiple as a list
 Enumeration for formats.
   Used for facets and limits.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default |
 | --- | --- | --- |
-| WEBSITE | <code>string</code> | <code>&quot;Archived website&quot;</code> | 
-| ARTWORK | <code>string</code> | <code>&quot;Art work&quot;</code> | 
-| ARTICLE | <code>string</code> | <code>&quot;Article&quot;</code> | 
-| ARTICLEABSTRACT | <code>string</code> | <code>&quot;Article/Abstract&quot;</code> | 
-| ARTICLECHAPTER | <code>string</code> | <code>&quot;Article/Book chapter&quot;</code> | 
-| ARTICLEPAPER | <code>string</code> | <code>&quot;Article/Conference paper&quot;</code> | 
-| ARTICLEJOURNAL | <code>string</code> | <code>&quot;Article/Journal or magazine article&quot;</code> | 
-| ARTICLEOTHER | <code>string</code> | <code>&quot;Article/Other article&quot;</code> | 
-| ARTICLEREPORT | <code>string</code> | <code>&quot;Article/Report&quot;</code> | 
-| ARTICLEREVIEW | <code>string</code> | <code>&quot;Article/Review&quot;</code> | 
-| ARTICLEWORKING | <code>string</code> | <code>&quot;Article/Working paper&quot;</code> | 
-| AUDIOBOOK | <code>string</code> | <code>&quot;Audio book&quot;</code> | 
-| BOOK | <code>string</code> | <code>&quot;Book&quot;</code> | 
-| BOOKBRAILLE | <code>string</code> | <code>&quot;Book/Braille&quot;</code> | 
-| BOOKILLUSTRATED | <code>string</code> | <code>&quot;Book/Illustrated&quot;</code> | 
-| BOOKLARGEPRINT | <code>string</code> | <code>&quot;Book/Large print&quot;</code> | 
-| PROCEEDINGS | <code>string</code> | <code>&quot;Conference Proceedings&quot;</code> | 
-| DATASET | <code>string</code> | <code>&quot;Data set&quot;</code> | 
-| MAP | <code>string</code> | <code>&quot;Map&quot;</code> | 
-| MAPAERIAL | <code>string</code> | <code>&quot;Map/Aerial photograph&quot;</code> | 
-| MAPATLAS | <code>string</code> | <code>&quot;Map/Atlas&quot;</code> | 
-| MAPBRAILLE | <code>string</code> | <code>&quot;Map/Braille&quot;</code> | 
-| MAPELECTRONIC | <code>string</code> | <code>&quot;Map/Electronic&quot;</code> | 
-| MAPGLOBE | <code>string</code> | <code>&quot;Map/Globe or object&quot;</code> | 
-| MAPLARGE | <code>string</code> | <code>&quot;Map/Large print&quot;</code> | 
-| MAPSERIES | <code>string</code> | <code>&quot;Map/Map series&quot;</code> | 
-| MAPMICROFORM | <code>string</code> | <code>&quot;Map/Microform&quot;</code> | 
-| MAPSINGLE | <code>string</code> | <code>&quot;Map/Single map&quot;</code> | 
-| OBJECT | <code>string</code> | <code>&quot;Object&quot;</code> | 
-| PERIODICAL | <code>string</code> | <code>&quot;Periodical&quot;</code> | 
-| PERIODICALJOURNAL | <code>string</code> | <code>&quot;Periodical/Journal, magazine, other&quot;</code> | 
-| PERIODICALNEWSPAPER | <code>string</code> | <code>&quot;Periodical/Newspaper&quot;</code> | 
-| PHOTO | <code>string</code> | <code>&quot;Photograph&quot;</code> | 
-| POSTER | <code>string</code> | <code>&quot;Poster, chart, other&quot;</code> | 
-| PUBLISHED | <code>string</code> | <code>&quot;Published&quot;</code> | 
-| SHEETMUSIC | <code>string</code> | <code>&quot;Sheet music&quot;</code> | 
-| SOUND | <code>string</code> | <code>&quot;Sound&quot;</code> | 
-| SOUNDTALK | <code>string</code> | <code>&quot;Sound/Interview, lecture, talk&quot;</code> | 
-| SOUNDOTHER | <code>string</code> | <code>&quot;Sound/Other sound&quot;</code> | 
-| SOUNDMUSIC | <code>string</code> | <code>&quot;Sound/Recorded music&quot;</code> | 
-| THESIS | <code>string</code> | <code>&quot;Thesis&quot;</code> | 
-| UNPUBLISHED | <code>string</code> | <code>&quot;Unpublished&quot;</code> | 
-| VIDEO | <code>string</code> | <code>&quot;Video&quot;</code> | 
-| VIDEOCAPTIONED | <code>string</code> | <code>&quot;Video/Captioned&quot;</code> | 
+| WEBSITE | <code>string</code> | <code>&quot;Archived website&quot;</code> |
+| ARTWORK | <code>string</code> | <code>&quot;Art work&quot;</code> |
+| ARTICLE | <code>string</code> | <code>&quot;Article&quot;</code> |
+| ARTICLEABSTRACT | <code>string</code> | <code>&quot;Article/Abstract&quot;</code> |
+| ARTICLECHAPTER | <code>string</code> | <code>&quot;Article/Book chapter&quot;</code> |
+| ARTICLEPAPER | <code>string</code> | <code>&quot;Article/Conference paper&quot;</code> |
+| ARTICLEJOURNAL | <code>string</code> | <code>&quot;Article/Journal or magazine article&quot;</code> |
+| ARTICLEOTHER | <code>string</code> | <code>&quot;Article/Other article&quot;</code> |
+| ARTICLEREPORT | <code>string</code> | <code>&quot;Article/Report&quot;</code> |
+| ARTICLEREVIEW | <code>string</code> | <code>&quot;Article/Review&quot;</code> |
+| ARTICLEWORKING | <code>string</code> | <code>&quot;Article/Working paper&quot;</code> |
+| AUDIOBOOK | <code>string</code> | <code>&quot;Audio book&quot;</code> |
+| BOOK | <code>string</code> | <code>&quot;Book&quot;</code> |
+| BOOKBRAILLE | <code>string</code> | <code>&quot;Book/Braille&quot;</code> |
+| BOOKILLUSTRATED | <code>string</code> | <code>&quot;Book/Illustrated&quot;</code> |
+| BOOKLARGEPRINT | <code>string</code> | <code>&quot;Book/Large print&quot;</code> |
+| PROCEEDINGS | <code>string</code> | <code>&quot;Conference Proceedings&quot;</code> |
+| DATASET | <code>string</code> | <code>&quot;Data set&quot;</code> |
+| MAP | <code>string</code> | <code>&quot;Map&quot;</code> |
+| MAPAERIAL | <code>string</code> | <code>&quot;Map/Aerial photograph&quot;</code> |
+| MAPATLAS | <code>string</code> | <code>&quot;Map/Atlas&quot;</code> |
+| MAPBRAILLE | <code>string</code> | <code>&quot;Map/Braille&quot;</code> |
+| MAPELECTRONIC | <code>string</code> | <code>&quot;Map/Electronic&quot;</code> |
+| MAPGLOBE | <code>string</code> | <code>&quot;Map/Globe or object&quot;</code> |
+| MAPLARGE | <code>string</code> | <code>&quot;Map/Large print&quot;</code> |
+| MAPSERIES | <code>string</code> | <code>&quot;Map/Map series&quot;</code> |
+| MAPMICROFORM | <code>string</code> | <code>&quot;Map/Microform&quot;</code> |
+| MAPSINGLE | <code>string</code> | <code>&quot;Map/Single map&quot;</code> |
+| OBJECT | <code>string</code> | <code>&quot;Object&quot;</code> |
+| PERIODICAL | <code>string</code> | <code>&quot;Periodical&quot;</code> |
+| PERIODICALJOURNAL | <code>string</code> | <code>&quot;Periodical/Journal, magazine, other&quot;</code> |
+| PERIODICALNEWSPAPER | <code>string</code> | <code>&quot;Periodical/Newspaper&quot;</code> |
+| PHOTO | <code>string</code> | <code>&quot;Photograph&quot;</code> |
+| POSTER | <code>string</code> | <code>&quot;Poster, chart, other&quot;</code> |
+| PUBLISHED | <code>string</code> | <code>&quot;Published&quot;</code> |
+| SHEETMUSIC | <code>string</code> | <code>&quot;Sheet music&quot;</code> |
+| SOUND | <code>string</code> | <code>&quot;Sound&quot;</code> |
+| SOUNDTALK | <code>string</code> | <code>&quot;Sound/Interview, lecture, talk&quot;</code> |
+| SOUNDOTHER | <code>string</code> | <code>&quot;Sound/Other sound&quot;</code> |
+| SOUNDMUSIC | <code>string</code> | <code>&quot;Sound/Recorded music&quot;</code> |
+| THESIS | <code>string</code> | <code>&quot;Thesis&quot;</code> |
+| UNPUBLISHED | <code>string</code> | <code>&quot;Unpublished&quot;</code> |
+| VIDEO | <code>string</code> | <code>&quot;Video&quot;</code> |
+| VIDEOCAPTIONED | <code>string</code> | <code>&quot;Video/Captioned&quot;</code> |
 
 <a name="Trove.AVAILABILITIES"></a>
 ### Trove.AVAILABILITIES : <code>enum</code>
 Enumeration for availability.
 Used for facets and limits.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default | Description |
@@ -991,25 +998,25 @@ Used for facets and limits.
 ### Trove.VENDORS : <code>enum</code>
 Used for facets and limits.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 <a name="Trove.AUDIENCES"></a>
 ### Trove.AUDIENCES : <code>enum</code>
 Used for facets and limits.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default |
 | --- | --- | --- |
-| TRADE | <code>string</code> | <code>&quot;Trade&quot;</code> | 
-| GENERAL | <code>string</code> | <code>&quot;General&quot;</code> | 
-| ACADEMIC | <code>string</code> | <code>&quot;Academic&quot;</code> | 
-| PROFESSIONAL | <code>string</code> | <code>&quot;Professional&quot;</code> | 
-| CHILDREN | <code>string</code> | <code>&quot;Children&#x27;s&quot;</code> | 
-| CHILDRENUPPER | <code>string</code> | <code>&quot;Children&#x27;s - Upper elementry&quot;</code> | 
-| CHILDRENLOWER | <code>string</code> | <code>&quot;Children&#x27;s - Lower elementry&quot;</code> | 
+| TRADE | <code>string</code> | <code>&quot;Trade&quot;</code> |
+| GENERAL | <code>string</code> | <code>&quot;General&quot;</code> |
+| ACADEMIC | <code>string</code> | <code>&quot;Academic&quot;</code> |
+| PROFESSIONAL | <code>string</code> | <code>&quot;Professional&quot;</code> |
+| CHILDREN | <code>string</code> | <code>&quot;Children&#x27;s&quot;</code> |
+| CHILDRENUPPER | <code>string</code> | <code>&quot;Children&#x27;s - Upper elementry&quot;</code> |
+| CHILDRENLOWER | <code>string</code> | <code>&quot;Children&#x27;s - Lower elementry&quot;</code> |
 
 <a name="Trove.CATEGORIES"></a>
 ### Trove.CATEGORIES : <code>enum</code>
@@ -1018,8 +1025,8 @@ Enumeration for NewspaperArticle categories. Returned as part of the
   the results of a search using [LIMITS](#Trove.LIMITS).CATEGORY.
   Used for facets and limits.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default | Description |
@@ -1038,8 +1045,8 @@ Facets are categories that describe the results for your search. For
   the list of decades your results span across, and how many results
   are found in each decade.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default | Description |
@@ -1067,8 +1074,8 @@ Facets are categories that describe the results for your search. For
 ### Trove.LIMITS : <code>enum</code>
 Enumeration for limiting the results of a search.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default | Description |
@@ -1096,8 +1103,8 @@ Enumeration for limiting the results of a search.
 ### Trove.SORTBY : <code>enum</code>
 Enumeration for sort order.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default | Description |
@@ -1110,8 +1117,8 @@ Enumeration for sort order.
 ### Trove.RECLEVEL : <code>enum</code>
 Enumeration for record level
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default | Description |
@@ -1123,8 +1130,8 @@ Enumeration for record level
 ### Trove.INCLUDES : <code>enum</code>
 Enumeration for includes, can include multiple as a list.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default | Description |
@@ -1150,8 +1157,8 @@ Enumeration for Australian states. Used to specify a state for which
   a state when making the query via [NewspaperList](#Trove.NewspaperList) or
   use ALL.
 
-**Kind**: static enum property of <code>[Trove](#Trove)</code>  
-**Read only**: true  
+**Kind**: static enum property of <code>[Trove](#Trove)</code>
+**Read only**: true
 **Properties**
 
 | Name | Type | Default | Description |
@@ -1169,7 +1176,7 @@ Enumeration for Australian states. Used to specify a state for which
 
 <a name="Trove.init"></a>
 ### Trove.init(key)
-**Kind**: static method of <code>[Trove](#Trove)</code>  
+**Kind**: static method of <code>[Trove](#Trove)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |

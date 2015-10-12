@@ -709,7 +709,7 @@
 
         for (var zone_num in this.response.zone) {
             zone_name = this.response.zone[zone_num].name;
-            console.log(zone_name);
+            // console.log(zone_name);
 
             this.items[zone_name] = []; // Create an empty list for this zone
 
@@ -1530,11 +1530,15 @@
      */
     NewspaperArticle.prototype.get_newspaper = function(options) {
         // console.log('Get NewspaperTitle for Article');
+
+        var done;
+        if (options) done = options.done || this.done;
+
         if (this.title !== undefined) {
             if (this.title.id !== undefined) {
                 return new Trove.CONSTRUCTORS.newspaper_title({
                     init: this.title.id,
-                    done: options.done || this.done
+                    done: done || this.done
                 });
             }
         }
@@ -1827,15 +1831,15 @@
      * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
      *
-     * @property {string} id
-     * @property {string} url
-     * @property {string} name
-     * @property {string[]} nuc
-     * @property {string} shortname
-     * @property {number} totalholdings
-     * @property {string} accesspolicy
+     * @property {string} id The Trove identifier for the contributor.
+     * @property {string} url The Trove-relative URL.
+     * @property {string} name The name of the contributor.
+     * @property {string[]} nuc The list of NUCs for the contributor.
+     * @property {string} shortname The short name of the contributor.
+     * @property {number} totalholdings The number of holdings for the contributor.
+     * @property {string} accesspolicy The access policy for the contributor.
      * @property {string} algentry
-     * @property {Object} parent
+     * @property {Object} parent An object holding the parents of this contributor
      * @property {string} parent.id
      * @property {string} parent.url
      * @property {string} parent.value
@@ -1874,6 +1878,24 @@
         if (this.fail !== undefined) {
             this.fail(this);
         }
+    };
+
+    /**
+     * Get the parent Contributor for this Contributor.
+     * @returns {Trove.Contributor}
+     */
+    Contributor.prototype.get_parent = function(options) {
+
+        var done;
+        if (options) done = options.done || this.done;
+
+        if (this.parent) {
+            return new Trove.CONSTRUCTORS.contributor({
+                init: this.parent.id,
+                done: done || this.done
+            });
+        }
+
     };
 
     /**
