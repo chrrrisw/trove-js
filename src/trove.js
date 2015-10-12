@@ -463,7 +463,8 @@
         WORK: 'work/',
         NEWS: 'newspaper/',
         LIST: 'list/',
-        PEOPLE: 'people/'
+        CONTRIBUTOR: 'contributor',
+        PEOPLE: ''  // This isn't supported.
     };
     Trove.RECORD_TYPE = RECORD_TYPE;
 
@@ -473,6 +474,7 @@
         NP_ARTICLE: API_ADDRESS + RECORD_TYPE.NEWS,
         NP_TITLE: API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
         NP_TITLES: API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
+        CONTRIBUTOR: API_ADDRESS + RECORD_TYPE.CONTRIBUTOR,
         PEOPLE: API_ADDRESS + RECORD_TYPE.PEOPLE,
         QUERY: API_ADDRESS + 'result'
     };

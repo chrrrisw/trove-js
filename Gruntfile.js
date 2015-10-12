@@ -23,7 +23,9 @@ module.exports = function(grunt) {
                     'src/collection.js',
                     'src/newspaper_article.js',
                     'src/newspaper_title.js',
-                    'src/newspaper_list.js'
+                    'src/newspaper_list.js',
+                    'src/contributor.js',
+                    'src/contributor_list.js'
                 ],
                 dest: 'dist/<%= pkg.name %>.js',
                 options: {

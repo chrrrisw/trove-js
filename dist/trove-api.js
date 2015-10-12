@@ -463,7 +463,8 @@
         WORK: 'work/',
         NEWS: 'newspaper/',
         LIST: 'list/',
-        PEOPLE: 'people/'
+        CONTRIBUTOR: 'contributor',
+        PEOPLE: ''  // This isn't supported.
     };
     Trove.RECORD_TYPE = RECORD_TYPE;
 
@@ -473,6 +474,7 @@
         NP_ARTICLE: API_ADDRESS + RECORD_TYPE.NEWS,
         NP_TITLE: API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
         NP_TITLES: API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
+        CONTRIBUTOR: API_ADDRESS + RECORD_TYPE.CONTRIBUTOR,
         PEOPLE: API_ADDRESS + RECORD_TYPE.PEOPLE,
         QUERY: API_ADDRESS + 'result'
     };
@@ -707,7 +709,7 @@
 
         for (var zone_num in this.response.zone) {
             zone_name = this.response.zone[zone_num].name;
-            // console.log(zone_name);
+            console.log(zone_name);
 
             this.items[zone_name] = []; // Create an empty list for this zone
 
@@ -1802,5 +1804,255 @@
     };
 
     Trove.NewspaperList = NewspaperList;
+
+}(window.Trove = window.Trove || {}, jQuery));
+
+/**
+ * @lends Trove
+ */
+(function(Trove, $, undefined) {
+    'use strict';
+
+    /**
+     * A class to hold a contributor
+     * @class
+     * @alias Trove.Contributor
+     *
+     * @param {Object} options The options object for the contributor.
+     * @param {string} options.init The contributor ID (NUC code) for which
+     *   to retrieve data on construction.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
+     *
+     * @property {string} id
+     * @property {string} url
+     * @property {string} name
+     * @property {string[]} nuc
+     * @property {string} shortname
+     * @property {number} totalholdings
+     * @property {string} accesspolicy
+     * @property {string} algentry
+     * @property {Object} parent
+     * @property {string} parent.id
+     * @property {string} parent.url
+     * @property {string} parent.value
+     *
+     */
+    function Contributor(options) {
+        console.log('Creating Contributor');
+
+        // Save and remove init from options.
+        var init;
+        if (options.init !== undefined) {
+            init = options.init;
+            delete options.init;
+        }
+
+        // Save all other options in this object.
+        $.extend(this, options);
+
+        // If we know the identifier, get the data
+        if (init !== undefined) {
+            this.get({id: init});
+        }
+
+    }
+
+    Contributor.prototype.process_done = function(data) {
+        $.extend(this, data.contributor);
+        if (this.done !== undefined) {
+            this.done(this);
+        }
+    };
+
+    Contributor.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
+
+    /**
+     * Get the Contributor metadata from the Trove server.
+     * @param {Object} options The options object for the query.
+     * @param {string} options.id The Contributor ID (NUC code) for which
+     *   to retrieve data.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
+     */
+    Contributor.prototype.get = function(options) {
+        console.log('Getting contributor');
+
+        // Override reclevel, done and fail if specified
+        if (options) {
+            this.id = options.id || this.id;
+            this.reclevel = options.reclevel || this.reclevel;
+            this.done = options.done || this.done;
+            this.fail = options.fail || this.fail;
+        }
+
+        var query_data = {
+            key: Trove.trove_key,
+            encoding: 'json'
+        };
+
+        // Full or brief
+        if (this.reclevel !== undefined) {
+            query_data.reclevel = this.reclevel;
+        }
+
+        $.ajax({
+            dataType: "jsonp",
+            url: Trove.API.CONTRIBUTOR + '/' + this.id,
+            data: query_data,
+            context: this
+        }).done(this.process_done).fail(this.process_fail);
+    };
+
+    Trove.Contributor = Contributor;
+    Trove.CONSTRUCTORS.contributor = Contributor;
+
+}(window.Trove = window.Trove || {}, jQuery));
+
+/**
+ * @lends Trove
+ */
+(function(Trove, $, undefined) {
+    'use strict';
+
+    /**
+     * A list of Contributors.
+     * @class
+     * @alias Trove.ContributorList
+     * @classdesc The ContributorList class is a wrapper around the
+     *   "http://api.trove.nla.gov.au/contributor" API. If no terms
+     *   are specified on construction, you will have to call the get()
+     *   method to actually request the data from Trove. If the terms
+     *   are specified on construction, the get() method will be
+     *   called immediately.
+     * @param {Object} options An object specifying the options for
+     *   this ContributorList.
+     * @param {string} options.terms The search terms for which the contributor
+     *   list will be returned (optional). If specified, the request
+     *   will be made immediately.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full records.
+     *
+     * @property {Trove.Contributor[]} contributors The list of
+     *   [Contributors]{@link Trove.Contributor} returned from the query.
+     */
+    function ContributorList(options) {
+        console.log('Creating ContributorList');
+
+        // Save the options in the object.
+        $.extend(this, options);
+
+        // The list of contributors, initially empty.
+        this.contributors = [];
+
+        // If terms is defined, get the data.
+        if (this.terms !== undefined) {
+            this.get();
+        }
+    }
+
+    ContributorList.prototype.process_done = function(
+        data, textStatus, jqXHR) {
+
+        console.log('status', jqXHR.status);
+
+        console.log(data.response.total);
+
+        // Clear the previous results.
+        this.contributors = [];
+
+        for (var index in data.response.contributor) {
+            // console.dir(data.response.contributor[index]);
+            this.contributors.push(new Trove.CONSTRUCTORS.contributor(
+                data.response.contributor[index]
+            ));
+        }
+
+        // console.log("total = " + data.response.total);
+        if (this.done !== undefined) {
+            this.done(this);
+        }
+    };
+
+    ContributorList.prototype.process_fail = function(
+        jqXHR, textStatus, errorThrown) {
+
+        console.error('fail status', jqXHR.status);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    };
+
+
+    /**
+     * Get the data from the Trove server. If done or fail are set,
+     *   they will be copied into the object, overwriting any
+     *   existing callbacks.
+     * @param {Object} options Options for the request.
+     * @param {string} options.terms The search terms for which to
+     *   request data (optional).
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full records.
+     */
+    ContributorList.prototype.get = function(options) {
+        console.log('Getting ContributorList');
+
+        if (options) {
+
+            this.reclevel = options.reclevel || this.reclevel;
+
+            // Override the terms
+            this.terms = options.terms || this.terms;
+
+            // Override the done callback
+            this.done = options.done || this.done;
+
+            // Override the fail callback
+            this.fail = options.fail || this.fail;
+        }
+
+        var query_data = {
+            key: Trove.trove_key,
+            encoding: 'json'
+        };
+
+        // Add search terms, if specified
+        if (this.terms !== undefined) {
+            query_data.q = this.terms;
+        }
+
+        // Full or brief
+        if (this.reclevel !== undefined) {
+            query_data.reclevel = this.reclevel;
+        }
+
+        $.ajax({
+            dataType: "jsonp",
+            url: Trove.API.CONTRIBUTOR,
+            data: query_data,
+            context: this
+        }).done(this.process_done).fail(this.process_fail);
+    };
+
+    Trove.ContributorList = ContributorList;
 
 }(window.Trove = window.Trove || {}, jQuery));
