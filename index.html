@@ -33,7 +33,23 @@
 
       <p>This library works with: <a href="http://api.trove.nla.gov.au">http://api.trove.nla.gov.au</a></p>
 
-      <a href="#" class="btn">Initialise!</a>
+      <p>First, you need to initialise the library with your key.</p>
+      <label for="trovekey">Enter your trove key here:</label>
+      <input id="trovekey" type="text">
+      <button id="initbutton">Initialise</button>
+      <p>Now, let's search the newspaper zone</p>
+      <label for="trovesearch">Enter your search here:</label>
+      <input id="trovesearch" type="text">
+      <button id="searchbutton">Search</button>
+      <p>Here's the first ten results</p>
+      <table>
+        <thead>
+          <tr><th>ID</th><th>Link</th></tr>
+        </thead>
+        <tbody id="newspapertable">
+
+        </tbody>
+      </table>
 
       <h2>
         <a id="if-you-just-want-to-use-the-library-in-your-webpage" class="anchor" href="#if-you-just-want-to-use-the-library-in-your-webpage" aria-hidden="true">
@@ -158,6 +174,7 @@ try out the demo page, put your key in this file (<strong>DON'T commit and push 
 
     </section>
 
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script type="text/javascript" src="https://raw.githubusercontent.com/chrrrisw/trove-js/master/dist/trove-api.js"></script>
     <script type="text/javascript" src="js/main.js"></script>
   </body>
