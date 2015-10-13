@@ -10,7 +10,6 @@ var newspaper_search = new Trove.Search({
 });
 
 function newspaper_search_done(s) {
-    console.log("newspaper_search_done");
     var idlink, snippet;
     for (var index in s.items[Trove.ZONES.NEWSPAPER]) {
         idlink = "<a href='" +
@@ -24,7 +23,7 @@ function newspaper_search_done(s) {
 }
 
 function search_newspapers() {
-    console.log("search");
+    ga('send', 'event', 'trove', 'searched_newspapers');
     newspaper_search.query({
         terms: trovesearch.val(),
         number: 10
@@ -32,13 +31,12 @@ function search_newspapers() {
 }
 
 function initialise_trove() {
-    console.log("initialise");
+    ga('send', 'event', 'trove', 'initialised');
     Trove.init(trovekey.val());
 }
 
 
 function documentReady(jQuery) {
-    console.log('documentReady');
     searchbutton.click(search_newspapers);
     initbutton.click(initialise_trove);
 }
