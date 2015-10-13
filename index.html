@@ -25,7 +25,7 @@
         </a>trove-js
       </h1>
 
-      <p>A JavaScript library to access the National Library of Australia's (NLA) Trove API.</p>
+      <p>trove-js is a JavaScript library to access the National Library of Australia's (NLA) Trove API.</p>
 
       <p>The Trove website can be found at: <a href="http://trove.nla.gov.au">http://trove.nla.gov.au</a></p>
 
@@ -33,23 +33,67 @@
 
       <p>This library works with: <a href="http://api.trove.nla.gov.au">http://api.trove.nla.gov.au</a></p>
 
-      <p>First, you need to initialise the library with your key.</p>
+      <h2>A Simple Search Example</h2>
+
+      <p>First, we need to initialise the library with your key. This key will be passed along with every query to the Trove servers and is a required parameter.</p>
+
+      <div class="highlight highlight-source-js"><pre>Trove.init(your_key);</pre></div>
+
+      <p>You can do that here:</p>
+
+      </code>
       <label for="trovekey">Enter your trove key here:</label>
       <input id="trovekey" type="text">
-      <button id="initbutton">Initialise</button>
-      <p>Now, let's search the newspaper zone</p>
+      <button id="initbutton">Call Trove.init()</button>
+
+      <p>Now, let's search the newspaper zone. First we create a Search object. The <em>zones</em> we search can be specified on construction, as we do here, or passed with each call to the query() method. The same is true for the <em>done</em> callback.</p>
+
+      <div class="highlight highlight-source-js"><pre>var newspaper_search = new Trove.Search({
+    zones: [Trove.ZONES.NEWSPAPER],
+    done: newspaper_search_done
+});
+</pre></div>
+
+      <p>Then we call the query() method on the search object. Again, we can specify search <em>terms</em> on construction, but it makes sense here to specify them every time you call query() so that we can update them with the current value in the text input (known here as 'trovesearch').</p>
+
+      <div class="highlight highlight-source-js"><pre>newspaper_search.query({
+    terms: trovesearch.val(),
+    number: 10
+});
+</pre></div>
+
       <label for="trovesearch">Enter your search here:</label>
       <input id="trovesearch" type="text">
-      <button id="searchbutton">Search</button>
-      <p>Here's the first ten results</p>
+      <button id="searchbutton">Call Search.query()</button>
+
+      <p>The done callback on this page just populates the following table with a couple of fields from the metadata. The callback is called with the Search object as the argument, and the Search object contains an <em>items</em> object that contains a list for each zone searched. The callback is used to handle the results, because calling the query() method results in an asynchronous call to the Trove server that will return at some unknown time in the future.</p>
+
+      <div class="highlight highlight-source-js"><pre>function newspaper_search_done(s) {
+    var idlink, snippet;
+    for (var index in s.items[Trove.ZONES.NEWSPAPER]) {
+        idlink = "&lt;a href='" +
+            s.items[Trove.ZONES.NEWSPAPER][index].troveUrl +
+            "'&gt;" +
+            s.items[Trove.ZONES.NEWSPAPER][index].id +
+            "&lt;/a&gt;";
+        snippet = s.items[Trove.ZONES.NEWSPAPER][index].snippet;
+        newspapertable.append("&lt;tr&gt;&lt;td&gt;" + idlink + "&lt;/td&gt;&lt;td&gt;" + snippet + "&lt;/td&gt;&lt;/tr&gt;");
+    }
+}
+</pre></div>
+
+      <p>Here's the results:</p>
+
       <table>
         <thead>
-          <tr><th>ID</th><th>Link</th></tr>
+          <tr><th>ID/Link</th><th>Snippet</th></tr>
         </thead>
         <tbody id="newspapertable">
 
         </tbody>
       </table>
+
+<!--
 
       <h2>
         <a id="if-you-just-want-to-use-the-library-in-your-webpage" class="anchor" href="#if-you-just-want-to-use-the-library-in-your-webpage" aria-hidden="true">
@@ -159,10 +203,12 @@ try out the demo page, put your key in this file (<strong>DON'T commit and push 
 
 <p>to get the same result. The parameter to the called function is the object that has been updated by the request.</p>
 
+-->
+
 <h2>
 <a id="examples-and-documentation" class="anchor" href="#examples-and-documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Examples and Documentation</h2>
 
-<p>Please see the <a href="https://github.com/chrrrisw/trove-js/wiki">wiki</a> for examples</p>
+<p>Please see the <a href="https://github.com/chrrrisw/trove-js/wiki">wiki</a> for more examples.</p>
 
 <p>There are API docs <a href="https://github.com/chrrrisw/trove-js/blob/master/docs/api.md">here</a> and you can build HTML API pages using <code>grunt jsdoc</code>.</p>
 
