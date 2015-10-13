@@ -5,7 +5,7 @@
     'use strict';
 
     /**
-     * A list of Contributors.
+     * A container for a list of Contributors.
      * @class
      * @alias Trove.ContributorList
      * @classdesc The ContributorList class is a wrapper around the
@@ -21,17 +21,17 @@
      *   list will be returned (optional). If specified, the request
      *   will be made immediately. The search will be performed by the
      *   Trove servers on the NUC symbol and name.
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full records (optional, default=brief).
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
-     *   or full records.
      *
      * @property {Trove.Contributor[]} contributors The list of
      *   [Contributors]{@link Trove.Contributor} returned from the query.
      */
     function ContributorList(options) {
-        console.log('Creating ContributorList');
+        // console.log('Creating ContributorList');
 
         // Save the options in the object.
         $.extend(this, options);
@@ -50,9 +50,9 @@
         textStatus,
         jqXHR) {
 
-        console.log('status', jqXHR.status);
+        // console.log('status', jqXHR.status);
 
-        console.log(data.response.total);
+        // console.log(data.response.total);
 
         // Clear the previous results.
         this.contributors = [];
@@ -82,20 +82,20 @@
 
 
     /**
-     * Get the data from the Trove server. If done or fail are set,
+     * Get the data from the Trove server. If "done" or "fail" are set,
      *   they will be copied into the object, overwriting any
-     *   existing callbacks.
+     *   existing callbacks. This is also true for "terms" and "reclevel".
      * @param {Object} options Options for the request.
      * @param {string} options.terms The search terms for which to
      *   request data (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full records (optional).
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
-     *   or full records.
      */
     ContributorList.prototype.get = function(options) {
-        console.log('Getting ContributorList');
+        // console.log('Getting ContributorList');
 
         if (options) {
 

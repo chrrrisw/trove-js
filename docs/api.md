@@ -15,7 +15,7 @@
     * [.get(options)](#Trove.Work+get)
   * [.Contributor](#Trove.Contributor)
     * [new Contributor(options)](#new_Trove.Contributor_new)
-    * [.get_parent()](#Trove.Contributor+get_parent) ⇒ <code>[Contributor](#Trove.Contributor)</code>
+    * [.get_parent(options)](#Trove.Contributor+get_parent) ⇒ <code>[Contributor](#Trove.Contributor)</code>
     * [.get(options)](#Trove.Contributor+get)
   * [.ContributorList](#Trove.ContributorList)
     * [new ContributorList(options)](#new_Trove.ContributorList_new)
@@ -174,6 +174,13 @@ Get the Work metadata from the Trove server.
 
 <a name="Trove.Contributor"></a>
 ### Trove.Contributor
+Contributors are libraries and other organisations that
+  contribute to Trove. Contributors usually have a "name", an "id" and
+  a "url". They may also have a "nuc" (National Union Catalogue)
+  identifier assigned to them. If you want more information, pass
+  [RECLEVEL](#Trove.RECLEVEL).FULL into the "reclevel" option. See
+  [ContributorList](#Trove.ContributorList) to retrieve lists of Contributors.
+
 **Kind**: static class of <code>[Trove](#Trove)</code>
 **Properties**
 
@@ -184,58 +191,69 @@ Get the Work metadata from the Trove server.
 | name | <code>string</code> | The name of the contributor. |
 | nuc | <code>Array.&lt;string&gt;</code> | The list of NUCs for the contributor. |
 | shortname | <code>string</code> | The short name of the contributor. |
-| totalholdings | <code>number</code> | The number of holdings for the contributor. |
+| totalholdings | <code>number</code> | The number of holdings for the   contributor. |
 | accesspolicy | <code>string</code> | The access policy for the contributor. |
-| algentry | <code>string</code> |  |
-| parent | <code>Object</code> | An object holding the parents of this contributor |
-| parent.id | <code>string</code> |  |
-| parent.url | <code>string</code> |  |
-| parent.value | <code>string</code> |  |
+| algentry | <code>string</code> | Australian Libraries Gateway URL. |
+| parent | <code>Object</code> | An object holding the parents of this   contributor. |
+| parent.id | <code>string</code> | The ID of the parent. |
+| parent.url | <code>string</code> | The Trove-relative URL of the parent. |
+| parent.value | <code>string</code> | The name of the parent. |
 
 
 * [.Contributor](#Trove.Contributor)
   * [new Contributor(options)](#new_Trove.Contributor_new)
-  * [.get_parent()](#Trove.Contributor+get_parent) ⇒ <code>[Contributor](#Trove.Contributor)</code>
+  * [.get_parent(options)](#Trove.Contributor+get_parent) ⇒ <code>[Contributor](#Trove.Contributor)</code>
   * [.get(options)](#Trove.Contributor+get)
 
 <a name="new_Trove.Contributor_new"></a>
 #### new Contributor(options)
-A class to hold a contributor
+A class to hold a contributor.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the contributor. |
-| options.init | <code>string</code> | The contributor ID (NUC code) for which   to retrieve data on construction. |
+| options.init | <code>string</code> | The contributor ID for which   to retrieve data on construction (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record (optional, default=brief). |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 
 <a name="Trove.Contributor+get_parent"></a>
-#### contributor.get_parent() ⇒ <code>[Contributor](#Trove.Contributor)</code>
-Get the parent Contributor for this Contributor.
+#### contributor.get_parent(options) ⇒ <code>[Contributor](#Trove.Contributor)</code>
+Get the parent Contributor for this Contributor. The "parent"
+attribute is only available if [RECLEVEL](#Trove.RECLEVEL).FULL
+was specified on requesting the data from Trove.
 
 **Kind**: instance method of <code>[Contributor](#Trove.Contributor)</code>
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> |  |
+| options.done | <code>function</code> | The callback on completion (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+
 <a name="Trove.Contributor+get"></a>
 #### contributor.get(options)
-Get the Contributor metadata from the Trove server.
+Get the Contributor metadata from the Trove server. If "done" or "fail"
+  are set, they will be copied into the object, overwriting any
+  existing callbacks. This is also true for "id" and "reclevel".
 
 **Kind**: instance method of <code>[Contributor](#Trove.Contributor)</code>
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | The options object for the query. |
-| options.id | <code>string</code> | The Contributor ID (NUC code) for which   to retrieve data. |
+| options.id | <code>string</code> | The Contributor ID (NUC code) for which   to retrieve data (optional if specified previously). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record (optional). |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full record. |
 
 <a name="Trove.ContributorList"></a>
 ### Trove.ContributorList
 The ContributorList class is a wrapper around the
-  "http://api.trove.nla.gov.au/contributor" API. If no terms
+  "http://api.trove.nla.gov.au/contributor" API. If no "terms"
   are specified on construction, you will have to call the get()
-  method to actually request the data from Trove. If the terms
+  method to actually request the data from Trove. If the "terms"
   are specified on construction, the get() method will be
   called immediately.
 
@@ -253,22 +271,22 @@ The ContributorList class is a wrapper around the
 
 <a name="new_Trove.ContributorList_new"></a>
 #### new ContributorList(options)
-A list of Contributors.
+A container for a list of Contributors.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
 | options | <code>Object</code> | An object specifying the options for   this ContributorList. |
-| options.terms | <code>string</code> | The search terms for which the contributor   list will be returned (optional). If specified, the request   will be made immediately. |
+| options.terms | <code>string</code> | The search terms for which the contributor   list will be returned (optional). If specified, the request   will be made immediately. The search will be performed by the   Trove servers on the NUC symbol and name. |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full records (optional, default=brief). |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full records. |
 
 <a name="Trove.ContributorList+get"></a>
 #### contributorList.get(options)
-Get the data from the Trove server. If done or fail are set,
+Get the data from the Trove server. If "done" or "fail" are set,
   they will be copied into the object, overwriting any
-  existing callbacks.
+  existing callbacks. This is also true for "terms" and "reclevel".
 
 **Kind**: instance method of <code>[ContributorList](#Trove.ContributorList)</code>
 
@@ -276,9 +294,9 @@ Get the data from the Trove server. If done or fail are set,
 | --- | --- | --- |
 | options | <code>Object</code> | Options for the request. |
 | options.terms | <code>string</code> | The search terms for which to   request data (optional). |
+| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full records (optional). |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
-| options.reclevel | <code>[RECLEVEL](#Trove.RECLEVEL)</code> | Whether to return the brief   or full records. |
 
 <a name="Trove.List"></a>
 ### Trove.List

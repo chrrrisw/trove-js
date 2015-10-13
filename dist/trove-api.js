@@ -1818,35 +1818,43 @@
     'use strict';
 
     /**
-     * A class to hold a contributor
+     * A class to hold a contributor.
      * @class
      * @alias Trove.Contributor
+     * @classdesc Contributors are libraries and other organisations that
+     *   contribute to Trove. Contributors usually have a "name", an "id" and
+     *   a "url". They may also have a "nuc" (National Union Catalogue)
+     *   identifier assigned to them. If you want more information, pass
+     *   {@link Trove.RECLEVEL}.FULL into the "reclevel" option. See
+     *   {@link Trove.ContributorList} to retrieve lists of Contributors.
      *
      * @param {Object} options The options object for the contributor.
-     * @param {string} options.init The contributor ID (NUC code) for which
-     *   to retrieve data on construction.
+     * @param {string} options.init The contributor ID for which
+     *   to retrieve data on construction (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record (optional, default=brief).
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
-     *   or full record.
      *
      * @property {string} id The Trove identifier for the contributor.
      * @property {string} url The Trove-relative URL.
      * @property {string} name The name of the contributor.
      * @property {string[]} nuc The list of NUCs for the contributor.
      * @property {string} shortname The short name of the contributor.
-     * @property {number} totalholdings The number of holdings for the contributor.
+     * @property {number} totalholdings The number of holdings for the
+     *   contributor.
      * @property {string} accesspolicy The access policy for the contributor.
-     * @property {string} algentry
-     * @property {Object} parent An object holding the parents of this contributor
-     * @property {string} parent.id
-     * @property {string} parent.url
-     * @property {string} parent.value
+     * @property {string} algentry Australian Libraries Gateway URL.
+     * @property {Object} parent An object holding the parents of this
+     *   contributor.
+     * @property {string} parent.id The ID of the parent.
+     * @property {string} parent.url The Trove-relative URL of the parent.
+     * @property {string} parent.value The name of the parent.
      *
      */
     function Contributor(options) {
-        console.log('Creating Contributor');
+        // console.log('Creating Contributor');
 
         // Save and remove init from options.
         var init;
@@ -1860,20 +1868,34 @@
 
         // If we know the identifier, get the data
         if (init !== undefined) {
-            this.get({id: init});
+            this.get({
+                id: init
+            });
         }
 
     }
 
-    Contributor.prototype.process_done = function(data) {
+    Contributor.prototype.process_done = function(
+        data,
+        textStatus,
+        jqXHR) {
+
+        // console.log('done status', jqXHR.status);
+
+        // Populate the object attributes.
         $.extend(this, data.contributor);
+
         if (this.done !== undefined) {
             this.done(this);
         }
     };
 
-    Contributor.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
-        console.error(textStatus);
+    Contributor.prototype.process_fail = function(
+        jqXHR,
+        textStatus,
+        errorThrown) {
+
+        console.error('fail status', jqXHR.status, textStatus);
 
         if (this.fail !== undefined) {
             this.fail(this);
@@ -1881,36 +1903,48 @@
     };
 
     /**
-     * Get the parent Contributor for this Contributor.
+     * Get the parent Contributor for this Contributor. The "parent"
+     * attribute is only available if {@link Trove.RECLEVEL}.FULL
+     * was specified on requesting the data from Trove.
+     * @param {Object} options
+     * @param {function} options.done The callback on completion (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     *
      * @returns {Trove.Contributor}
      */
     Contributor.prototype.get_parent = function(options) {
 
-        var done;
-        if (options) done = options.done || this.done;
+        var done, fail;
+        if (options) {
+            done = options.done || this.done;
+            fail = options.fail || this.fail;
+        }
 
         if (this.parent) {
             return new Trove.CONSTRUCTORS.contributor({
                 init: this.parent.id,
-                done: done || this.done
+                done: done || this.done,
+                fail: fail || this.fail
             });
         }
 
     };
 
     /**
-     * Get the Contributor metadata from the Trove server.
+     * Get the Contributor metadata from the Trove server. If "done" or "fail"
+     *   are set, they will be copied into the object, overwriting any
+     *   existing callbacks. This is also true for "id" and "reclevel".
      * @param {Object} options The options object for the query.
      * @param {string} options.id The Contributor ID (NUC code) for which
-     *   to retrieve data.
+     *   to retrieve data (optional if specified previously).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record (optional).
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
-     *   or full record.
      */
     Contributor.prototype.get = function(options) {
-        console.log('Getting contributor');
+        // console.log('Getting contributor');
 
         // Override reclevel, done and fail if specified
         if (options) {
@@ -1950,31 +1984,33 @@
     'use strict';
 
     /**
-     * A list of Contributors.
+     * A container for a list of Contributors.
      * @class
      * @alias Trove.ContributorList
      * @classdesc The ContributorList class is a wrapper around the
-     *   "http://api.trove.nla.gov.au/contributor" API. If no terms
+     *   "http://api.trove.nla.gov.au/contributor" API. If no "terms"
      *   are specified on construction, you will have to call the get()
-     *   method to actually request the data from Trove. If the terms
+     *   method to actually request the data from Trove. If the "terms"
      *   are specified on construction, the get() method will be
      *   called immediately.
+     *
      * @param {Object} options An object specifying the options for
      *   this ContributorList.
      * @param {string} options.terms The search terms for which the contributor
      *   list will be returned (optional). If specified, the request
-     *   will be made immediately.
+     *   will be made immediately. The search will be performed by the
+     *   Trove servers on the NUC symbol and name.
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full records (optional, default=brief).
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
-     *   or full records.
      *
      * @property {Trove.Contributor[]} contributors The list of
      *   [Contributors]{@link Trove.Contributor} returned from the query.
      */
     function ContributorList(options) {
-        console.log('Creating ContributorList');
+        // console.log('Creating ContributorList');
 
         // Save the options in the object.
         $.extend(this, options);
@@ -1989,11 +2025,13 @@
     }
 
     ContributorList.prototype.process_done = function(
-        data, textStatus, jqXHR) {
+        data,
+        textStatus,
+        jqXHR) {
 
-        console.log('status', jqXHR.status);
+        // console.log('status', jqXHR.status);
 
-        console.log(data.response.total);
+        // console.log(data.response.total);
 
         // Clear the previous results.
         this.contributors = [];
@@ -2023,20 +2061,20 @@
 
 
     /**
-     * Get the data from the Trove server. If done or fail are set,
+     * Get the data from the Trove server. If "done" or "fail" are set,
      *   they will be copied into the object, overwriting any
-     *   existing callbacks.
+     *   existing callbacks. This is also true for "terms" and "reclevel".
      * @param {Object} options Options for the request.
      * @param {string} options.terms The search terms for which to
      *   request data (optional).
+     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     *   or full records (optional).
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
-     *   or full records.
      */
     ContributorList.prototype.get = function(options) {
-        console.log('Getting ContributorList');
+        // console.log('Getting ContributorList');
 
         if (options) {
 
