@@ -10,6 +10,7 @@ var newspaper_search = new Trove.Search({
 });
 
 function newspaper_search_done(s) {
+    newspapertable.empty();
     var idlink, snippet;
     for (var index in s.items[Trove.ZONES.NEWSPAPER]) {
         idlink = "<a href='" +
