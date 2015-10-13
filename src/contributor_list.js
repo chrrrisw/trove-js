@@ -9,16 +9,18 @@
      * @class
      * @alias Trove.ContributorList
      * @classdesc The ContributorList class is a wrapper around the
-     *   "http://api.trove.nla.gov.au/contributor" API. If no terms
+     *   "http://api.trove.nla.gov.au/contributor" API. If no "terms"
      *   are specified on construction, you will have to call the get()
-     *   method to actually request the data from Trove. If the terms
+     *   method to actually request the data from Trove. If the "terms"
      *   are specified on construction, the get() method will be
      *   called immediately.
+     *
      * @param {Object} options An object specifying the options for
      *   this ContributorList.
      * @param {string} options.terms The search terms for which the contributor
      *   list will be returned (optional). If specified, the request
-     *   will be made immediately.
+     *   will be made immediately. The search will be performed by the
+     *   Trove servers on the NUC symbol and name.
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
@@ -44,7 +46,9 @@
     }
 
     ContributorList.prototype.process_done = function(
-        data, textStatus, jqXHR) {
+        data,
+        textStatus,
+        jqXHR) {
 
         console.log('status', jqXHR.status);
 
