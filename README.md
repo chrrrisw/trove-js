@@ -7,6 +7,8 @@ Trove's API is documented at: http://help.nla.gov.au/trove/building-with-trove/a
 
 This library works with: http://api.trove.nla.gov.au
 
+A simple live search example is [here](http://chrrrisw.github.io/trove-js/).
+
 ## If you just want to use the library in your webpage
 1. Get a Trove API key: [see here](#getting_key)
 2. Download dist/trove-api.js or dist/trove-api.min.js
@@ -104,4 +106,4 @@ Please see the [wiki](https://github.com/chrrrisw/trove-js/wiki) for examples
 
 There are API docs [here](https://github.com/chrrrisw/trove-js/blob/master/docs/api.md) and you can build HTML API pages using ```grunt jsdoc```.
 
-There is a nice webpage at http://chrrrisw.github.io/trove-js/
+There is a simple search example at http://chrrrisw.github.io/trove-js/
