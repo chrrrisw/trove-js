@@ -464,7 +464,7 @@
         NEWS: 'newspaper/',
         LIST: 'list/',
         CONTRIBUTOR: 'contributor',
-        PEOPLE: ''  // This isn't supported.
+        PEOPLE: 'people/'  // This is not supported by the Trove API.
     };
     Trove.RECORD_TYPE = RECORD_TYPE;
 
@@ -1219,7 +1219,7 @@
     'use strict';
 
     /**
-     * A class to hold a journal article
+     * A class to hold a journal article.
      * @class
      * @alias Trove.Article
      * @augments Trove.Work

@@ -464,7 +464,7 @@
         NEWS: 'newspaper/',
         LIST: 'list/',
         CONTRIBUTOR: 'contributor',
-        PEOPLE: ''  // This isn't supported.
+        PEOPLE: 'people/'  // This is not supported by the Trove API.
     };
     Trove.RECORD_TYPE = RECORD_TYPE;
 

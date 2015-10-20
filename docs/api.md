@@ -84,7 +84,7 @@
 
 <a name="new_Trove.Article_new"></a>
 #### new Article(options)
-A class to hold a journal article
+A class to hold a journal article.
 
 
 | Param | Type |

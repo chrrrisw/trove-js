@@ -5,7 +5,7 @@
     'use strict';
 
     /**
-     * A class to hold a journal article
+     * A class to hold a journal article.
      * @class
      * @alias Trove.Article
      * @augments Trove.Work
