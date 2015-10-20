@@ -93,6 +93,13 @@ module.exports = function(grunt) {
             }
         },
 
+        jsdoc2md: {
+            oneOutputFile: {
+                src: "src/**/*.js",
+                dest: "docs/api.md"
+            }
+        },
+
         watch: {
             files: ['<%= jshint.files %>'],
             tasks: ['jshint', 'qunit']
@@ -107,10 +114,11 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-connect');
     grunt.loadNpmTasks('grunt-jsdoc');
+    grunt.loadNpmTasks("grunt-jsdoc-to-markdown");
 
     grunt.registerTask('test', ['jshint', 'connect', 'qunit']);
-    grunt.registerTask('prepare', ['jshint', 'jsdoc', 'concat', 'uglify']);
-    grunt.registerTask('default', ['jshint', 'jsdoc', 'connect', 'qunit', 'concat', 'uglify']);
+    grunt.registerTask('prepare', ['jshint', 'jsdoc', 'jsdoc2md', 'concat', 'uglify']);
+    grunt.registerTask('default', ['jshint', 'jsdoc', 'jsdoc2md', 'connect', 'qunit', 'concat', 'uglify']);
 
     grunt.event.on('qunit.testStart', function (name) {
       grunt.log.ok("\nRunning test: " + name);
