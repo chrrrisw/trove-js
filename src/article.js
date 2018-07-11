@@ -1,8 +1,7 @@
 /**
  * @lends Trove
  */
-(function(Trove, $, undefined) {
-    'use strict';
+import {Work} from "./work";
 
     /**
      * A class to hold a journal article.
@@ -11,13 +10,11 @@
      * @augments Trove.Work
      * @param {Object} options
      */
-    function Article(options) {
-        // console.log('Creating Article');
-        Trove.CONSTRUCTORS.work.call(this, options);
-    }
-    Article.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
-    Article.prototype.constructor = Article;
-    Trove.Article = Article;
-    Trove.CONSTRUCTORS.article = Article;
+    export class Article extends Work {
 
-}(window.Trove = window.Trove || {}, jQuery));
+        constructor (options) {
+            super(options);
+            console.log('Creating Article');
+        }
+
+    }

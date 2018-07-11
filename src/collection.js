@@ -1,8 +1,7 @@
 /**
  * @lends Trove
  */
-(function(Trove, $, undefined) {
-    'use strict';
+import {Work} from "./work";
 
     /**
      * A class to hold a collection
@@ -11,13 +10,11 @@
      * @augments Trove.Work
      * @param {Object} options
      */
-    function Collection(options) {
-        // console.log('Creating Collection');
-        Trove.CONSTRUCTORS.work.call(this, options);
-    }
-    Collection.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
-    Collection.prototype.constructor = Collection;
-    Trove.Collection = Collection;
-    Trove.CONSTRUCTORS.collection = Collection;
+    export class Collection extends Work {
 
-}(window.Trove = window.Trove || {}, jQuery));
+        constructor (options) {
+            super(options);
+            console.log('Creating Collection');
+        }
+
+    }

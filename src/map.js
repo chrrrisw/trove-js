@@ -1,8 +1,7 @@
 /**
  * @lends Trove
  */
-(function(Trove, $, undefined) {
-    'use strict';
+import {Work} from "./work";
 
     /**
      * A class to hold a map
@@ -11,13 +10,11 @@
      * @augments Trove.Work
      * @param {Object} options
      */
-    function Map(options) {
-        // console.log('Creating Map');
-        Trove.CONSTRUCTORS.work.call(this, options);
-    }
-    Map.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
-    Map.prototype.constructor = Map;
-    Trove.Map = Map;
-    Trove.CONSTRUCTORS.map = Map;
+    export class Map extends Work {
 
-}(window.Trove = window.Trove || {}, jQuery));
+        constructor (options) {
+            super(options);
+            console.log('Creating Map');
+        }
+
+    }

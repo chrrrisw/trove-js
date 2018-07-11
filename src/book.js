@@ -1,8 +1,7 @@
 /**
  * @lends Trove
  */
-(function(Trove, $, undefined) {
-    'use strict';
+import {Work} from "./work";
 
     /**
      * A class to hold a book
@@ -11,13 +10,11 @@
      * @augments Trove.Work
      * @param {Object} options
      */
-    function Book(options) {
-        // console.log('Creating Book');
-        Trove.CONSTRUCTORS.work.call(this, options);
-    }
-    Book.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
-    Book.prototype.constructor = Book;
-    Trove.Book = Book;
-    Trove.CONSTRUCTORS.book = Book;
+    export class Book extends Work {
 
-}(window.Trove = window.Trove || {}, jQuery));
+        constructor (options) {
+            super(options);
+            console.log('Creating Book');
+        }
+
+    }
