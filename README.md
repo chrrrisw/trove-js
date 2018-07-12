@@ -19,7 +19,7 @@ A simple live search example is [here](http://chrrrisw.github.io/trove-js/).
 
 Source files are in `src`, concatenated and minified distribution files are in `dist`.
 
-You'll need `npm` and `grunt-cli` installed to generate the distribution files.
+You'll need `npm`, `babel` and `webpack` installed to generate the distribution files.
 
 Clone this repository, and go to the directory created. Type:
 

@@ -1,65 +1,76 @@
 /**
- * @namespace Trove
  * @copyright Chris Willoughby 2015
  */
-(function(Trove, $, undefined) {
-    'use strict';
+export {Article} from "./article";
+export {Book} from "./book";
+export {Collection} from "./collection";
+export {Contributor} from "./contributor";
+export {ContributorList} from "./contributor_list";
+export {List} from "./list";
+export {Map} from "./map";
+export {Music} from "./music";
+export {NewspaperArticle} from "./newspaper_article";
+export {NewspaperList} from "./newspaper_list";
+export {NewspaperTitle} from "./newspaper_title";
+export {Person} from "./person";
+export {Picture} from "./picture";
+export {Search} from "./search";
+
+
 
     //Public Property
-    Trove.trove_key = '';
+    export var trove_key = '';
 
     /**
-     * @alias Trove.init
      * @param {string} key The Trove API key given to you by the National
      *   Library of Australia.
      *
      * This function should be called before any queries are made to the
      *   Trove servers.
      */
-    Trove.init = function(key) {
-        Trove.trove_key = key;
-    };
+    export function init(key) {
+        console.log("INIT called");
+        trove_key = key;
+    }
 
     var ENC = '&encoding=json';
 
     /**
      * Enumeration for zones, can include multiple as a list
-     * @alias Trove.ZONES
+     * @namespace
      * @readonly
      * @enum {string}
+     * @property {string} BOOK The zone for books.
+     * @property {string} PICTURE The zone for pictures
+     * @property {string} ARTICLE The zone for journal articles
+     * @property {string} MUSIC The zone for music
+     * @property {string} MAP The zone for maps
+     * @property {string} COLLECTION The zone for collections
+     * @property {string} NEWSPAPER The zone for newspapers
+     * @property {string} LIST The zone for lists
+     * @property {string} PEOPLE The zone for people
+     * @property {string} ALL All of the above
      */
-    var ZONES = {
-        /** The zone for books */
+    export var ZONES = {
         BOOK: 'book',
-        /** The zone for pictures */
         PICTURE: 'picture',
-        /** The zone for journal articles */
         ARTICLE: 'article',
-        /** The zone for music */
         MUSIC: 'music',
-        /** The zone for maps */
         MAP: 'map',
-        /** The zone for collections */
         COLLECTION: 'collection',
-        /** The zone for newspapers */
         NEWSPAPER: 'newspaper',
-        /** The zone for lists */
         LIST: 'list',
-        /** The zone for people */
         PEOPLE: 'people',
-        /** All of the above */
         ALL: 'all'
     };
-    Trove.ZONES = ZONES;
 
     /**
      * Enumeration for formats.
-     *   Used for facets and limits.
-     * @alias Trove.FORMATS
+     * Used for facets and limits.
      * @readonly
      * @enum {string}
      */
-    var FORMATS = {
+    export var FORMATS = {
         WEBSITE: 'Archived website',
         ARTWORK: 'Art work',
         ARTICLE: 'Article',
@@ -105,16 +116,14 @@
         VIDEO: 'Video',
         VIDEOCAPTIONED: 'Video/Captioned'
     };
-    Trove.FORMATS = FORMATS;
 
     /**
      * Enumeration for availability.
      * Used for facets and limits.
-     * @alias Trove.AVAILABILITIES
      * @readonly
      * @enum {string}
      */
-    var AVAILABILITIES = {
+    export var AVAILABILITIES = {
         /** Online. */
         ONLINE: 'y',
         /** Freely accessible online. */
@@ -126,26 +135,22 @@
         /** Possibly online. */
         POSSIBLY: 'y/u'
     };
-    Trove.AVAILABILITIES = AVAILABILITIES;
 
     /**
      *
      * Used for facets and limits.
-     * @alias Trove.VENDORS
      * @readonly
      * @enum {string}
      */
-    var VENDORS = {};
-    Trove.VENDORS = VENDORS;
+    export var VENDORS = {};
 
     /**
      *
      * Used for facets and limits.
-     * @alias Trove.AUDIENCES
      * @readonly
      * @enum {string}
      */
-    var AUDIENCES = {
+    export var AUDIENCES = {
         TRADE: "Trade",
         GENERAL: "General",
         ACADEMIC: "Academic",
@@ -154,18 +159,16 @@
         CHILDRENUPPER: "Children's - Upper elementry",
         CHILDRENLOWER: "Children's - Lower elementry"
     };
-    Trove.AUDIENCES = AUDIENCES;
 
     /**
      * Enumeration for NewspaperArticle categories. Returned as part of the
      *   brief record for NewspaperArticle, and may also be used to limit
-     *   the results of a search using {@link Trove.LIMITS}.CATEGORY.
+     *   the results of a search using {@link LIMITS}.CATEGORY.
      *   Used for facets and limits.
-     * @alias Trove.CATEGORIES
      * @readonly
      * @enum {string}
      */
-    var CATEGORIES = {
+    export var CATEGORIES = {
         /** Classified as an article. */
         ARTICLE: 'Article',
         /** Classified as advertising. */
@@ -177,7 +180,6 @@
         /** Classified as literature. */
         LITERATURE: 'Literature'
     };
-    Trove.CATEGORIES = CATEGORIES;
 
     /**
      * Enumeration for facets.
@@ -185,15 +187,14 @@
      *   example, if you ask for the decade facet, the response will include
      *   the list of decades your results span across, and how many results
      *   are found in each decade.
-     * @alias Trove.FACETS
      * @readonly
      * @enum {string}
      */
-    var FACETS = {
+    export var FACETS = {
         /**
          * (book, picture, article, music, map, collection)
          *   The format of the resource. For example, is it a book or a
-         *   piece of sheet music? See {@link Trove.FORMATS}.
+         *   piece of sheet music? See {@link FORMATS}.
          */
         FORMAT: 'format',
         /**
@@ -220,7 +221,7 @@
         /**
          * (book, picture, article, music, map, collection, list)
          *   Whether the item is online or not. See
-         *   {@link Trove.AVAILABILITIES}.
+         *   {@link AVAILABILITIES}.
          */
         AVAILABILITY: 'availability',
         /**
@@ -243,12 +244,12 @@
         VENDORDB: 'vendordb',
         /**
          * (article) The vendor who sells subscriptions to access a database
-         *   containing these articles. See {@link Trove.VENDORS}.
+         *   containing these articles. See {@link VENDORS}.
          */
         VENDOR: 'vendor',
         /**
          * (article) Only applies to articles from Gale. See
-         *   {@link Trove.AUDIENCES}.
+         *   {@link AUDIENCES}.
          */
         AUDIENCE: 'audience',
         /**
@@ -257,7 +258,7 @@
         TITLE: 'title',
         /**
          * (newspaper) Newspaper article category. See
-         *   {@link Trove.CATEGORIES}.
+         *   {@link CATEGORIES}.
          */
         CATEGORY: 'category',
         /**
@@ -277,15 +278,13 @@
          */
         ALL: 'all'
     };
-    Trove.FACETS = FACETS;
 
     /**
      * Enumeration for limiting the results of a search.
-     * @alias Trove.LIMITS
      * @readonly
      * @enum {string}
      */
-    var LIMITS = {
+    export var LIMITS = {
         /** Limit by format. */
         FORMAT: 'l-format',
         /** Limit by decade. In the form of YYY e.g. 190 is the 1900s. */
@@ -323,15 +322,13 @@
         /** Limit by all */
         ALL: 'l-all'
     };
-    Trove.LIMITS = LIMITS;
 
     /**
      * Enumeration for sort order.
-     * @alias Trove.SORTBY
      * @readonly
      * @enum {string}
      */
-    var SORTBY = {
+    export var SORTBY = {
         /** Sort by date (descending). */
         DATEDESC: 'datedesc',
         /** Sort by date (ascending). */
@@ -339,15 +336,13 @@
         /** Sort by relevance. */
         RELEVANCE: 'relevance'
     };
-    Trove.SORTBY = SORTBY;
 
     /**
      * Enumeration for record level
-     * @alias Trove.RECLEVEL
      * @readonly
      * @enum {string}
      */
-    var RECLEVEL = {
+    export var RECLEVEL = {
         /**
          * Get the full metadata (excluding all links, version level records,
          *   tags and comments).
@@ -356,15 +351,13 @@
         /** Get the brief metadata. */
         BRIEF: 'brief'
     };
-    Trove.RECLEVEL = RECLEVEL;
 
     /**
      * Enumeration for includes, can include multiple as a list.
-     * @alias Trove.INCLUDES
      * @readonly
      * @enum {string}
      */
-    var INCLUDES = {
+    export var INCLUDES = {
         /**
          * (Book, Picture, Article, Music, Map, Collection, NewspaperArticle,
          *   List)
@@ -401,20 +394,18 @@
          */
         ALL: 'all'
     };
-    Trove.INCLUDES = INCLUDES;
 
     /**
      * Enumeration for Australian states. Used to specify a state for which
-     *   to return {@link Trove.Newspaper} titles using the
-     *   {@link Trove.NewspaperList} class. To return all
-     *   [Newspapers]{@link Trove.Newspaper} for all states, do not specify
-     *   a state when making the query via {@link Trove.NewspaperList} or
+     *   to return {@link Newspaper} titles using the
+     *   {@link NewspaperList} class. To return all
+     *   [Newspapers]{@link Newspaper} for all states, do not specify
+     *   a state when making the query via {@link NewspaperList} or
      *   use ALL.
-     * @alias Trove.STATES
      * @readonly
      * @enum {string}
      */
-    var STATES = {
+    export var STATES = {
         /** New South Wales. */
         NSW: 'nsw',
         /** Australian Capital Territory. */
@@ -436,9 +427,8 @@
         /** All states. */
         ALL: ''
     };
-    Trove.STATES = STATES;
 
-    var SEARCH_RECORDS = {
+    export var SEARCH_RECORDS = {
         people: 'people',
         list: 'list',
         newspaper: 'article',
@@ -449,26 +439,19 @@
         map: 'work',
         music: 'work'
     };
-    Trove.SEARCH_RECORDS = SEARCH_RECORDS;
-
-    // Mapping of zones to constructors for those zones.
-    // Mostly used by Search to create objects on receipt of results.
-    var CONSTRUCTORS = {};
-    Trove.CONSTRUCTORS = CONSTRUCTORS;
 
     // Base URL for Trove
     var API_ADDRESS = 'http://api.trove.nla.gov.au/';
 
-    var RECORD_TYPE = {
+    export var RECORD_TYPE = {
         WORK: 'work/',
         NEWS: 'newspaper/',
         LIST: 'list/',
         CONTRIBUTOR: 'contributor',
         PEOPLE: 'people/'  // This is not supported by the Trove API.
     };
-    Trove.RECORD_TYPE = RECORD_TYPE;
 
-    var API = {
+    export var API = {
         WORK: API_ADDRESS + RECORD_TYPE.WORK,
         LIST: API_ADDRESS + RECORD_TYPE.LIST,
         NP_ARTICLE: API_ADDRESS + RECORD_TYPE.NEWS,
@@ -478,6 +461,3 @@
         PEOPLE: API_ADDRESS + RECORD_TYPE.PEOPLE,
         QUERY: API_ADDRESS + 'result'
     };
-    Trove.API = API;
-
-}(window.Trove = window.Trove || {}, jQuery));

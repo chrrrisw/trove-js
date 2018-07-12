@@ -1,0 +1,14 @@
+{
+	"opts": {
+		"template": "node_modules/jsdoc-rtd"
+	},
+	"plugins": [
+		"plugins/markdown"
+	],
+	"source": {
+		"include": [
+			"./src"
+		]
+	}
+}
+

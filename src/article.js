@@ -1,20 +1,19 @@
-/**
- * @lends Trove
- */
 import {Work} from "./work";
 
-    /**
-     * A class to hold a journal article.
-     * @class
-     * @alias Trove.Article
-     * @augments Trove.Work
-     * @param {Object} options
-     */
-    export class Article extends Work {
+/**
+ * A class to hold a journal article.
+ * @class
+ * @augments Work
+ */
+export class Article extends Work {
 
-        constructor (options) {
-            super(options);
-            console.log('Creating Article');
-        }
-
+	/**
+	 * Create an Article
+	 * @param {Object} options
+	 */
+    constructor (options) {
+        super(options);
+        console.log('Creating Article');
     }
+
+}

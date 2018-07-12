@@ -1,32 +1,26 @@
 /**
- * @lends Trove
+ * A class to hold a person.
+ * Please note that the Trove API does not currently support People
+ * except as a result of a search.
+ * @class
+ *
+ * @param {Object} options The options object for the Person.
+ * @param {(number|string)} options.init The Person identifier for which
+ *   to retrieve data on construction.
+ * @param {function} options.done The callback on receipt of data
+ *   (optional).
+ * @param {function} options.fail The callback on failure (optional).
+ * @param {RECLEVEL} options.reclevel Whether to return the brief
+ *   or full record.
+ * @param {INCLUDES[]} options.includes
+ *
+ * @property {string} id The Trove identifier for the person
+ * @property {string} troveUrl The full URL for the person
+ * @property {string} url The relative URL for the person
+ *
  */
-(function(Trove, $, undefined) {
-    'use strict';
-
-    /**
-     * A class to hold a person.
-     * Please note that the Trove API does not currently support People
-     * except as a result of a search.
-     * @class
-     * @alias Trove.Person
-     *
-     * @param {Object} options The options object for the Person.
-     * @param {(number|string)} options.init The Person identifier for which
-     *   to retrieve data on construction.
-     * @param {function} options.done The callback on receipt of data
-     *   (optional).
-     * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
-     *   or full record.
-     * @param {Trove.INCLUDES[]} options.includes
-     *
-     * @property {string} id The Trove identifier for the person
-     * @property {string} troveUrl The full URL for the person
-     * @property {string} url The relative URL for the person
-     *
-     */
-    function Person(options) {
+export class Person {
+    constructor (options) {
         // console.log('Creating Person');
 
         // Save and remove init from options.
@@ -46,20 +40,20 @@
 
     }
 
-    Person.prototype.process_done = function(data) {
+    process_done (data) {
         $.extend(this, data.people);
         if (this.done !== undefined) {
             this.done(this);
         }
-    };
+    }
 
-    Person.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+    process_fail (jqXHR, textStatus, errorThrown) {
         console.error('Error getting person:', textStatus);
 
         if (this.fail !== undefined) {
             this.fail(this);
         }
-    };
+    }
 
     /**
      * Get the Person metadata from the Trove server.
@@ -70,11 +64,11 @@
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     * @param {RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDES[]} options.includes
+     * @param {INCLUDES[]} options.includes
      */
-    Person.prototype.get = function(options) {
+    get (options) {
         // console.log('Getting person');
 
         // Override reclevel, includes, done and fail if specified
@@ -109,10 +103,6 @@
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);
-    };
+    }
 
-
-    Trove.Person = Person;
-    Trove.CONSTRUCTORS.people = Person;
-
-}(window.Trove = window.Trove || {}, jQuery));
+}

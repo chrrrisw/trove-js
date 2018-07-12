@@ -1,27 +1,22 @@
 /**
- * @lends Trove
+ * A class to hold a list
+ * @class
+ *
+ * @param {Object} options The options object for the list.
+ * @param {(number|string)} options.init The list identifier for which
+ *   to retrieve data on construction.
+ * @param {function} options.done The callback on receipt of data
+ *   (optional).
+ * @param {function} options.fail The callback on failure (optional).
+ * @param {RECLEVEL} options.reclevel Whether to return the brief
+ *   or full record.
+ * @param {INCLUDES[]} options.includes
+ *
  */
-(function(Trove, $, undefined) {
-    'use strict';
+export class List {
 
-    /**
-     * A class to hold a list
-     * @class
-     * @alias Trove.List
-     *
-     * @param {Object} options The options object for the list.
-     * @param {(number|string)} options.init The list identifier for which
-     *   to retrieve data on construction.
-     * @param {function} options.done The callback on receipt of data
-     *   (optional).
-     * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
-     *   or full record.
-     * @param {Trove.INCLUDES[]} options.includes
-     *
-     */
-    function List(options) {
-        // console.log('Creating List');
+    constructor (options) {
+        console.log('Creating List');
 
         // Save and remove init from options.
         var init;
@@ -40,20 +35,20 @@
 
     }
 
-    List.prototype.process_done = function(data) {
+    process_done (data) {
         $.extend(this, data.list);
         if (this.done !== undefined) {
             this.done(this);
         }
-    };
+    }
 
-    List.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+    process_fail (jqXHR, textStatus, errorThrown) {
         console.error(textStatus);
 
         if (this.fail !== undefined) {
             this.fail(this);
         }
-    };
+    }
 
     /**
      * Get the List metadata from the Trove server.
@@ -63,11 +58,11 @@
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     * @param {RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDES[]} options.includes
+     * @param {INCLUDES[]} options.includes
      */
-    List.prototype.get = function(options) {
+    get (options) {
         // console.log('Getting list');
 
         // Override reclevel, includes, done and fail if specified
@@ -102,9 +97,6 @@
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);
-    };
-
-    Trove.List = List;
-    Trove.CONSTRUCTORS.list = List;
-
-}(window.Trove = window.Trove || {}, jQuery));
+    }
+    
+}

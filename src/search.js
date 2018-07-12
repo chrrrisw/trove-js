@@ -1,29 +1,52 @@
-/**
- * @lends Trove
- */
-(function(Trove, $, undefined) {
-    'use strict';
+import {Article} from "./article";
+import {Book} from "./book";
+import {Collection} from "./collection";
+import {List} from "./list";
+import {Map as TroveMap} from "./map";
+import {Music} from "./music";
+import {NewspaperArticle} from "./newspaper_article";
+import {Person} from "./person";
+import {Picture} from "./picture";
 
-    /**
-     * An object to perform searches
-     * @class
-     * @alias Trove.Search
-     * @param {Object} options An object specifying the options for this
-     *   Search
-     * @param {Trove.ZONES[]} options.zones The list of zones to search
-     * @param {function} options.done The callback on receipt of data
-     *   (optional).
-     * @param {function} options.fail The callback on failure (optional).
-     * @param {string} options.terms The search terms
-     *
-     * @property {Object} response The raw response from the server.
-     * @property {Object[]} items The object containing the items created from
-     *   the raw response.
-     * @property {Trove.FACETS[]} facets The list of facets to include in
-     *   the data returned.
-     * @property {Object} limits The limits imposed on the search.
-     */
-    function Search(options) {
+// Mapping of zones to constructors for those zones.
+// Used by Search to create objects on receipt of results.
+export var CONSTRUCTORS = {
+    article: Article,
+    book: Book,
+    collection: Collection,
+    list: List,
+    map: TroveMap,
+    music: Music,
+    newspaper: NewspaperArticle,
+    people: Person,
+    picture: Picture,
+    // contributor: Contributor,
+    // newspaper_title: NewspaperTitle,
+    // work: Work,
+};
+
+
+/**
+ * An object to perform searches
+ * @class
+ * @param {Object} options An object specifying the options for this
+ *   Search
+ * @param {ZONES[]} options.zones The list of zones to search
+ * @param {function} options.done The callback on receipt of data
+ *   (optional).
+ * @param {function} options.fail The callback on failure (optional).
+ * @param {string} options.terms The search terms
+ *
+ * @property {Object} response The raw response from the server.
+ * @property {Object[]} items The object containing the items created from
+ *   the raw response.
+ * @property {FACETS[]} facets The list of facets to include in
+ *   the data returned.
+ * @property {Object} limits The limits imposed on the search.
+ */
+export class Search {
+
+    constructor (options) {
         // console.log('Creating Search');
 
         // copy everything from options to this object
@@ -46,18 +69,18 @@
     /**
      * Return the array of items returned by the most recent query
      *   in the specified zone.
-     * @param {Trove.ZONES} zone The zone for which the array should be
+     * @param {ZONES} zone The zone for which the array should be
      *   returned.
      * @returns {Object[]}
      */
-    Search.prototype.zone_list = function(zone) {
+    zone_list (zone) {
         return this.items[zone] || [];
-    };
+    }
 
     /*
      * Process the returned data, creating an object for each item.
      */
-    Search.prototype.process_done = function(data) {
+    process_done (data) {
         // console.log('Got Search Query');
         var zone_items;
         var zone_name;
@@ -67,7 +90,7 @@
 
         for (var zone_num in this.response.zone) {
             zone_name = this.response.zone[zone_num].name;
-            // console.log(zone_name);
+            console.log(zone_name);
 
             this.items[zone_name] = []; // Create an empty list for this zone
 
@@ -75,7 +98,7 @@
                 Trove.SEARCH_RECORDS[zone_name]];
 
             for (var item_num in zone_items) {
-                this.items[zone_name].push(new Trove.CONSTRUCTORS[
+                this.items[zone_name].push(new CONSTRUCTORS[
                     zone_name](zone_items[item_num]));
             }
         }
@@ -83,49 +106,49 @@
         if (this.done !== undefined) {
             this.done(this);
         }
-    };
+    }
 
-    Search.prototype.process_fail = function(jqXHR, textStatus, errorThrown) {
+    process_fail (jqXHR, textStatus, errorThrown) {
         console.error(textStatus);
 
         if (this.fail !== undefined) {
             this.fail(this);
         }
-    };
+    }
 
     /**
      * Remove the named facet.
-     * @param {Trove.FACETS} facet The name of the facet to remove
+     * @param {FACETS} facet The name of the facet to remove
      */
-    Search.prototype.remove_facet = function(facet) {
+    remove_facet (facet) {
         if (this.facets.indexOf(facet) != -1) {
             this.facets.splice(this.facets.indexOf(facet), 1);
         }
-    };
+    }
 
     /**
      * Add the named facet.
-     * @param {Trove.FACETS} facet The name of the facet to add
+     * @param {FACETS} facet The name of the facet to add
      */
-    Search.prototype.add_facet = function(facet) {
+    add_facet (facet) {
         this.facets.push(facet);
-    };
+    }
 
     /**
      * Clear the date range limits.
      */
-    Search.prototype.clear_date_range_limit = function() {
+    clear_date_range_limit () {
         if (this.limits.decade !== undefined) delete this.limits.decade;
         if (this.limits.year !== undefined) delete this.limits.year;
         if (this.limits.month !== undefined) delete this.limits.month;
-    };
+    }
 
     /**
      * Set the limits on the date range returned
      * @param {string} start The date limit, one of: YYY for decade,
      *   YYYY for year, or YYYY-MM for month
      */
-    Search.prototype.limit_date_range = function(start) {
+    limit_date_range (start) {
         var split_start = start.split('-');
         if (split_start.length >= 1) {
             if (split_start[0].length == 3) {
@@ -140,15 +163,15 @@
             this.limits.month = split_start[1];
         }
 
-    };
+    }
 
-    Search.prototype.clear_category_limit = function () {
+    clear_category_limit () {
         if (this.limits.category !== undefined) delete this.limits.category;
-    };
+    }
 
-    Search.prototype.limit_category = function(category) {
+    limit_category (category) {
         this.limits.category = category;
-    };
+    }
 
 
     /**
@@ -159,23 +182,23 @@
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
-     * @param {Trove.ZONES[]} options.zones The list of zones to search
+     * @param {ZONES[]} options.zones The list of zones to search
      *   (mandatory).
      * @param {string} options.terms The search terms (mandatory).
      * @param {number} options.start Return records starting at this point
      *  (optional, default=0).
      * @param {number} options.number Return this number of records
      *   (max. 100, optional, default=20).
-     * @param {Trove.SORTBY} options.sort Sort the results according to this
-     *   parameter (optional, default={@link Trove.SORTBY}.RELEVANCE).
-     * @param {Trove.RECLEVEL} options.reclevel Whether to return the brief
+     * @param {SORTBY} options.sort Sort the results according to this
+     *   parameter (optional, default={@link SORTBY}.RELEVANCE).
+     * @param {RECLEVEL} options.reclevel Whether to return the brief
      *   or full record.
-     * @param {Trove.INCLUDES[]} options.includes
+     * @param {INCLUDES[]} options.includes
      * @param {Object} options.limits Limit the search results
-     *   (optional, see {@link Trove.LIMITS}).
-     * @param {Trove.FACETS[]} options.facets
+     *   (optional, see {@link LIMITS}).
+     * @param {FACETS[]} options.facets
      */
-    Search.prototype.query = function(options) {
+    query (options) {
 
         // console.log('Querying Search');
 
@@ -271,7 +294,7 @@
             context: this
         }).done(this.process_done).fail(this.process_fail);
 
-    };
+    }
 
     /**
      * Repeat the last query, with a delta applied to the start.
@@ -282,7 +305,7 @@
      * @param {number} delta The change to be applied to the start number
      *   (positive or negative).
      */
-    Search.prototype.requery = function(options, delta) {
+    requery (options, delta) {
 
         if (options) {
             // Override the done callback
@@ -303,7 +326,7 @@
                 context: this
             }).done(this.process_done).fail(this.process_fail);
         }
-    };
+    }
 
     /**
      * Request the next search results
@@ -312,11 +335,11 @@
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
      */
-    Search.prototype.next = function(options) {
+    next (options) {
         if (this._last_search !== undefined) {
             this.requery(options, this._last_search.n);
         }
-    };
+    }
 
     /**
      * Request the previous search results
@@ -325,17 +348,15 @@
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
      */
-    Search.prototype.previous = function(options) {
+    previous (options) {
         if (this._last_search !== undefined) {
             this.requery(options, -this._last_search.n);
         }
-    };
+    }
 
-    Search.prototype.newspaper_articles = function() {
+    newspaper_articles () {
         // The Search object just
         return [];
-    };
+    }
 
-    Trove.Search = Search;
-
-}(window.Trove = window.Trove || {}, jQuery));
+}

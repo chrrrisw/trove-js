@@ -1,6 +1,6 @@
 {
   "name": "trove-api",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A library to access the NLA Trove API.",
   "repository": {
     "type": "git",
@@ -8,15 +8,24 @@
   },
   "license": "(LGPL-3.0 OR GPL-3.0)",
   "devDependencies": {
-    "grunt": "^0.4.5",
-    "grunt-contrib-concat": "^0.5.1",
-    "grunt-contrib-connect": "^0.11.2",
-    "grunt-contrib-jshint": "^0.11.3",
-    "grunt-contrib-qunit": "^0.7.0",
-    "grunt-contrib-uglify": "^0.9.2",
-    "grunt-contrib-watch": "^0.6.1",
-    "grunt-jsdoc": "^0.6.10",
-    "grunt-jsdoc-to-markdown": "^1.1.1",
-    "jsdoc-to-markdown": "^1.2.0"
+    "babel-cli": "*",
+    "babel-core": "*",
+    "babel-loader": "*",
+    "jsdoc": "*",
+    "jsdoc-rtd": "^1.0.15",
+    "jsdoc-to-markdown": "*",
+    "jshint": "*",
+    "qunit": "*",
+    "webpack": "*",
+    "webpack-cli": "*"
+  },
+  "scripts": {
+    "build": "webpack",
+    "docs": "jsdoc --configure jsdoc.json --package package.json --readme README.md",
+    "lint": "jshint demo/**.js src/**.js test/**.js",
+    "test": "qunit"
+  },
+  "jshintConfig": {
+    "esversion": 6
   }
 }
