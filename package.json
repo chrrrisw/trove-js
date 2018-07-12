@@ -12,7 +12,6 @@
     "babel-core": "*",
     "babel-loader": "*",
     "jsdoc": "*",
-    "jsdoc-rtd": "^1.0.15",
     "jsdoc-to-markdown": "*",
     "jshint": "*",
     "qunit": "*",
@@ -21,7 +20,7 @@
   },
   "scripts": {
     "build": "webpack",
-    "docs": "jsdoc --configure jsdoc.json --package package.json --readme README.md",
+    "docs": "jsdoc --configure jsdoc.json",
     "lint": "jshint demo/**.js src/**.js test/**.js",
     "test": "qunit"
   },

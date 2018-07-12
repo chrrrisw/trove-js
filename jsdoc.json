@@ -1,6 +1,7 @@
 {
 	"opts": {
-		"template": "node_modules/jsdoc-rtd"
+		"readme": "README.md",
+		"package": "package.json"
 	},
 	"plugins": [
 		"plugins/markdown"
