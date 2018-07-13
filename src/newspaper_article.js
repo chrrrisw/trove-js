@@ -72,7 +72,7 @@ import {NewspaperTitle} from "./newspaper_title";
 export class NewspaperArticle {
 
     constructor (options) {
-        console.log('Creating NewspaperArticle');
+        // console.log('Creating NewspaperArticle');
 
         // Save and remove init from options.
         var init;

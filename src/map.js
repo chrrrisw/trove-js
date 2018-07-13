@@ -10,7 +10,7 @@ export class Map extends Work {
 
     constructor (options) {
         super(options);
-        console.log('Creating Map');
+        // console.log('Creating Map');
     }
 
 }

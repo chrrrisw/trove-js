@@ -10,7 +10,7 @@ export class Picture extends Work {
 
     constructor (options) {
         super(options);
-        console.log('Creating Picture');
+        // console.log('Creating Picture');
     }
 
 }

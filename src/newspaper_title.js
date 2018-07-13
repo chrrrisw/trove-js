@@ -45,7 +45,7 @@ var STATEABBR = {
 export class NewspaperTitle {
 
     constructor (options) {
-        console.log('Creating NewspaperTitle ');
+        // console.log('Creating NewspaperTitle ');
 
         // Save and remove init from options.
         var init;

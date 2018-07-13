@@ -10,7 +10,7 @@ export class Music extends Work {
 
     constructor (options) {
         super(options);
-        console.log('Creating Music');
+        // console.log('Creating Music');
     }
 
 }

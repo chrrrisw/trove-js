@@ -14,6 +14,7 @@
     "jsdoc": "*",
     "jsdoc-to-markdown": "*",
     "jshint": "*",
+    "node-qunit-phantomjs": "^2.0.0",
     "qunit": "*",
     "webpack": "*",
     "webpack-cli": "*"
@@ -22,7 +23,7 @@
     "build": "webpack",
     "docs": "jsdoc --configure jsdoc.json",
     "lint": "jshint demo/**.js src/**.js test/**.js",
-    "test": "qunit"
+    "test": "node-qunit-phantomjs --verbose --timeout 30 test/test.html"
   },
   "jshintConfig": {
     "esversion": 6

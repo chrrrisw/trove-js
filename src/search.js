@@ -90,7 +90,7 @@ export class Search {
 
         for (var zone_num in this.response.zone) {
             zone_name = this.response.zone[zone_num].name;
-            console.log(zone_name);
+            // console.log(zone_name);
 
             this.items[zone_name] = []; // Create an empty list for this zone
 

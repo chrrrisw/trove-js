@@ -29,7 +29,7 @@ export {Search} from "./search";
      *   Trove servers.
      */
     export function init(key) {
-        console.log("INIT called");
+        // console.log("INIT called");
         trove_key = key;
     }
 

@@ -28,7 +28,7 @@
 export class ContributorList {
 
     constructor (options) {
-        console.log('Creating ContributorList');
+        // console.log('Creating ContributorList');
 
         // Save the options in the object.
         $.extend(this, options);

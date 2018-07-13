@@ -1,12 +1,14 @@
 // // Should start a test server, instead of querying Trove.
-QUnit.module( "work tests", function( hooks ) {
+QUnit.config.testTimeout = 15000;
 
+QUnit.module( "work tests", function( hooks ) {
   // You can invoke the hooks methods more than once.
   hooks.before( function( assert ) {
     var key_file_done = assert.async();
     // Get the key_file
-    $.get('/__key_file__', function(data) {
+    $.get('../__key_file__', function(data) {
       data = data.replace(/(\r\n|\n|\r)/gm, '');
+
       Trove.init(data);
       assert.equal(Trove.trove_key, data, "Key is set");
       key_file_done();
@@ -22,7 +24,8 @@ QUnit.module( "work tests", function( hooks ) {
       includes: [Trove.INCLUDES.TAGS, Trove.INCLUDES.COMMENTS],
       done: function(returned) {
         assert.equal(returned.id, identifier, "Checking article id");
-        console.log(JSON.stringify(returned, null, '\t'));
+        // console.log(JSON.stringify(returned, null, '\t'));
+        console.log("\t" + returned.id + " " + returned.title);
         article_done();
       }
     } );
@@ -37,7 +40,8 @@ QUnit.module( "work tests", function( hooks ) {
       includes: [Trove.INCLUDES.TAGS, Trove.INCLUDES.COMMENTS],
       done: function(returned) {
         assert.equal(returned.id, identifier, "Checking book id");
-        console.log(JSON.stringify(returned, null, '\t'));
+        // console.log(JSON.stringify(returned, null, '\t'));
+        console.log("\t" + returned.id + " " + returned.title);
         book_done();
       }
     } );
@@ -52,7 +56,8 @@ QUnit.module( "work tests", function( hooks ) {
       includes: [Trove.INCLUDES.TAGS, Trove.INCLUDES.COMMENTS],
       done: function(returned) {
         assert.equal(returned.id, identifier, "Checking collection id");
-        console.log(JSON.stringify(returned, null, '\t'));
+        // console.log(JSON.stringify(returned, null, '\t'));
+        console.log("\t" + returned.id + " " + returned.title);
         collection_done();
       }
     });
@@ -67,7 +72,8 @@ QUnit.module( "work tests", function( hooks ) {
       includes: [Trove.INCLUDES.TAGS, Trove.INCLUDES.COMMENTS],
       done: function(returned) {
         assert.equal(returned.id, identifier, "Checking list id");
-        console.log(JSON.stringify(returned, null, '\t'));
+        // console.log(JSON.stringify(returned, null, '\t'));
+        console.log("\t" + returned.id + " " + returned.title);
         map_done();
       }
     });
@@ -82,7 +88,8 @@ QUnit.module( "work tests", function( hooks ) {
       includes: [Trove.INCLUDES.TAGS, Trove.INCLUDES.COMMENTS],
       done: function(returned) {
         assert.equal(returned.id, identifier, "Checking music id");
-        console.log(JSON.stringify(returned, null, '\t'));
+        // console.log(JSON.stringify(returned, null, '\t'));
+        console.log("\t" + returned.id + " " + returned.title);
         music_done();
       }
     });
@@ -97,7 +104,8 @@ QUnit.module( "work tests", function( hooks ) {
       includes: [Trove.INCLUDES.TAGS, Trove.INCLUDES.COMMENTS],
       done: function(returned) {
         assert.equal(returned.id, identifier, "Checking picture id");
-        console.log(JSON.stringify(returned, null, '\t'));
+        // console.log(JSON.stringify(returned, null, '\t'));
+        console.log("\t" + returned.id + " " + returned.title);
         picture_done();
       }
     });
@@ -112,7 +120,7 @@ QUnit.module( "list tests", function( hooks ) {
   hooks.before( function( assert ) {
     var key_file_done = assert.async();
     // Get the key_file
-    $.get('/__key_file__', function(data) {
+    $.get('../__key_file__', function(data) {
       data = data.replace(/(\r\n|\n|\r)/gm, '');
       Trove.init(data);
       assert.equal(Trove.trove_key, data, "Key is set");
@@ -121,6 +129,7 @@ QUnit.module( "list tests", function( hooks ) {
   } );
 
   QUnit.test("contributor list test", function(assert) {
+    assert.timeout(30000);
     var list_done = assert.async();
     var my_contributor_list = new Trove.ContributorList({
       // terms: 'light horse',
@@ -167,15 +176,16 @@ QUnit.module( "list tests", function( hooks ) {
       done: function(returned) {
         // console.log('number of newspapers', returned.newspapers.length);
         for (var np in returned.newspapers) {
-          console.log(JSON.stringify(returned.newspapers[np], null, '\t'));
+          // console.log(JSON.stringify(returned.newspapers[np], null, '\t'));
+          console.log("\t" + returned.newspapers[np].id + " " + returned.newspapers[np].title);
         }
         assert.ok(returned.newspapers.length > 0, "Checking newspapers > 0");
         returned.newspapers[0].get({
           includes: [Trove.INCLUDES.YEARS],
           range: '19250101-19251231',
           done: function(np) {
-              console.log(JSON.stringify(np, null, '\t'));
-              list_done();
+            console.log(JSON.stringify(np, null, '\t'));
+            list_done();
           }
         });
       }
@@ -194,7 +204,7 @@ QUnit.module( "newspaper tests", function( hooks ) {
   hooks.before( function( assert ) {
     var key_file_done = assert.async();
     // Get the key_file
-    $.get('/__key_file__', function(data) {
+    $.get('../__key_file__', function(data) {
       data = data.replace(/(\r\n|\n|\r)/gm, '');
       Trove.init(data);
       assert.equal(Trove.trove_key, data, "Key is set");
@@ -241,7 +251,7 @@ QUnit.module( "search tests", function( hooks ) {
   hooks.before( function( assert ) {
     var key_file_done = assert.async();
     // Get the key_file
-    $.get('/__key_file__', function(data) {
+    $.get('../__key_file__', function(data) {
       data = data.replace(/(\r\n|\n|\r)/gm, '');
       Trove.init(data);
       assert.equal(Trove.trove_key, data, "Key is set");
@@ -251,40 +261,40 @@ QUnit.module( "search tests", function( hooks ) {
 
 
   QUnit.test("book and newspaper zone search test", function(assert) {
-      var search_done = assert.async();
-      var search = new Trove.Search();
-      var num_records = 4;
-      var terms = 'periwinkle';
-      var zones = [Trove.ZONES.BOOK, Trove.ZONES.NEWSPAPER];
+    var search_done = assert.async();
+    var search = new Trove.Search();
+    var num_records = 4;
+    var terms = 'periwinkle';
+    var zones = [Trove.ZONES.BOOK, Trove.ZONES.NEWSPAPER];
 
-      search.limit_date_range('188');
-      search.query({
-          terms: terms,
-          zones: zones,
-          number: num_records,
-          reclevel: Trove.RECLEVEL.FULL,
-          done: function(returned) {
-              // console.log(returned._last_search);
-              assert.equal(returned._last_search.zone, zones.join(','), "Checking zone");
-              assert.equal(returned._last_search.q, terms, "Checking query terms");
-              assert.equal(returned._last_search.s, 0, "Checking start");
-              assert.equal(returned._last_search.n, num_records, "Checking number");
-              var returned_zones = Object.keys(returned.items);
-              var zone_items;
-              for (var index in returned_zones) {
-                  zone_items = returned.items[returned_zones[index]];
-                  assert.equal(zone_items.length, num_records, "checking number returned");
-                  // for (var item_index in zone_items) {
-                  //     console.log(JSON.stringify(zone_items[item_index], null, '\t'));
-                  // }
-              }
-              search_done();
-          },
-          fail: function(s) {
-              console.error('Failed');
-              search_done();
-          }
-      });
+    search.limit_date_range('188');
+    search.query({
+      terms: terms,
+      zones: zones,
+      number: num_records,
+      reclevel: Trove.RECLEVEL.FULL,
+      done: function(returned) {
+        // console.log(returned._last_search);
+        assert.equal(returned._last_search.zone, zones.join(','), "Checking zone");
+        assert.equal(returned._last_search.q, terms, "Checking query terms");
+        assert.equal(returned._last_search.s, 0, "Checking start");
+        assert.equal(returned._last_search.n, num_records, "Checking number");
+        var returned_zones = Object.keys(returned.items);
+        var zone_items;
+        for (var index in returned_zones) {
+            zone_items = returned.items[returned_zones[index]];
+            assert.equal(zone_items.length, num_records, "checking number returned");
+            // for (var item_index in zone_items) {
+            //     console.log(JSON.stringify(zone_items[item_index], null, '\t'));
+            // }
+        }
+        search_done();
+      },
+      fail: function(s) {
+        console.error('Failed');
+        search_done();
+      }
+    });
   });
 
   QUnit.test("search next and previous test", function(assert) {

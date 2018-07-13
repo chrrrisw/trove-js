@@ -10,7 +10,7 @@ export class Book extends Work {
 
     constructor (options) {
         super(options);
-        console.log('Creating Book');
+        // console.log('Creating Book');
     }
 
 }

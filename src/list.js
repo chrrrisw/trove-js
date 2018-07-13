@@ -16,7 +16,7 @@
 export class List {
 
     constructor (options) {
-        console.log('Creating List');
+        // console.log('Creating List');
 
         // Save and remove init from options.
         var init;

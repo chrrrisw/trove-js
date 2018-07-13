@@ -10,7 +10,7 @@ export class Collection extends Work {
 
     constructor (options) {
         super(options);
-        console.log('Creating Collection');
+        // console.log('Creating Collection');
     }
 
 }

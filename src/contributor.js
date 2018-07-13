@@ -36,7 +36,7 @@
 export class Contributor {
 
     constructor (options) {
-        console.log('Creating Contributor');
+        // console.log('Creating Contributor');
 
         // Save and remove init from options.
         var init;

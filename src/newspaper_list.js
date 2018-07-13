@@ -28,7 +28,7 @@ import {NewspaperTitle} from "./newspaper_title";
 export class NewspaperList {
 
     constructor (options) {
-        console.log('Creating NewspaperList');
+        // console.log('Creating NewspaperList');
 
         // Save the options in the object.
         $.extend(this, options);

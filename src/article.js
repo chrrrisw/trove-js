@@ -13,7 +13,7 @@ export class Article extends Work {
 	 */
     constructor (options) {
         super(options);
-        console.log('Creating Article');
+        // console.log('Creating Article');
     }
 
 }
