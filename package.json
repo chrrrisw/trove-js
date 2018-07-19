@@ -20,12 +20,17 @@
     "webpack-cli": "*"
   },
   "scripts": {
-    "build": "webpack",
+    "dev": "webpack --mode=development",
+    "build": "npm run lint; webpack --mode=production",
     "docs": "jsdoc --configure jsdoc.json",
+    "docs:md": "jsdoc2md src/**.js > docs/api.md",
     "lint": "jshint demo/**.js src/**.js test/**.js",
     "test": "node-qunit-phantomjs --verbose --timeout 30 test/test.html"
   },
   "jshintConfig": {
     "esversion": 6
+  },
+  "dependencies": {
+    "fetch-jsonp": "^1.1.3"
   }
 }

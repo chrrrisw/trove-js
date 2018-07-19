@@ -1,7 +1,4 @@
-docs/fonts
-docs/scripts
-docs/styles
-docs/*html
+docs/trove-api
 node_modules
 deprecated
 twistd.*
