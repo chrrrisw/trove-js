@@ -368,7 +368,7 @@ __webpack_require__.r(__webpack_exports__);
  * A container for a list of Contributors.
  * @class
  * @classdesc The ContributorList class is a wrapper around the
- *   "http://api.trove.nla.gov.au/contributor" API. If no "terms"
+ *   "https://api.trove.nla.gov.au/v2/contributor" API. If no "terms"
  *   are specified on construction, you will have to call the get()
  *   method to actually request the data from Trove. If the "terms"
  *   are specified on construction, the get() method will be
@@ -492,6 +492,124 @@ class ContributorList {
 
 /***/ }),
 
+/***/ "./src/gazette.js":
+/*!************************!*\
+  !*** ./src/gazette.js ***!
+  \************************/
+/*! exports provided: Gazette */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Gazette", function() { return Gazette; });
+/**
+ * A Class to hold government gazette articles.
+ *
+ * See: {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6}
+ *
+ * @class
+ *
+ * @param {Object} options An object specifying the default options
+ * @param {number} options.init The article identifier for which
+ *   to retrieve data on construction.
+ * @param {function} options.done The callback on receipt of
+ *   data (optional).
+ * @param {function} options.fail The callback on failure (optional).
+ * @param {RECLEVEL} options.reclevel Whether to return the brief
+ *   or full record.
+ * @param {INCLUDES[]} options.includes
+ *
+ */
+class Gazette {
+
+    constructor(options) {
+        // console.log('Creating Gazette');
+
+        // Save and remove init from options.
+        var init;
+        if (options.init !== undefined) {
+            init = options.init;
+            delete options.init;
+        }
+
+        // Save all other options in this object.
+        $.extend(this, options);
+
+        // If we know the identifier, get the data
+        if (init !== undefined) {
+            this.get({ id: init });
+        }
+    }
+
+    process_done(data) {
+        $.extend(this, data.article);
+        if (this.done !== undefined) {
+            this.done(this);
+        }
+    }
+
+    process_fail(jqXHR, textStatus, errorThrown) {
+
+        console.error(textStatus);
+
+        if (this.fail !== undefined) {
+            this.fail(this);
+        }
+    }
+
+    /**
+     * Retrieve article information from Trove based on identifier.
+     *
+     * @param {Object} options The options object for the query.
+     * @param {number} options.id The article ID for which to
+     *   retrieve data.
+     * @param {function} options.done The callback on receipt of data
+     *   (optional).
+     * @param {function} options.fail The callback on failure (optional).
+     * @param {RECLEVEL} options.reclevel Whether to return the brief
+     *   or full record.
+     * @param {INCLUDES[]} options.includes
+     */
+    get(options) {
+        // console.log('Getting Gazette');
+        // https://api.trove.nla.gov.au/v2/gazette/18342701?key=<INSERT KEY>
+
+        // Override reclevel, includes, done and fail if specified
+        if (options) {
+            this.id = options.id || this.id;
+            this.reclevel = options.reclevel || this.reclevel;
+            this.includes = options.includes || this.includes;
+            this.done = options.done || this.done;
+            this.fail = options.fail || this.fail;
+        }
+
+        var query_data = {
+            key: Trove.trove_key,
+            encoding: 'json'
+        };
+
+        // Full or brief
+        if (this.reclevel !== undefined) {
+            query_data.reclevel = this.reclevel;
+        }
+
+        // What to include
+        if (this.includes !== undefined && Array.isArray(this.includes) && this.includes.length > 0) {
+            query_data.include = this.includes.join(',');
+        }
+
+        $.ajax({
+            dataType: "jsonp",
+            url: Trove.API.GAZETTE + this.id,
+            data: query_data,
+            context: this
+        }).done(this.process_done).fail(this.process_fail);
+    }
+
+}
+
+/***/ }),
+
 /***/ "./src/list.js":
 /*!*********************!*\
   !*** ./src/list.js ***!
@@ -504,6 +622,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "List", function() { return List; });
 /**
  * A class to hold a list
+ *
+ * See: {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-5}
+ *
  * @class
  *
  * @param {Object} options The options object for the list.
@@ -680,6 +801,8 @@ __webpack_require__.r(__webpack_exports__);
 /**
  * A Class to hold newspaper articles.
  *
+ * See: {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6}
+ *
  * @class
  *
  * @param {Object} options An object specifying the default options
@@ -798,7 +921,7 @@ class NewspaperArticle {
      */
     get(options) {
         // console.log('Getting NewspaperArticle');
-        // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
+        // https://api.trove.nla.gov.au/v2/newspaper/18342701?key=<INSERT KEY>
 
         // Override reclevel, includes, done and fail if specified
         if (options) {
@@ -878,7 +1001,7 @@ __webpack_require__.r(__webpack_exports__);
  * A list of Newspapers for a specific state or all states.
  * @class
  * @classdesc The NewspaperList class is a wrapper around the
- *   "http://api.trove.nla.gov.au/newspaper/titles" API. If no state
+ *   "https://api.trove.nla.gov.au/v2/newspaper/titles" API. If no state
  *   is specified on construction, you will have to call the get()
  *   method to actually request the data from Trove. If the state
  *   is specified on construction, the get() method will be
@@ -1016,7 +1139,7 @@ var STATEABBR = {
  * A class to hold an instance of a newspaper title.
  * @class
  * @classdesc The NewspaperTitle class is a wrapper around the
- *   "http://api.trove.nla.gov.au/newspaper/title" API.
+ *   "https://api.trove.nla.gov.au/v2/newspaper/title" API.
  *   The {@link NewspaperList} class will return a list of
  *   these objects for a state (or all states).
  * @param {Object} options The options used on construction. Every
@@ -1079,7 +1202,7 @@ class NewspaperTitle {
      *   publication dates in the given range. Of the form: YYYYMMDD-YYYYMMDD.
      */
     get(options) {
-        // http://api.trove.nla.gov.au/newspaper/title/35?encoding=json
+        // https://api.trove.nla.gov.au/v2/newspaper/title/35?encoding=json
 
         if (options) {
             this.id = options.id || this.id;
@@ -1290,12 +1413,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _article__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./article */ "./src/article.js");
 /* harmony import */ var _book__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./book */ "./src/book.js");
 /* harmony import */ var _collection__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./collection */ "./src/collection.js");
-/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./list */ "./src/list.js");
-/* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./map */ "./src/map.js");
-/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./music */ "./src/music.js");
-/* harmony import */ var _newspaper_article__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./newspaper_article */ "./src/newspaper_article.js");
-/* harmony import */ var _person__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./person */ "./src/person.js");
-/* harmony import */ var _picture__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./picture */ "./src/picture.js");
+/* harmony import */ var _gazette__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./gazette */ "./src/gazette.js");
+/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./list */ "./src/list.js");
+/* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./map */ "./src/map.js");
+/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./music */ "./src/music.js");
+/* harmony import */ var _newspaper_article__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./newspaper_article */ "./src/newspaper_article.js");
+/* harmony import */ var _person__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./person */ "./src/person.js");
+/* harmony import */ var _picture__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./picture */ "./src/picture.js");
+
 
 
 
@@ -1309,15 +1434,16 @@ __webpack_require__.r(__webpack_exports__);
 // Mapping of zones to constructors for those zones.
 // Used by Search to create objects on receipt of results.
 var CONSTRUCTORS = {
-    article: _article__WEBPACK_IMPORTED_MODULE_0__["Article"],
     book: _book__WEBPACK_IMPORTED_MODULE_1__["Book"],
+    picture: _picture__WEBPACK_IMPORTED_MODULE_9__["Picture"],
+    article: _article__WEBPACK_IMPORTED_MODULE_0__["Article"],
+    music: _music__WEBPACK_IMPORTED_MODULE_6__["Music"],
+    map: _map__WEBPACK_IMPORTED_MODULE_5__["Map"],
     collection: _collection__WEBPACK_IMPORTED_MODULE_2__["Collection"],
-    list: _list__WEBPACK_IMPORTED_MODULE_3__["List"],
-    map: _map__WEBPACK_IMPORTED_MODULE_4__["Map"],
-    music: _music__WEBPACK_IMPORTED_MODULE_5__["Music"],
-    newspaper: _newspaper_article__WEBPACK_IMPORTED_MODULE_6__["NewspaperArticle"],
-    people: _person__WEBPACK_IMPORTED_MODULE_7__["Person"],
-    picture: _picture__WEBPACK_IMPORTED_MODULE_8__["Picture"]
+    newspaper: _newspaper_article__WEBPACK_IMPORTED_MODULE_7__["NewspaperArticle"],
+    gazette: _gazette__WEBPACK_IMPORTED_MODULE_3__["Gazette"],
+    list: _list__WEBPACK_IMPORTED_MODULE_4__["List"],
+    people: _person__WEBPACK_IMPORTED_MODULE_8__["Person"]
     // contributor: Contributor,
     // newspaper_title: NewspaperTitle,
     // work: Work,
@@ -1354,6 +1480,13 @@ class Search {
 
         this.items = {};
 
+        // The v2 API allows multiple zones to be searched when s=*,
+        // but subsequent searches (next|previous) must be a single zone.
+        // To allow stepping back and forward within zones we must store
+        // the cursor values as a list and keep a track of where we are.
+        this.cursors = {};
+        this.indices = {};
+
         // The parameters of the last search
         // Used to request previous and next results.
         this._last_search = undefined;
@@ -1382,16 +1515,52 @@ class Search {
         var zone_name;
 
         this.items = {}; // Clear the last lot of results
+
         this.response = data.response; // Store the raw response
 
+        // The raw response has the following structure
+        // response
+        //   query
+        //   zone []
+        //     name
+        //     records
+        //       n
+        //       next
+        //       nextStart
+        //       s
+        //       total
+        //       work|article|list|people []
+
         for (var zone_num in this.response.zone) {
+
+            // Get the name of the zone we're dealing with
             zone_name = this.response.zone[zone_num].name;
-            // console.log(zone_name);
 
-            this.items[zone_name] = []; // Create an empty list for this zone
+            // Create an empty list for this zone
+            this.items[zone_name] = [];
 
+            // If we don't have a cursor for this zone, seed the list with
+            // the current starting position (probably *) and set the index=0
+            if (this.cursors[zone_name] === undefined) {
+                console.log("Creating cursor list for", zone_name);
+                this.cursors[zone_name] = [this.response.zone[zone_num].records.s];
+                this.indices[zone_name] = 0;
+            }
+
+            // Only add the nextStart if we're at the end of the list.
+            // If we're not at the end of the list it means that we've stepped
+            // to a previous result and we shouldn't be modifying the list.
+            //
+            if (this.indices[zone_name] == this.cursors[zone_name].length - 1) {
+                this.cursors[zone_name].push(this.response.zone[zone_num].records.nextStart);
+            }
+
+            console.log(this.cursors[zone_name]);
+
+            // Access the list at work|article|list|people
             zone_items = this.response.zone[zone_num].records[Trove.SEARCH_RECORDS[zone_name]];
 
+            // Iterate over this list adding them to our items object.
             for (var item_num in zone_items) {
                 this.items[zone_name].push(new CONSTRUCTORS[zone_name](zone_items[item_num]));
             }
@@ -1478,7 +1647,7 @@ class Search {
      *   (mandatory).
      * @param {string} options.terms The search terms (mandatory).
      * @param {number} options.start Return records starting at this point
-     *  (optional, default=0).
+     *  (optional, default=*).
      * @param {number} options.number Return this number of records
      *   (max. 100, optional, default=20).
      * @param {SORTBY} options.sort Sort the results according to this
@@ -1522,13 +1691,18 @@ class Search {
             encoding: 'json',
             zone: zones,
             q: this.terms,
-            s: 0,
-            n: 20
+            s: '*',
+            n: 20,
+            bulkHarvest: false
         };
 
         // Where to start
         if (options.start !== undefined) {
             query_data.s = options.start;
+        }
+
+        if (options.nextStart !== undefined) {
+            query_data.nextStart = options.nextStart;
         }
 
         // How many to return
@@ -1539,6 +1713,10 @@ class Search {
         // In what sort order
         if (options.sort !== undefined) {
             query_data.sortby = options.sort;
+        }
+
+        if (options.bulkHarvest !== undefined) {
+            query_data.bulkHarvest = options.bulkHarvest;
         }
 
         // Full or brief
@@ -1591,7 +1769,8 @@ class Search {
      * @param {number} delta The change to be applied to the start number
      *   (positive or negative).
      */
-    requery(options, delta) {
+    requery(zone, options) {
+        console.log("Requery called");
 
         if (options) {
             // Override the done callback
@@ -1603,7 +1782,7 @@ class Search {
 
         if (this._last_search !== undefined) {
 
-            this._last_search.s = this._last_search.s + delta;
+            this._last_search.s = this.cursors[zone][this.indices[zone]];
 
             $.ajax({
                 dataType: "jsonp",
@@ -1616,28 +1795,56 @@ class Search {
 
     /**
      * Request the next search results
+     *
+     * Although an initial search may cover more than one zone, getting
+     * results through this interface must specify a singe zone.
+     *
+     * @param {string} zone The zone in which to get the results.
      * @param {Object} options Options to be applied to the query
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
      */
-    next(options) {
-        if (this._last_search !== undefined) {
-            this.requery(options, this._last_search.n);
+    next(zone, options) {
+        console.log("Next called");
+        console.log(zone, "index is", this.indices[zone]);
+        console.log(zone, "cursor length is", this.cursors[zone].length);
+        if (this.indices[zone] < this.cursors[zone].length - 1) {
+            console.log("Current index", this.indices[zone]);
+            this.indices[zone]++;
+            console.log("New index", this.indices[zone]);
+            this.requery(zone, options);
         }
+        // if (this._last_search !== undefined) {
+        //     this.requery(options, zone, this._last_search.n);
+        // }
     }
 
     /**
-     * Request the previous search results
+     * Request the previous search results.
+     *
+     * Although an initial search may cover more than one zone, getting
+     * results through this interface must specify a singe zone.
+     *
+     * @param {string} zone The zone in which to get the results.
      * @param {Object} options Options to be applied to the query
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
      */
-    previous(options) {
-        if (this._last_search !== undefined) {
-            this.requery(options, -this._last_search.n);
+    previous(zone, options) {
+        console.log("Previous called");
+        console.log(zone, "index is", this.indices[zone]);
+        console.log(zone, "cursor length is", this.cursors[zone].length);
+        if (this.indices[zone] > 0) {
+            console.log("Current index", this.indices[zone]);
+            this.indices[zone]--;
+            console.log("New index", this.indices[zone]);
+            this.requery(zone, options);
         }
+        // if (this._last_search !== undefined) {
+        //     this.requery(options, zone, -this._last_search.n);
+        // }
     }
 
     newspaper_articles() {
@@ -1653,7 +1860,7 @@ class Search {
 /*!**********************!*\
   !*** ./src/trove.js ***!
   \**********************/
-/*! exports provided: Article, Book, Collection, Contributor, ContributorList, List, Map, Music, NewspaperArticle, NewspaperList, NewspaperTitle, Person, Picture, Search, trove_key, init, ZONES, FORMATS, AVAILABILITIES, VENDORS, AUDIENCES, CATEGORIES, FACETS, LIMITS, SORTBY, RECLEVEL, INCLUDES, STATES, SEARCH_RECORDS, RECORD_TYPE, API */
+/*! exports provided: Article, Book, Collection, Contributor, ContributorList, Gazette, List, Map, Music, NewspaperArticle, NewspaperList, NewspaperTitle, Person, Picture, Search, trove_key, init, ZONES, FORMATS, AVAILABILITIES, VENDORS, AUDIENCES, CATEGORIES, FACETS, LIMITS, SORTBY, RECLEVEL, INCLUDES, STATES, SEARCH_RECORDS, RECORD_TYPE, API */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1690,36 +1897,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _contributor_list__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./contributor_list */ "./src/contributor_list.js");
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "ContributorList", function() { return _contributor_list__WEBPACK_IMPORTED_MODULE_4__["ContributorList"]; });
 
-/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./list */ "./src/list.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "List", function() { return _list__WEBPACK_IMPORTED_MODULE_5__["List"]; });
+/* harmony import */ var _gazette__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./gazette */ "./src/gazette.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Gazette", function() { return _gazette__WEBPACK_IMPORTED_MODULE_5__["Gazette"]; });
 
-/* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./map */ "./src/map.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Map", function() { return _map__WEBPACK_IMPORTED_MODULE_6__["Map"]; });
+/* harmony import */ var _list__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./list */ "./src/list.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "List", function() { return _list__WEBPACK_IMPORTED_MODULE_6__["List"]; });
 
-/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./music */ "./src/music.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Music", function() { return _music__WEBPACK_IMPORTED_MODULE_7__["Music"]; });
+/* harmony import */ var _map__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./map */ "./src/map.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Map", function() { return _map__WEBPACK_IMPORTED_MODULE_7__["Map"]; });
 
-/* harmony import */ var _newspaper_article__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./newspaper_article */ "./src/newspaper_article.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NewspaperArticle", function() { return _newspaper_article__WEBPACK_IMPORTED_MODULE_8__["NewspaperArticle"]; });
+/* harmony import */ var _music__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./music */ "./src/music.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Music", function() { return _music__WEBPACK_IMPORTED_MODULE_8__["Music"]; });
 
-/* harmony import */ var _newspaper_list__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./newspaper_list */ "./src/newspaper_list.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NewspaperList", function() { return _newspaper_list__WEBPACK_IMPORTED_MODULE_9__["NewspaperList"]; });
+/* harmony import */ var _newspaper_article__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./newspaper_article */ "./src/newspaper_article.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NewspaperArticle", function() { return _newspaper_article__WEBPACK_IMPORTED_MODULE_9__["NewspaperArticle"]; });
 
-/* harmony import */ var _newspaper_title__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./newspaper_title */ "./src/newspaper_title.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NewspaperTitle", function() { return _newspaper_title__WEBPACK_IMPORTED_MODULE_10__["NewspaperTitle"]; });
+/* harmony import */ var _newspaper_list__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./newspaper_list */ "./src/newspaper_list.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NewspaperList", function() { return _newspaper_list__WEBPACK_IMPORTED_MODULE_10__["NewspaperList"]; });
 
-/* harmony import */ var _person__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./person */ "./src/person.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Person", function() { return _person__WEBPACK_IMPORTED_MODULE_11__["Person"]; });
+/* harmony import */ var _newspaper_title__WEBPACK_IMPORTED_MODULE_11__ = __webpack_require__(/*! ./newspaper_title */ "./src/newspaper_title.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "NewspaperTitle", function() { return _newspaper_title__WEBPACK_IMPORTED_MODULE_11__["NewspaperTitle"]; });
 
-/* harmony import */ var _picture__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./picture */ "./src/picture.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Picture", function() { return _picture__WEBPACK_IMPORTED_MODULE_12__["Picture"]; });
+/* harmony import */ var _person__WEBPACK_IMPORTED_MODULE_12__ = __webpack_require__(/*! ./person */ "./src/person.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Person", function() { return _person__WEBPACK_IMPORTED_MODULE_12__["Person"]; });
 
-/* harmony import */ var _search__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./search */ "./src/search.js");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Search", function() { return _search__WEBPACK_IMPORTED_MODULE_13__["Search"]; });
+/* harmony import */ var _picture__WEBPACK_IMPORTED_MODULE_13__ = __webpack_require__(/*! ./picture */ "./src/picture.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Picture", function() { return _picture__WEBPACK_IMPORTED_MODULE_13__["Picture"]; });
+
+/* harmony import */ var _search__WEBPACK_IMPORTED_MODULE_14__ = __webpack_require__(/*! ./search */ "./src/search.js");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "Search", function() { return _search__WEBPACK_IMPORTED_MODULE_14__["Search"]; });
 
 /**
  * @copyright Chris Willoughby 2015
  */
+
 
 
 
@@ -1764,6 +1975,7 @@ var ENC = '&encoding=json';
  * @property {string} MAP The zone for maps
  * @property {string} COLLECTION The zone for collections
  * @property {string} NEWSPAPER The zone for newspapers
+ * @property {string} GAZETTE The zone for government gazettes
  * @property {string} LIST The zone for lists
  * @property {string} PEOPLE The zone for people
  * @property {string} ALL All of the above
@@ -1776,13 +1988,15 @@ var ZONES = {
   MAP: 'map',
   COLLECTION: 'collection',
   NEWSPAPER: 'newspaper',
+  GAZETTE: 'gazette',
   LIST: 'list',
-  PEOPLE: 'people',
+  PEOPLE: 'people', // not supported?
   ALL: 'all'
 };
 
 /**
  * Enumeration for formats.
+ * See {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#formats}
  * Used for facets and limits.
  * @readonly
  * @enum {string}
@@ -1835,8 +2049,10 @@ var FORMATS = {
 };
 
 /**
- * Enumeration for availability.
+ * (book, picture, article, music, map, collection, list) Enumeration for availability.
+ *
  * Used for facets and limits.
+ *
  * @readonly
  * @enum {string}
  */
@@ -1854,18 +2070,33 @@ var AVAILABILITIES = {
 };
 
 /**
+ * (article) The vendor who sells subscriptions to access a database
+ *   containing these articles.
  *
  * Used for facets and limits.
+ *
  * @readonly
  * @enum {string}
  */
-var VENDORS = {};
+var VENDORS = {
+  GALE: "GALE",
+  INFORMIT: "Informit"
+};
 
 /**
+ * (article) Only applies to articles from Gale.
  *
  * Used for facets and limits.
+ *
  * @readonly
  * @enum {string}
+ * @property {string} TRADE Trade
+ * @property {string} GENERAL General
+ * @property {string} ACADEMIC Academic
+ * @property {string} PROFESSIONAL Professional
+ * @property {string} CHILDREN Children's
+ * @property {string} CHILDRENUPPER Children's - Upper elementry
+ * @property {string} CHILDRENLOWER Children's - Lower elementry
  */
 var AUDIENCES = {
   TRADE: "Trade",
@@ -1878,63 +2109,92 @@ var AUDIENCES = {
 };
 
 /**
- * Enumeration for NewspaperArticle categories. Returned as part of the
- *   brief record for NewspaperArticle, and may also be used to limit
- *   the results of a search using {@link LIMITS}.CATEGORY.
- *   Used for facets and limits.
+ * Enumeration for NewspaperArticle and Gazette categories. Returned as
+ *   part of the brief record for NewspaperArticle and Gazette, and may
+ *   also be used to limit the results of a search using
+ *   {@link LIMITS}.CATEGORY.
+ *
+ * Used for facets and limits.
+ *
  * @readonly
  * @enum {string}
+ * @property {string} ARTICLE Classified as an article (newspaper).
+ * @property {string} ADVERTISING Classified as advertising (newspaper).
+ * @property {string} LISTS Classified as a list (newspaper).
+ * @property {string} FAMILY_NOTICES Classified as family notices (newspaper).
+ * @property {string} LITERATURE Classified as literature (newspaper).
+ * @property {string} NOTICES Classified as notices (gazettes).
+ * @property {string} TENDERS Classified as Tenders and Contracts (gazettes).
+ * @property {string} PROCLAMATIONS Classified as Proclamations And Legislation (gazettes).
+ * @property {string} PRIVATE Classified as Private Notices (gazettes).
+ * @property {string} BUDGET Classified as Budgetary Papers (gazettes).
+ * @property {string} INDEX Classified as Index And Contents (gazettes).
+ * @property {string} APPOINTMENTS Classified as Appointments And Employment (gazettes).
+ * @property {string} FOI Classified as Freedom Of Information (gazettes).
  */
 var CATEGORIES = {
-  /** Classified as an article. */
   ARTICLE: 'Article',
-  /** Classified as advertising. */
   ADVERTISING: 'Advertising',
-  /** Classified as a list. */
   LISTS: 'Detailed lists, results, guides',
-  /** Classified as family notices. */
   FAMILY_NOTICES: 'Family Notices',
-  /** Classified as literature. */
-  LITERATURE: 'Literature'
+  LITERATURE: 'Literature',
+
+  NOTICES: 'Government Gazette Notices',
+  TENDERS: 'Government Gazette Tenders and Contracts',
+  PROCLAMATIONS: 'Government Gazette Proclamations And Legislation',
+  PRIVATE: 'Government Gazette Private Notices',
+  BUDGET: 'Government Gazette Budgetary Papers',
+  INDEX: 'Government Gazette Index And Contents',
+  APPOINTMENTS: 'Government Gazette Appointments And Employment',
+  FOI: 'Government Gazette Freedom Of Information'
 };
 
 /**
  * Enumeration for facets.
- * Facets are categories that describe the results for your search. For
- *   example, if you ask for the decade facet, the response will include
- *   the list of decades your results span across, and how many results
- *   are found in each decade.
+ *
+ * See {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#facetValues}
+ *
+ * Facets are categories that describe all the records in a particular
+ *   result set. For example, if you have 10 results, you can check the
+ *   format facet to find out that 8 are books and 2 are theses. You could
+ *   also modify your search to retrieve only the theses, or only the books.
  * @readonly
  * @enum {string}
  */
 var FACETS = {
+
   /**
    * (book, picture, article, music, map, collection)
    *   The format of the resource. For example, is it a book or a
    *   piece of sheet music? See {@link FORMATS}.
    */
   FORMAT: 'format',
+
   /**
-   * (book, picture, article, music, map, collection, newspaper, list)
+   * (book, picture, article, music, map, collection, newspaper, gazette, list)
    *   Publication decade. e.g 199 represents 1990 – 1999.
    */
   DECADE: 'decade', //YYY
+
   /**
-   * (book, picture, article, music, map, collection, newspaper, list)
+   * (book, picture, article, music, map, collection, newspaper, gazette, list)
    *   Publication year. For newspapers, only available if the decade
    *   facet is also applied.
    */
   YEAR: 'year',
+
   /**
-   * (newspaper)
+   * (newspaper, gazette)
    *   Publication month. Only available if the year facet is also
    *   applied
    */
   MONTH: 'month', //
+
   /**
    * (book, picture, article, music, map, collection)
    */
   LANGUAGE: 'language',
+
   /**
    * (book, picture, article, music, map, collection, list)
    *   Whether the item is online or not. See
@@ -1970,26 +2230,36 @@ var FACETS = {
    */
   AUDIENCE: 'audience',
   /**
-   * (newspaper) The newspaper title id.
+   * (newspaper, gazette) The newspaper title id.
    */
   TITLE: 'title',
+
   /**
-   * (newspaper) Newspaper article category. See
+   * (newspaper, gazette) Newspaper article category. See
    *   {@link CATEGORIES}.
    */
   CATEGORY: 'category',
+
   /**
-   * (newspaper) Is a newspaper article illustrated?
+   * (newspaper, gazette) Is a newspaper article illustrated?
    */
   ILLUSTRATED: 'illustrated',
+
   /**
-   * (newspaper) Type of illustration for newspaper article. Only available if illustrated facet is applied
+   * (newspaper, gazette) Type of illustration for newspaper article. Only available if illustrated facet is applied
    */
   ILLTYPE: 'illtype',
+
   /**
-   * (newspaper) Newspaper article word count.
+   * (newspaper, gazette) Newspaper or gazette article word count.
    */
   WORD: 'word',
+
+  /**
+   * (newspaper, gazette) State of publication for newspaper or gazette article.
+   */
+  STATE: 'state',
+
   /**
    * All of the above.
    */
@@ -2036,6 +2306,8 @@ var LIMITS = {
   ILLTYPE: 'l-illtype',
   /** Limit by word */
   WORD: 'l-word',
+  /** Limit by state */
+  STATE: 'l-state',
   /** Limit by all */
   ALL: 'l-all'
 };
@@ -2145,10 +2417,14 @@ var STATES = {
   ALL: ''
 };
 
+/*
+ * Mapping between zone name and record list name
+ */
 var SEARCH_RECORDS = {
   people: 'people',
   list: 'list',
   newspaper: 'article',
+  gazette: 'article',
   article: 'work',
   collection: 'work',
   book: 'work',
@@ -2158,11 +2434,12 @@ var SEARCH_RECORDS = {
 };
 
 // Base URL for Trove
-var API_ADDRESS = 'http://api.trove.nla.gov.au/';
+var API_ADDRESS = 'https://api.trove.nla.gov.au/v2/';
 
 var RECORD_TYPE = {
   WORK: 'work/',
   NEWS: 'newspaper/',
+  GAZETTE: 'newspaper/',
   LIST: 'list/',
   CONTRIBUTOR: 'contributor',
   PEOPLE: 'people/' // This is not supported by the Trove API.
@@ -2174,6 +2451,7 @@ var API = {
   NP_ARTICLE: API_ADDRESS + RECORD_TYPE.NEWS,
   NP_TITLE: API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
   NP_TITLES: API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
+  GAZETTE: API_ADDRESS + RECORD_TYPE.GAZETTE,
   CONTRIBUTOR: API_ADDRESS + RECORD_TYPE.CONTRIBUTOR,
   PEOPLE: API_ADDRESS + RECORD_TYPE.PEOPLE,
   QUERY: API_ADDRESS + 'result'
@@ -2195,6 +2473,8 @@ __webpack_require__.r(__webpack_exports__);
  * A class to hold a work. Work is the parent class for other classes
  *   (Article, Book, Collection, Map, Music, Picture).
  *
+ * See: {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-4}
+ *
  * @class
  *
  * @param {Object} options The options object for the work.
@@ -2206,6 +2486,8 @@ __webpack_require__.r(__webpack_exports__);
  * @param {RECLEVEL} options.reclevel Whether to return the brief
  *   or full record.
  * @param {INCLUDES[]} options.includes
+ *
+ * TODO: Not complete
  *
  * @property {string} id
  * @property {string} url

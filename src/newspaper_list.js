@@ -4,7 +4,7 @@ import {NewspaperTitle} from "./newspaper_title";
  * A list of Newspapers for a specific state or all states.
  * @class
  * @classdesc The NewspaperList class is a wrapper around the
- *   "http://api.trove.nla.gov.au/newspaper/titles" API. If no state
+ *   "https://api.trove.nla.gov.au/v2/newspaper/titles" API. If no state
  *   is specified on construction, you will have to call the get()
  *   method to actually request the data from Trove. If the state
  *   is specified on construction, the get() method will be

@@ -228,6 +228,22 @@ QUnit.module( "newspaper tests", function( hooks ) {
     });
   });
 
+  QUnit.test("gazette article test", function(assert) {
+    var article_done = assert.async();
+    var identifier = 241299520;
+    var my_np_article = new Trove.Gazette({
+      init: identifier,
+      reclevel: Trove.RECLEVEL.FULL,
+      includes: [Trove.INCLUDES.TAGS, Trove.INCLUDES.COMMENTS, Trove.INCLUDES.ARTICLETEXT],
+      done: function(returned) {
+        // console.dir(returned.newspapers);
+        assert.equal(returned.id, identifier, "Checking gazette id");
+        console.log(JSON.stringify(returned, null, '\t'));
+        article_done();
+      }
+    });
+  });
+
   QUnit.test("newspaper title test", function(assert) {
     var title_done = assert.async();
     var identifier = 167;
@@ -260,12 +276,12 @@ QUnit.module( "search tests", function( hooks ) {
   } );
 
 
-  QUnit.test("book and newspaper zone search test", function(assert) {
+  QUnit.test("book, newspaper and gazette zone search test", function(assert) {
     var search_done = assert.async();
     var search = new Trove.Search();
     var num_records = 4;
-    var terms = 'periwinkle';
-    var zones = [Trove.ZONES.BOOK, Trove.ZONES.NEWSPAPER];
+    var terms = 'faraday';
+    var zones = [Trove.ZONES.BOOK, Trove.ZONES.NEWSPAPER, Trove.ZONES.GAZETTE];
 
     search.limit_date_range('188');
     search.query({
@@ -274,16 +290,18 @@ QUnit.module( "search tests", function( hooks ) {
       number: num_records,
       reclevel: Trove.RECLEVEL.FULL,
       done: function(returned) {
-        // console.log(returned._last_search);
+        console.log(returned);
+        assert.equal(returned.limits.decade, '188', "Checking date range");
+        assert.equal(returned.reclevel, "full", "Checking reclevel");
         assert.equal(returned._last_search.zone, zones.join(','), "Checking zone");
         assert.equal(returned._last_search.q, terms, "Checking query terms");
-        assert.equal(returned._last_search.s, 0, "Checking start");
+        assert.equal(returned._last_search.s, '*', "Checking start");
         assert.equal(returned._last_search.n, num_records, "Checking number");
         var returned_zones = Object.keys(returned.items);
         var zone_items;
         for (var index in returned_zones) {
             zone_items = returned.items[returned_zones[index]];
-            assert.equal(zone_items.length, num_records, "checking number returned");
+            assert.ok(zone_items.length <= num_records, "checking number returned");
             // for (var item_index in zone_items) {
             //     console.log(JSON.stringify(zone_items[item_index], null, '\t'));
             // }
@@ -305,26 +323,52 @@ QUnit.module( "search tests", function( hooks ) {
     var num_records = 4;
     var terms = 'periwinkle';
     var zones = [Trove.ZONES.NEWSPAPER];
+    var first_query = [];
+    var num;
 
     search.query({
       terms: terms,
       zones: zones,
       number: num_records,
-      start: 0,
+      bulkHarvest: true,
       done: function(s1) {
-        search.next({
-          done: function(s) {
+
+        assert.equal(s1.items.newspaper.length, num_records, "Checking number");
+
+        // Store the results
+        console.log(s1.items.newspaper);
+        for (num in s1.items.newspaper) {
+          first_query.push(s1.items.newspaper[num].id);
+        }
+
+        // Go to the next results
+        search.next(Trove.ZONES.NEWSPAPER, {
+          done: function(s2) {
+
+            assert.equal(s2.items.newspaper.length, num_records, "Checking number");
+
+            // Store the results
+            console.log(s2.items.newspaper);
+
             // console.log(s._last_search);
-            assert.equal(s._last_search.s, num_records, "Checking start");
-            assert.equal(s._last_search.n, num_records, "Checking number");
-            search.previous({
-              done: function(s) {
-                // console.log(s._last_search);
-                assert.equal(s._last_search.s, 0, "Checking start");
-                assert.equal(s._last_search.n, num_records, "Checking number");
+            // assert.equal(s2._last_search.s, num_records, "Checking start");
+
+            // Go back to the previous results
+            search.previous(Trove.ZONES.NEWSPAPER, {
+              done: function(s3) {
+
+                assert.equal(s3.items.newspaper.length, num_records, "Checking number");
+
+                // Check that the results are the same as the first time
+                console.log(s3.items.newspaper);
+                for (num in s3.items.newspaper) {
+                  assert.equal(s3.items.newspaper[num].id, first_query[num], "Checking item");
+                }
+
                 previous_done();
               }
             });
+
             next_done();
           }
         });

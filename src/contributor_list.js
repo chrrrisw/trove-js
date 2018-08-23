@@ -4,7 +4,7 @@
  * A container for a list of Contributors.
  * @class
  * @classdesc The ContributorList class is a wrapper around the
- *   "http://api.trove.nla.gov.au/contributor" API. If no "terms"
+ *   "https://api.trove.nla.gov.au/v2/contributor" API. If no "terms"
  *   are specified on construction, you will have to call the get()
  *   method to actually request the data from Trove. If the "terms"
  *   are specified on construction, the get() method will be

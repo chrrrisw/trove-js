@@ -6,6 +6,7 @@ export {Book} from "./book";
 export {Collection} from "./collection";
 export {Contributor} from "./contributor";
 export {ContributorList} from "./contributor_list";
+export {Gazette} from "./gazette";
 export {List} from "./list";
 export {Map} from "./map";
 export {Music} from "./music";
@@ -47,6 +48,7 @@ export {Search} from "./search";
      * @property {string} MAP The zone for maps
      * @property {string} COLLECTION The zone for collections
      * @property {string} NEWSPAPER The zone for newspapers
+     * @property {string} GAZETTE The zone for government gazettes
      * @property {string} LIST The zone for lists
      * @property {string} PEOPLE The zone for people
      * @property {string} ALL All of the above
@@ -59,13 +61,15 @@ export {Search} from "./search";
         MAP: 'map',
         COLLECTION: 'collection',
         NEWSPAPER: 'newspaper',
+        GAZETTE: 'gazette',
         LIST: 'list',
-        PEOPLE: 'people',
+        PEOPLE: 'people',  // not supported?
         ALL: 'all'
     };
 
     /**
      * Enumeration for formats.
+     * See {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#formats}
      * Used for facets and limits.
      * @readonly
      * @enum {string}
@@ -118,8 +122,10 @@ export {Search} from "./search";
     };
 
     /**
-     * Enumeration for availability.
+     * (book, picture, article, music, map, collection, list) Enumeration for availability.
+     *
      * Used for facets and limits.
+     *
      * @readonly
      * @enum {string}
      */
@@ -137,18 +143,33 @@ export {Search} from "./search";
     };
 
     /**
+     * (article) The vendor who sells subscriptions to access a database
+     *   containing these articles.
      *
      * Used for facets and limits.
+     *
      * @readonly
      * @enum {string}
      */
-    export var VENDORS = {};
+    export var VENDORS = {
+        GALE: "GALE",
+        INFORMIT: "Informit"
+    };
 
     /**
+     * (article) Only applies to articles from Gale.
      *
      * Used for facets and limits.
+     *
      * @readonly
      * @enum {string}
+     * @property {string} TRADE Trade
+     * @property {string} GENERAL General
+     * @property {string} ACADEMIC Academic
+     * @property {string} PROFESSIONAL Professional
+     * @property {string} CHILDREN Children's
+     * @property {string} CHILDRENUPPER Children's - Upper elementry
+     * @property {string} CHILDRENLOWER Children's - Lower elementry
      */
     export var AUDIENCES = {
         TRADE: "Trade",
@@ -161,63 +182,92 @@ export {Search} from "./search";
     };
 
     /**
-     * Enumeration for NewspaperArticle categories. Returned as part of the
-     *   brief record for NewspaperArticle, and may also be used to limit
-     *   the results of a search using {@link LIMITS}.CATEGORY.
-     *   Used for facets and limits.
+     * Enumeration for NewspaperArticle and Gazette categories. Returned as
+     *   part of the brief record for NewspaperArticle and Gazette, and may
+     *   also be used to limit the results of a search using
+     *   {@link LIMITS}.CATEGORY.
+     *
+     * Used for facets and limits.
+     *
      * @readonly
      * @enum {string}
+     * @property {string} ARTICLE Classified as an article (newspaper).
+     * @property {string} ADVERTISING Classified as advertising (newspaper).
+     * @property {string} LISTS Classified as a list (newspaper).
+     * @property {string} FAMILY_NOTICES Classified as family notices (newspaper).
+     * @property {string} LITERATURE Classified as literature (newspaper).
+     * @property {string} NOTICES Classified as notices (gazettes).
+     * @property {string} TENDERS Classified as Tenders and Contracts (gazettes).
+     * @property {string} PROCLAMATIONS Classified as Proclamations And Legislation (gazettes).
+     * @property {string} PRIVATE Classified as Private Notices (gazettes).
+     * @property {string} BUDGET Classified as Budgetary Papers (gazettes).
+     * @property {string} INDEX Classified as Index And Contents (gazettes).
+     * @property {string} APPOINTMENTS Classified as Appointments And Employment (gazettes).
+     * @property {string} FOI Classified as Freedom Of Information (gazettes).
      */
     export var CATEGORIES = {
-        /** Classified as an article. */
         ARTICLE: 'Article',
-        /** Classified as advertising. */
         ADVERTISING: 'Advertising',
-        /** Classified as a list. */
         LISTS: 'Detailed lists, results, guides',
-        /** Classified as family notices. */
         FAMILY_NOTICES: 'Family Notices',
-        /** Classified as literature. */
-        LITERATURE: 'Literature'
+        LITERATURE: 'Literature',
+
+        NOTICES: 'Government Gazette Notices',
+        TENDERS: 'Government Gazette Tenders and Contracts',
+        PROCLAMATIONS: 'Government Gazette Proclamations And Legislation',
+        PRIVATE: 'Government Gazette Private Notices',
+        BUDGET: 'Government Gazette Budgetary Papers',
+        INDEX: 'Government Gazette Index And Contents',
+        APPOINTMENTS: 'Government Gazette Appointments And Employment',
+        FOI: 'Government Gazette Freedom Of Information',
     };
 
     /**
      * Enumeration for facets.
-     * Facets are categories that describe the results for your search. For
-     *   example, if you ask for the decade facet, the response will include
-     *   the list of decades your results span across, and how many results
-     *   are found in each decade.
+     *
+     * See {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#facetValues}
+     *
+     * Facets are categories that describe all the records in a particular
+     *   result set. For example, if you have 10 results, you can check the
+     *   format facet to find out that 8 are books and 2 are theses. You could
+     *   also modify your search to retrieve only the theses, or only the books.
      * @readonly
      * @enum {string}
      */
     export var FACETS = {
+
         /**
          * (book, picture, article, music, map, collection)
          *   The format of the resource. For example, is it a book or a
          *   piece of sheet music? See {@link FORMATS}.
          */
         FORMAT: 'format',
+
         /**
-         * (book, picture, article, music, map, collection, newspaper, list)
+         * (book, picture, article, music, map, collection, newspaper, gazette, list)
          *   Publication decade. e.g 199 represents 1990 – 1999.
          */
         DECADE: 'decade', //YYY
+
         /**
-         * (book, picture, article, music, map, collection, newspaper, list)
+         * (book, picture, article, music, map, collection, newspaper, gazette, list)
          *   Publication year. For newspapers, only available if the decade
          *   facet is also applied.
          */
         YEAR: 'year',
+
         /**
-         * (newspaper)
+         * (newspaper, gazette)
          *   Publication month. Only available if the year facet is also
          *   applied
          */
         MONTH: 'month', //
+
         /**
          * (book, picture, article, music, map, collection)
          */
         LANGUAGE: 'language',
+
         /**
          * (book, picture, article, music, map, collection, list)
          *   Whether the item is online or not. See
@@ -253,26 +303,36 @@ export {Search} from "./search";
          */
         AUDIENCE: 'audience',
         /**
-         * (newspaper) The newspaper title id.
+         * (newspaper, gazette) The newspaper title id.
          */
         TITLE: 'title',
+
         /**
-         * (newspaper) Newspaper article category. See
+         * (newspaper, gazette) Newspaper article category. See
          *   {@link CATEGORIES}.
          */
         CATEGORY: 'category',
+
         /**
-         * (newspaper) Is a newspaper article illustrated?
+         * (newspaper, gazette) Is a newspaper article illustrated?
          */
         ILLUSTRATED: 'illustrated',
+
         /**
-         * (newspaper) Type of illustration for newspaper article. Only available if illustrated facet is applied
+         * (newspaper, gazette) Type of illustration for newspaper article. Only available if illustrated facet is applied
          */
         ILLTYPE: 'illtype',
+
         /**
-         * (newspaper) Newspaper article word count.
+         * (newspaper, gazette) Newspaper or gazette article word count.
          */
         WORD: 'word',
+
+        /**
+         * (newspaper, gazette) State of publication for newspaper or gazette article.
+         */
+        STATE: 'state',
+
         /**
          * All of the above.
          */
@@ -319,6 +379,8 @@ export {Search} from "./search";
         ILLTYPE: 'l-illtype',
         /** Limit by word */
         WORD: 'l-word',
+        /** Limit by state */
+        STATE: 'l-state',
         /** Limit by all */
         ALL: 'l-all'
     };
@@ -428,10 +490,14 @@ export {Search} from "./search";
         ALL: ''
     };
 
+    /*
+     * Mapping between zone name and record list name
+     */
     export var SEARCH_RECORDS = {
         people: 'people',
         list: 'list',
         newspaper: 'article',
+        gazette: 'article',
         article: 'work',
         collection: 'work',
         book: 'work',
@@ -441,11 +507,12 @@ export {Search} from "./search";
     };
 
     // Base URL for Trove
-    var API_ADDRESS = 'http://api.trove.nla.gov.au/';
+    var API_ADDRESS = 'https://api.trove.nla.gov.au/v2/';
 
     export var RECORD_TYPE = {
         WORK: 'work/',
         NEWS: 'newspaper/',
+        GAZETTE: 'newspaper/',
         LIST: 'list/',
         CONTRIBUTOR: 'contributor',
         PEOPLE: 'people/'  // This is not supported by the Trove API.
@@ -457,6 +524,7 @@ export {Search} from "./search";
         NP_ARTICLE: API_ADDRESS + RECORD_TYPE.NEWS,
         NP_TITLE: API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
         NP_TITLES: API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
+        GAZETTE: API_ADDRESS + RECORD_TYPE.GAZETTE,
         CONTRIBUTOR: API_ADDRESS + RECORD_TYPE.CONTRIBUTOR,
         PEOPLE: API_ADDRESS + RECORD_TYPE.PEOPLE,
         QUERY: API_ADDRESS + 'result'

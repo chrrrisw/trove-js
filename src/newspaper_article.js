@@ -3,6 +3,8 @@ import {NewspaperTitle} from "./newspaper_title";
 /**
  * A Class to hold newspaper articles.
  *
+ * See: {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6}
+ *
  * @class
  *
  * @param {Object} options An object specifying the default options
@@ -122,7 +124,7 @@ export class NewspaperArticle {
      */
     get (options) {
         // console.log('Getting NewspaperArticle');
-        // http://api.trove.nla.gov.au/newspaper/18342701?key=<INSERT KEY>
+        // https://api.trove.nla.gov.au/v2/newspaper/18342701?key=<INSERT KEY>
 
         // Override reclevel, includes, done and fail if specified
         if (options) {

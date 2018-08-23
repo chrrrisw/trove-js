@@ -1,25 +1,25 @@
 /**
- * A class to hold a list
+ * A Class to hold government gazette articles.
  *
- * See: {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-5}
+ * See: {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6}
  *
  * @class
  *
- * @param {Object} options The options object for the list.
- * @param {(number|string)} options.init The list identifier for which
+ * @param {Object} options An object specifying the default options
+ * @param {number} options.init The article identifier for which
  *   to retrieve data on construction.
- * @param {function} options.done The callback on receipt of data
- *   (optional).
+ * @param {function} options.done The callback on receipt of
+ *   data (optional).
  * @param {function} options.fail The callback on failure (optional).
  * @param {RECLEVEL} options.reclevel Whether to return the brief
  *   or full record.
  * @param {INCLUDES[]} options.includes
  *
  */
-export class List {
+export class Gazette {
 
     constructor (options) {
-        // console.log('Creating List');
+        // console.log('Creating Gazette');
 
         // Save and remove init from options.
         var init;
@@ -35,17 +35,18 @@ export class List {
         if (init !== undefined) {
             this.get({id: init});
         }
-
     }
 
     process_done (data) {
-        $.extend(this, data.list);
+        $.extend(this, data.article);
         if (this.done !== undefined) {
             this.done(this);
         }
     }
 
-    process_fail (jqXHR, textStatus, errorThrown) {
+    process_fail (
+            jqXHR, textStatus, errorThrown) {
+
         console.error(textStatus);
 
         if (this.fail !== undefined) {
@@ -54,10 +55,11 @@ export class List {
     }
 
     /**
-     * Get the List metadata from the Trove server.
+     * Retrieve article information from Trove based on identifier.
+     *
      * @param {Object} options The options object for the query.
-     * @param {(number|string)} options.id The List ID for which
-     *   to retrieve data.
+     * @param {number} options.id The article ID for which to
+     *   retrieve data.
      * @param {function} options.done The callback on receipt of data
      *   (optional).
      * @param {function} options.fail The callback on failure (optional).
@@ -66,7 +68,8 @@ export class List {
      * @param {INCLUDES[]} options.includes
      */
     get (options) {
-        // console.log('Getting list');
+        // console.log('Getting Gazette');
+        // https://api.trove.nla.gov.au/v2/gazette/18342701?key=<INSERT KEY>
 
         // Override reclevel, includes, done and fail if specified
         if (options) {
@@ -96,10 +99,10 @@ export class List {
 
         $.ajax({
             dataType: "jsonp",
-            url: Trove.API.LIST + this.id,
+            url: Trove.API.GAZETTE + this.id,
             data: query_data,
             context: this
         }).done(this.process_done).fail(this.process_fail);
     }
-    
+
 }

@@ -2,6 +2,8 @@
  * A class to hold a work. Work is the parent class for other classes
  *   (Article, Book, Collection, Map, Music, Picture).
  *
+ * See: {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-4}
+ *
  * @class
  *
  * @param {Object} options The options object for the work.
@@ -13,6 +15,8 @@
  * @param {RECLEVEL} options.reclevel Whether to return the brief
  *   or full record.
  * @param {INCLUDES[]} options.includes
+ *
+ * TODO: Not complete
  *
  * @property {string} id
  * @property {string} url

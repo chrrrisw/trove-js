@@ -20,14 +20,19 @@
 </dd>
 <dt><a href="#ContributorList">ContributorList</a></dt>
 <dd><p>The ContributorList class is a wrapper around the
-  &quot;<a href="http://api.trove.nla.gov.au/contributor&quot;">http://api.trove.nla.gov.au/contributor&quot;</a> API. If no &quot;terms&quot;
+  &quot;<a href="https://api.trove.nla.gov.au/v2/contributor&quot;">https://api.trove.nla.gov.au/v2/contributor&quot;</a> API. If no &quot;terms&quot;
   are specified on construction, you will have to call the get()
   method to actually request the data from Trove. If the &quot;terms&quot;
   are specified on construction, the get() method will be
   called immediately.</p>
 </dd>
+<dt><a href="#Gazette">Gazette</a></dt>
+<dd><p>A Class to hold government gazette articles.</p>
+<p>See: <a href="http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6">http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6</a></p>
+</dd>
 <dt><a href="#List">List</a></dt>
 <dd><p>A class to hold a list</p>
+<p>See: <a href="http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-5">http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-5</a></p>
 </dd>
 <dt><a href="#Map">Map</a> ⇐ <code><a href="#Work">Work</a></code></dt>
 <dd><p>A class to hold a map</p>
@@ -37,10 +42,11 @@
 </dd>
 <dt><a href="#NewspaperArticle">NewspaperArticle</a></dt>
 <dd><p>A Class to hold newspaper articles.</p>
+<p>See: <a href="http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6">http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6</a></p>
 </dd>
 <dt><a href="#NewspaperList">NewspaperList</a></dt>
 <dd><p>The NewspaperList class is a wrapper around the
-  &quot;<a href="http://api.trove.nla.gov.au/newspaper/titles&quot;">http://api.trove.nla.gov.au/newspaper/titles&quot;</a> API. If no state
+  &quot;<a href="https://api.trove.nla.gov.au/v2/newspaper/titles&quot;">https://api.trove.nla.gov.au/v2/newspaper/titles&quot;</a> API. If no state
   is specified on construction, you will have to call the get()
   method to actually request the data from Trove. If the state
   is specified on construction, the get() method will be
@@ -52,7 +58,7 @@
 </dd>
 <dt><a href="#NewspaperTitle">NewspaperTitle</a></dt>
 <dd><p>The NewspaperTitle class is a wrapper around the
-  &quot;<a href="http://api.trove.nla.gov.au/newspaper/title&quot;">http://api.trove.nla.gov.au/newspaper/title&quot;</a> API.
+  &quot;<a href="https://api.trove.nla.gov.au/v2/newspaper/title&quot;">https://api.trove.nla.gov.au/v2/newspaper/title&quot;</a> API.
   The <a href="#NewspaperList">NewspaperList</a> class will return a list of
   these objects for a state (or all states).</p>
 </dd>
@@ -70,6 +76,7 @@ except as a result of a search.</p>
 <dt><a href="#Work">Work</a></dt>
 <dd><p>A class to hold a work. Work is the parent class for other classes
   (Article, Book, Collection, Map, Music, Picture).</p>
+<p>See: <a href="http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-4">http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-4</a></p>
 </dd>
 </dl>
 
@@ -314,7 +321,7 @@ Get the Contributor metadata from the Trove server. If "done" or "fail"
 
 ## ContributorList
 The ContributorList class is a wrapper around the
-  "http://api.trove.nla.gov.au/contributor" API. If no "terms"
+  "https://api.trove.nla.gov.au/v2/contributor" API. If no "terms"
   are specified on construction, you will have to call the get()
   method to actually request the data from Trove. If the "terms"
   are specified on construction, the get() method will be
@@ -361,10 +368,54 @@ Get the data from the Trove server. If "done" or "fail" are set,
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 
+<a name="Gazette"></a>
+
+## Gazette
+A Class to hold government gazette articles.
+
+See: [http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6](http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6)
+
+**Kind**: global class  
+
+* [Gazette](#Gazette)
+    * [new exports.Gazette(options)](#new_Gazette_new)
+    * [.get(options)](#Gazette+get)
+
+<a name="new_Gazette_new"></a>
+
+### new exports.Gazette(options)
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | An object specifying the default options |
+| options.init | <code>number</code> | The article identifier for which   to retrieve data on construction. |
+| options.done | <code>function</code> | The callback on receipt of   data (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | [<code>RECLEVEL</code>](#RECLEVEL) | Whether to return the brief   or full record. |
+| options.includes | [<code>Array.&lt;INCLUDES&gt;</code>](#INCLUDES) |  |
+
+<a name="Gazette+get"></a>
+
+### gazette.get(options)
+Retrieve article information from Trove based on identifier.
+
+**Kind**: instance method of [<code>Gazette</code>](#Gazette)  
+
+| Param | Type | Description |
+| --- | --- | --- |
+| options | <code>Object</code> | The options object for the query. |
+| options.id | <code>number</code> | The article ID for which to   retrieve data. |
+| options.done | <code>function</code> | The callback on receipt of data   (optional). |
+| options.fail | <code>function</code> | The callback on failure (optional). |
+| options.reclevel | [<code>RECLEVEL</code>](#RECLEVEL) | Whether to return the brief   or full record. |
+| options.includes | [<code>Array.&lt;INCLUDES&gt;</code>](#INCLUDES) |  |
+
 <a name="List"></a>
 
 ## List
 A class to hold a list
+
+See: [http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-5](http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-5)
 
 **Kind**: global class  
 
@@ -506,6 +557,8 @@ Get the Work metadata from the Trove server.
 ## NewspaperArticle
 A Class to hold newspaper articles.
 
+See: [http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6](http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-6)
+
 **Kind**: global class  
 **Properties**
 
@@ -607,7 +660,7 @@ Retrieve newspaper title information for the article
 
 ## NewspaperList
 The NewspaperList class is a wrapper around the
-  "http://api.trove.nla.gov.au/newspaper/titles" API. If no state
+  "https://api.trove.nla.gov.au/v2/newspaper/titles" API. If no state
   is specified on construction, you will have to call the get()
   method to actually request the data from Trove. If the state
   is specified on construction, the get() method will be
@@ -661,7 +714,7 @@ Get the data from the Trove server. If done or fail are set,
 
 ## NewspaperTitle
 The NewspaperTitle class is a wrapper around the
-  "http://api.trove.nla.gov.au/newspaper/title" API.
+  "https://api.trove.nla.gov.au/v2/newspaper/title" API.
   The [NewspaperList](#NewspaperList) class will return a list of
   these objects for a state (or all states).
 
@@ -840,8 +893,8 @@ An object to perform searches
     * [.limit_date_range(start)](#Search+limit_date_range)
     * [.query(options)](#Search+query)
     * [.requery(options, delta)](#Search+requery)
-    * [.next(options)](#Search+next)
-    * [.previous(options)](#Search+previous)
+    * [.next(zone, options)](#Search+next)
+    * [.previous(zone, options)](#Search+previous)
 
 <a name="new_Search_new"></a>
 
@@ -920,7 +973,7 @@ Query the Trove database.
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.zones | [<code>Array.&lt;ZONES&gt;</code>](#ZONES) | The list of zones to search   (mandatory). |
 | options.terms | <code>string</code> | The search terms (mandatory). |
-| options.start | <code>number</code> | Return records starting at this point  (optional, default=0). |
+| options.start | <code>number</code> | Return records starting at this point  (optional, default=*). |
 | options.number | <code>number</code> | Return this number of records   (max. 100, optional, default=20). |
 | options.sort | [<code>SORTBY</code>](#SORTBY) | Sort the results according to this   parameter (optional, default=[SORTBY](#SORTBY).RELEVANCE). |
 | options.reclevel | [<code>RECLEVEL</code>](#RECLEVEL) | Whether to return the brief   or full record. |
@@ -944,26 +997,34 @@ Repeat the last query, with a delta applied to the start.
 
 <a name="Search+next"></a>
 
-### search.next(options)
+### search.next(zone, options)
 Request the next search results
+
+Although an initial search may cover more than one zone, getting
+results through this interface must specify a singe zone.
 
 **Kind**: instance method of [<code>Search</code>](#Search)  
 
 | Param | Type | Description |
 | --- | --- | --- |
+| zone | <code>string</code> | The zone in which to get the results. |
 | options | <code>Object</code> | Options to be applied to the query |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 
 <a name="Search+previous"></a>
 
-### search.previous(options)
-Request the previous search results
+### search.previous(zone, options)
+Request the previous search results.
+
+Although an initial search may cover more than one zone, getting
+results through this interface must specify a singe zone.
 
 **Kind**: instance method of [<code>Search</code>](#Search)  
 
 | Param | Type | Description |
 | --- | --- | --- |
+| zone | <code>string</code> | The zone in which to get the results. |
 | options | <code>Object</code> | Options to be applied to the query |
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
@@ -973,6 +1034,8 @@ Request the previous search results
 ## Work
 A class to hold a work. Work is the parent class for other classes
   (Article, Book, Collection, Map, Music, Picture).
+
+See: [http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-4](http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#anchor-4)
 
 **Kind**: global class  
 **Properties**
@@ -1044,7 +1107,7 @@ Create a Work object instance.
 | options.done | <code>function</code> | The callback on receipt of data   (optional). |
 | options.fail | <code>function</code> | The callback on failure (optional). |
 | options.reclevel | [<code>RECLEVEL</code>](#RECLEVEL) | Whether to return the brief   or full record. |
-| options.includes | [<code>Array.&lt;INCLUDES&gt;</code>](#INCLUDES) |  |
+| options.includes | [<code>Array.&lt;INCLUDES&gt;</code>](#INCLUDES) | TODO: Not complete |
 
 <a name="Work+process_done"></a>
 
@@ -1092,6 +1155,7 @@ Enumeration for zones, can include multiple as a list
 | MAP | <code>string</code> | The zone for maps |
 | COLLECTION | <code>string</code> | The zone for collections |
 | NEWSPAPER | <code>string</code> | The zone for newspapers |
+| GAZETTE | <code>string</code> | The zone for government gazettes |
 | LIST | <code>string</code> | The zone for lists |
 | PEOPLE | <code>string</code> | The zone for people |
 | ALL | <code>string</code> | All of the above |
@@ -1100,6 +1164,7 @@ Enumeration for zones, can include multiple as a list
 
 ## FORMATS : <code>enum</code>
 Enumeration for formats.
+See [http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#formats](http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#formats)
 Used for facets and limits.
 
 **Kind**: global enum  
@@ -1107,7 +1172,8 @@ Used for facets and limits.
 <a name="AVAILABILITIES"></a>
 
 ## AVAILABILITIES : <code>enum</code>
-Enumeration for availability.
+(book, picture, article, music, map, collection, list) Enumeration for availability.
+
 Used for facets and limits.
 
 **Kind**: global enum  
@@ -1115,6 +1181,9 @@ Used for facets and limits.
 <a name="VENDORS"></a>
 
 ## VENDORS : <code>enum</code>
+(article) The vendor who sells subscriptions to access a database
+  containing these articles.
+
 Used for facets and limits.
 
 **Kind**: global enum  
@@ -1122,28 +1191,65 @@ Used for facets and limits.
 <a name="AUDIENCES"></a>
 
 ## AUDIENCES : <code>enum</code>
+(article) Only applies to articles from Gale.
+
 Used for facets and limits.
 
 **Kind**: global enum  
 **Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| TRADE | <code>string</code> | Trade |
+| GENERAL | <code>string</code> | General |
+| ACADEMIC | <code>string</code> | Academic |
+| PROFESSIONAL | <code>string</code> | Professional |
+| CHILDREN | <code>string</code> | Children's |
+| CHILDRENUPPER | <code>string</code> | Children's - Upper elementry |
+| CHILDRENLOWER | <code>string</code> | Children's - Lower elementry |
+
 <a name="CATEGORIES"></a>
 
 ## CATEGORIES : <code>enum</code>
-Enumeration for NewspaperArticle categories. Returned as part of the
-  brief record for NewspaperArticle, and may also be used to limit
-  the results of a search using [LIMITS](#LIMITS).CATEGORY.
-  Used for facets and limits.
+Enumeration for NewspaperArticle and Gazette categories. Returned as
+  part of the brief record for NewspaperArticle and Gazette, and may
+  also be used to limit the results of a search using
+  [LIMITS](#LIMITS).CATEGORY.
+
+Used for facets and limits.
 
 **Kind**: global enum  
 **Read only**: true  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| ARTICLE | <code>string</code> | Classified as an article (newspaper). |
+| ADVERTISING | <code>string</code> | Classified as advertising (newspaper). |
+| LISTS | <code>string</code> | Classified as a list (newspaper). |
+| FAMILY_NOTICES | <code>string</code> | Classified as family notices (newspaper). |
+| LITERATURE | <code>string</code> | Classified as literature (newspaper). |
+| NOTICES | <code>string</code> | Classified as notices (gazettes). |
+| TENDERS | <code>string</code> | Classified as Tenders and Contracts (gazettes). |
+| PROCLAMATIONS | <code>string</code> | Classified as Proclamations And Legislation (gazettes). |
+| PRIVATE | <code>string</code> | Classified as Private Notices (gazettes). |
+| BUDGET | <code>string</code> | Classified as Budgetary Papers (gazettes). |
+| INDEX | <code>string</code> | Classified as Index And Contents (gazettes). |
+| APPOINTMENTS | <code>string</code> | Classified as Appointments And Employment (gazettes). |
+| FOI | <code>string</code> | Classified as Freedom Of Information (gazettes). |
+
 <a name="FACETS"></a>
 
 ## FACETS : <code>enum</code>
 Enumeration for facets.
-Facets are categories that describe the results for your search. For
-  example, if you ask for the decade facet, the response will include
-  the list of decades your results span across, and how many results
-  are found in each decade.
+
+See [http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#facetValues](http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#facetValues)
+
+Facets are categories that describe all the records in a particular
+  result set. For example, if you have 10 results, you can check the
+  format facet to find out that 8 are books and 2 are theses. You could
+  also modify your search to retrieve only the theses, or only the books.
 
 **Kind**: global enum  
 **Read only**: true  

@@ -14,7 +14,7 @@ var STATEABBR = {
  * A class to hold an instance of a newspaper title.
  * @class
  * @classdesc The NewspaperTitle class is a wrapper around the
- *   "http://api.trove.nla.gov.au/newspaper/title" API.
+ *   "https://api.trove.nla.gov.au/v2/newspaper/title" API.
  *   The {@link NewspaperList} class will return a list of
  *   these objects for a state (or all states).
  * @param {Object} options The options used on construction. Every
@@ -77,7 +77,7 @@ export class NewspaperTitle {
      *   publication dates in the given range. Of the form: YYYYMMDD-YYYYMMDD.
      */
     get (options) {
-        // http://api.trove.nla.gov.au/newspaper/title/35?encoding=json
+        // https://api.trove.nla.gov.au/v2/newspaper/title/35?encoding=json
 
         if (options) {
             this.id = options.id || this.id;
