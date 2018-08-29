@@ -8,6 +8,10 @@ import {Work} from "./work";
  */
 export class Book extends Work {
 
+	/**
+	 * Create an Book
+	 * @param {Object} options
+	 */
     constructor (options) {
         super(options);
         // console.log('Creating Book');
