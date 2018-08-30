@@ -113,6 +113,7 @@ __webpack_require__.r(__webpack_exports__);
  * A class to hold a journal article.
  * @class
  * @augments Work
+ * @param {Object} options
  */
 class Article extends _work__WEBPACK_IMPORTED_MODULE_0__["Work"] {
 
@@ -150,10 +151,14 @@ __webpack_require__.r(__webpack_exports__);
  */
 class Book extends _work__WEBPACK_IMPORTED_MODULE_0__["Work"] {
 
-    constructor(options) {
-        super(options);
-        // console.log('Creating Book');
-    }
+  /**
+   * Create an Book
+   * @param {Object} options
+   */
+  constructor(options) {
+    super(options);
+    // console.log('Creating Book');
+  }
 
 }
 
@@ -1701,9 +1706,9 @@ class Search {
             query_data.s = options.start;
         }
 
-        if (options.nextStart !== undefined) {
-            query_data.nextStart = options.nextStart;
-        }
+        // if (options.nextStart !== undefined) {
+        //     query_data.nextStart = options.nextStart;
+        // }
 
         // How many to return
         if (options.number !== undefined) {

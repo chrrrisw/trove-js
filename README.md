@@ -3,9 +3,9 @@ A JavaScript library to access the National Library of Australia's (NLA) Trove A
 
 The Trove website can be found at [https://trove.nla.gov.au](https://trove.nla.gov.au).
 
-Trove's API is documented [here](http://help.nla.gov.au/trove/building-with-trove/api-technical-guide).
+Trove's v2 API is documented [here](http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide).
 
-This library works with: http://api.trove.nla.gov.au
+This library works with: https://api.trove.nla.gov.au/v2
 
 A simple live search example is [here](http://chrrrisw.github.io/trove-js/).
 

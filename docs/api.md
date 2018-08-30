@@ -156,6 +156,8 @@ A class to hold a book
 <a name="new_Book_new"></a>
 
 ### new exports.Book(options)
+Create an Book
+
 
 | Param | Type |
 | --- | --- |
