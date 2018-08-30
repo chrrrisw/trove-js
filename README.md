@@ -1,11 +1,11 @@
 # trove-js
 A JavaScript library to access the National Library of Australia's (NLA) Trove API.
 
-The Trove website can be found at: http://trove.nla.gov.au
+The Trove website can be found at [https://trove.nla.gov.au](https://trove.nla.gov.au).
 
-Trove's API is documented at: http://help.nla.gov.au/trove/building-with-trove/api-technical-guide
+Trove's v2 API is documented [here](http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide).
 
-This library works with: http://api.trove.nla.gov.au
+This library works with: https://api.trove.nla.gov.au/v2
 
 A simple live search example is [here](http://chrrrisw.github.io/trove-js/).
 
@@ -19,7 +19,7 @@ A simple live search example is [here](http://chrrrisw.github.io/trove-js/).
 
 Source files are in `src`, concatenated and minified distribution files are in `dist`.
 
-You'll need `npm` and `grunt-cli` installed to generate the distribution files.
+You'll need `npm`, `babel` and `webpack` installed to generate the distribution files.
 
 Clone this repository, and go to the directory created. Type:
 
@@ -29,27 +29,23 @@ npm install
 
 This will install the dependencies for building and testing.
 
-There are a number of grunt tasks defined, but be aware that the unit tests will need a Trove API key in the `__key_file__` file.
+There are a number of npm scripts defined, but be aware that the unit tests will need a Trove API key in the `__key_file__` file.
 
 | Task      | Description
 |:--------- |:-------------
-| default   | Check code style, generate the docs, run unit tests, concatenate and uglify the source files.
-| prepare   | Used to prepare the code for uploading to GitHub (code style, docs, concat and uglify).
-| test      | Checks code style and runs unit tests (you'll need an API key to run the tests).
+| build     | Check code style, package the library.
+| docs      | Generate html docs.
+| docs:md   | Generate markdown docs.
+| lint      | Check code style.
+| test      | Runs unit tests (you'll need an API key to run the tests).
 
 To build the dist/trove-api.js after modifying a source file just type:
 
 ```bash
-grunt
+npm run build
 ```
 
-to run the default task, or
-
-```bash
-grunt prepare
-```
-
-which should check your files for code style and produce a concatenated file, as well as an uglified one.
+which should check your files for code style and produce the concatenated file.
 
 ## <a name="getting_key"></a>Getting an API key
 You'll need to get an API key first, by signing up and requesting one. Instructions for doing so are found at [Trove Help](http://help.nla.gov.au/trove/building-with-trove/api).
@@ -104,6 +100,6 @@ to get the same result. The parameter to the called function is the object that 
 
 Please see the [wiki](https://github.com/chrrrisw/trove-js/wiki) for examples
 
-There are API docs [here](https://github.com/chrrrisw/trove-js/blob/master/docs/api.md) and you can build HTML API pages using ```grunt jsdoc```.
+There are API docs [here](https://github.com/chrrrisw/trove-js/blob/master/docs/api.md) and you can build HTML API pages using ```npm run docs```.
 
 There is a simple search example at http://chrrrisw.github.io/trove-js/

@@ -1,65 +1,80 @@
 /**
- * @namespace Trove
  * @copyright Chris Willoughby 2015
  */
-(function(Trove, $, undefined) {
-    'use strict';
+export {Article} from "./article";
+export {Book} from "./book";
+export {Collection} from "./collection";
+export {Contributor} from "./contributor";
+export {ContributorList} from "./contributor_list";
+export {Gazette} from "./gazette";
+export {List} from "./list";
+export {Map} from "./map";
+export {Music} from "./music";
+export {NewspaperArticle} from "./newspaper_article";
+export {NewspaperList} from "./newspaper_list";
+export {NewspaperTitle} from "./newspaper_title";
+export {Person} from "./person";
+export {Picture} from "./picture";
+export {Search} from "./search";
+
+
 
     //Public Property
-    Trove.trove_key = '';
+    export var trove_key = '';
 
     /**
-     * @alias Trove.init
      * @param {string} key The Trove API key given to you by the National
      *   Library of Australia.
      *
      * This function should be called before any queries are made to the
      *   Trove servers.
      */
-    Trove.init = function(key) {
-        Trove.trove_key = key;
-    };
+    export function init(key) {
+        // console.log("INIT called");
+        trove_key = key;
+    }
 
     var ENC = '&encoding=json';
 
     /**
      * Enumeration for zones, can include multiple as a list
-     * @alias Trove.ZONES
+     * @namespace
      * @readonly
      * @enum {string}
+     * @property {string} BOOK The zone for books.
+     * @property {string} PICTURE The zone for pictures
+     * @property {string} ARTICLE The zone for journal articles
+     * @property {string} MUSIC The zone for music
+     * @property {string} MAP The zone for maps
+     * @property {string} COLLECTION The zone for collections
+     * @property {string} NEWSPAPER The zone for newspapers
+     * @property {string} GAZETTE The zone for government gazettes
+     * @property {string} LIST The zone for lists
+     * @property {string} PEOPLE The zone for people
+     * @property {string} ALL All of the above
      */
-    var ZONES = {
-        /** The zone for books */
+    export var ZONES = {
         BOOK: 'book',
-        /** The zone for pictures */
         PICTURE: 'picture',
-        /** The zone for journal articles */
         ARTICLE: 'article',
-        /** The zone for music */
         MUSIC: 'music',
-        /** The zone for maps */
         MAP: 'map',
-        /** The zone for collections */
         COLLECTION: 'collection',
-        /** The zone for newspapers */
         NEWSPAPER: 'newspaper',
-        /** The zone for lists */
+        GAZETTE: 'gazette',
         LIST: 'list',
-        /** The zone for people */
-        PEOPLE: 'people',
-        /** All of the above */
+        PEOPLE: 'people',  // not supported?
         ALL: 'all'
     };
-    Trove.ZONES = ZONES;
 
     /**
      * Enumeration for formats.
-     *   Used for facets and limits.
-     * @alias Trove.FORMATS
+     * See {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#formats}
+     * Used for facets and limits.
      * @readonly
      * @enum {string}
      */
-    var FORMATS = {
+    export var FORMATS = {
         WEBSITE: 'Archived website',
         ARTWORK: 'Art work',
         ARTICLE: 'Article',
@@ -105,16 +120,16 @@
         VIDEO: 'Video',
         VIDEOCAPTIONED: 'Video/Captioned'
     };
-    Trove.FORMATS = FORMATS;
 
     /**
-     * Enumeration for availability.
+     * (book, picture, article, music, map, collection, list) Enumeration for availability.
+     *
      * Used for facets and limits.
-     * @alias Trove.AVAILABILITIES
+     *
      * @readonly
      * @enum {string}
      */
-    var AVAILABILITIES = {
+    export var AVAILABILITIES = {
         /** Online. */
         ONLINE: 'y',
         /** Freely accessible online. */
@@ -126,26 +141,37 @@
         /** Possibly online. */
         POSSIBLY: 'y/u'
     };
-    Trove.AVAILABILITIES = AVAILABILITIES;
 
     /**
+     * (article) The vendor who sells subscriptions to access a database
+     *   containing these articles.
      *
      * Used for facets and limits.
-     * @alias Trove.VENDORS
+     *
      * @readonly
      * @enum {string}
      */
-    var VENDORS = {};
-    Trove.VENDORS = VENDORS;
+    export var VENDORS = {
+        GALE: "GALE",
+        INFORMIT: "Informit"
+    };
 
     /**
+     * (article) Only applies to articles from Gale.
      *
      * Used for facets and limits.
-     * @alias Trove.AUDIENCES
+     *
      * @readonly
      * @enum {string}
+     * @property {string} TRADE Trade
+     * @property {string} GENERAL General
+     * @property {string} ACADEMIC Academic
+     * @property {string} PROFESSIONAL Professional
+     * @property {string} CHILDREN Children's
+     * @property {string} CHILDRENUPPER Children's - Upper elementry
+     * @property {string} CHILDRENLOWER Children's - Lower elementry
      */
-    var AUDIENCES = {
+    export var AUDIENCES = {
         TRADE: "Trade",
         GENERAL: "General",
         ACADEMIC: "Academic",
@@ -154,73 +180,98 @@
         CHILDRENUPPER: "Children's - Upper elementry",
         CHILDRENLOWER: "Children's - Lower elementry"
     };
-    Trove.AUDIENCES = AUDIENCES;
 
     /**
-     * Enumeration for NewspaperArticle categories. Returned as part of the
-     *   brief record for NewspaperArticle, and may also be used to limit
-     *   the results of a search using {@link Trove.LIMITS}.CATEGORY.
-     *   Used for facets and limits.
-     * @alias Trove.CATEGORIES
+     * Enumeration for NewspaperArticle and Gazette categories. Returned as
+     *   part of the brief record for NewspaperArticle and Gazette, and may
+     *   also be used to limit the results of a search using
+     *   {@link LIMITS}.CATEGORY.
+     *
+     * Used for facets and limits.
+     *
      * @readonly
      * @enum {string}
+     * @property {string} ARTICLE Classified as an article (newspaper).
+     * @property {string} ADVERTISING Classified as advertising (newspaper).
+     * @property {string} LISTS Classified as a list (newspaper).
+     * @property {string} FAMILY_NOTICES Classified as family notices (newspaper).
+     * @property {string} LITERATURE Classified as literature (newspaper).
+     * @property {string} NOTICES Classified as notices (gazettes).
+     * @property {string} TENDERS Classified as Tenders and Contracts (gazettes).
+     * @property {string} PROCLAMATIONS Classified as Proclamations And Legislation (gazettes).
+     * @property {string} PRIVATE Classified as Private Notices (gazettes).
+     * @property {string} BUDGET Classified as Budgetary Papers (gazettes).
+     * @property {string} INDEX Classified as Index And Contents (gazettes).
+     * @property {string} APPOINTMENTS Classified as Appointments And Employment (gazettes).
+     * @property {string} FOI Classified as Freedom Of Information (gazettes).
      */
-    var CATEGORIES = {
-        /** Classified as an article. */
+    export var CATEGORIES = {
         ARTICLE: 'Article',
-        /** Classified as advertising. */
         ADVERTISING: 'Advertising',
-        /** Classified as a list. */
         LISTS: 'Detailed lists, results, guides',
-        /** Classified as family notices. */
         FAMILY_NOTICES: 'Family Notices',
-        /** Classified as literature. */
-        LITERATURE: 'Literature'
+        LITERATURE: 'Literature',
+
+        NOTICES: 'Government Gazette Notices',
+        TENDERS: 'Government Gazette Tenders and Contracts',
+        PROCLAMATIONS: 'Government Gazette Proclamations And Legislation',
+        PRIVATE: 'Government Gazette Private Notices',
+        BUDGET: 'Government Gazette Budgetary Papers',
+        INDEX: 'Government Gazette Index And Contents',
+        APPOINTMENTS: 'Government Gazette Appointments And Employment',
+        FOI: 'Government Gazette Freedom Of Information',
     };
-    Trove.CATEGORIES = CATEGORIES;
 
     /**
      * Enumeration for facets.
-     * Facets are categories that describe the results for your search. For
-     *   example, if you ask for the decade facet, the response will include
-     *   the list of decades your results span across, and how many results
-     *   are found in each decade.
-     * @alias Trove.FACETS
+     *
+     * See {@link http://help.nla.gov.au/trove/building-with-trove/api-version-2-technical-guide#facetValues}
+     *
+     * Facets are categories that describe all the records in a particular
+     *   result set. For example, if you have 10 results, you can check the
+     *   format facet to find out that 8 are books and 2 are theses. You could
+     *   also modify your search to retrieve only the theses, or only the books.
      * @readonly
      * @enum {string}
      */
-    var FACETS = {
+    export var FACETS = {
+
         /**
          * (book, picture, article, music, map, collection)
          *   The format of the resource. For example, is it a book or a
-         *   piece of sheet music? See {@link Trove.FORMATS}.
+         *   piece of sheet music? See {@link FORMATS}.
          */
         FORMAT: 'format',
+
         /**
-         * (book, picture, article, music, map, collection, newspaper, list)
+         * (book, picture, article, music, map, collection, newspaper, gazette, list)
          *   Publication decade. e.g 199 represents 1990 – 1999.
          */
         DECADE: 'decade', //YYY
+
         /**
-         * (book, picture, article, music, map, collection, newspaper, list)
+         * (book, picture, article, music, map, collection, newspaper, gazette, list)
          *   Publication year. For newspapers, only available if the decade
          *   facet is also applied.
          */
         YEAR: 'year',
+
         /**
-         * (newspaper)
+         * (newspaper, gazette)
          *   Publication month. Only available if the year facet is also
          *   applied
          */
         MONTH: 'month', //
+
         /**
          * (book, picture, article, music, map, collection)
          */
         LANGUAGE: 'language',
+
         /**
          * (book, picture, article, music, map, collection, list)
          *   Whether the item is online or not. See
-         *   {@link Trove.AVAILABILITIES}.
+         *   {@link AVAILABILITIES}.
          */
         AVAILABILITY: 'availability',
         /**
@@ -243,49 +294,57 @@
         VENDORDB: 'vendordb',
         /**
          * (article) The vendor who sells subscriptions to access a database
-         *   containing these articles. See {@link Trove.VENDORS}.
+         *   containing these articles. See {@link VENDORS}.
          */
         VENDOR: 'vendor',
         /**
          * (article) Only applies to articles from Gale. See
-         *   {@link Trove.AUDIENCES}.
+         *   {@link AUDIENCES}.
          */
         AUDIENCE: 'audience',
         /**
-         * (newspaper) The newspaper title id.
+         * (newspaper, gazette) The newspaper title id.
          */
         TITLE: 'title',
+
         /**
-         * (newspaper) Newspaper article category. See
-         *   {@link Trove.CATEGORIES}.
+         * (newspaper, gazette) Newspaper article category. See
+         *   {@link CATEGORIES}.
          */
         CATEGORY: 'category',
+
         /**
-         * (newspaper) Is a newspaper article illustrated?
+         * (newspaper, gazette) Is a newspaper article illustrated?
          */
         ILLUSTRATED: 'illustrated',
+
         /**
-         * (newspaper) Type of illustration for newspaper article. Only available if illustrated facet is applied
+         * (newspaper, gazette) Type of illustration for newspaper article. Only available if illustrated facet is applied
          */
         ILLTYPE: 'illtype',
+
         /**
-         * (newspaper) Newspaper article word count.
+         * (newspaper, gazette) Newspaper or gazette article word count.
          */
         WORD: 'word',
+
+        /**
+         * (newspaper, gazette) State of publication for newspaper or gazette article.
+         */
+        STATE: 'state',
+
         /**
          * All of the above.
          */
         ALL: 'all'
     };
-    Trove.FACETS = FACETS;
 
     /**
      * Enumeration for limiting the results of a search.
-     * @alias Trove.LIMITS
      * @readonly
      * @enum {string}
      */
-    var LIMITS = {
+    export var LIMITS = {
         /** Limit by format. */
         FORMAT: 'l-format',
         /** Limit by decade. In the form of YYY e.g. 190 is the 1900s. */
@@ -320,18 +379,18 @@
         ILLTYPE: 'l-illtype',
         /** Limit by word */
         WORD: 'l-word',
+        /** Limit by state */
+        STATE: 'l-state',
         /** Limit by all */
         ALL: 'l-all'
     };
-    Trove.LIMITS = LIMITS;
 
     /**
      * Enumeration for sort order.
-     * @alias Trove.SORTBY
      * @readonly
      * @enum {string}
      */
-    var SORTBY = {
+    export var SORTBY = {
         /** Sort by date (descending). */
         DATEDESC: 'datedesc',
         /** Sort by date (ascending). */
@@ -339,15 +398,13 @@
         /** Sort by relevance. */
         RELEVANCE: 'relevance'
     };
-    Trove.SORTBY = SORTBY;
 
     /**
      * Enumeration for record level
-     * @alias Trove.RECLEVEL
      * @readonly
      * @enum {string}
      */
-    var RECLEVEL = {
+    export var RECLEVEL = {
         /**
          * Get the full metadata (excluding all links, version level records,
          *   tags and comments).
@@ -356,15 +413,13 @@
         /** Get the brief metadata. */
         BRIEF: 'brief'
     };
-    Trove.RECLEVEL = RECLEVEL;
 
     /**
      * Enumeration for includes, can include multiple as a list.
-     * @alias Trove.INCLUDES
      * @readonly
      * @enum {string}
      */
-    var INCLUDES = {
+    export var INCLUDES = {
         /**
          * (Book, Picture, Article, Music, Map, Collection, NewspaperArticle,
          *   List)
@@ -401,20 +456,18 @@
          */
         ALL: 'all'
     };
-    Trove.INCLUDES = INCLUDES;
 
     /**
      * Enumeration for Australian states. Used to specify a state for which
-     *   to return {@link Trove.Newspaper} titles using the
-     *   {@link Trove.NewspaperList} class. To return all
-     *   [Newspapers]{@link Trove.Newspaper} for all states, do not specify
-     *   a state when making the query via {@link Trove.NewspaperList} or
+     *   to return {@link Newspaper} titles using the
+     *   {@link NewspaperList} class. To return all
+     *   [Newspapers]{@link Newspaper} for all states, do not specify
+     *   a state when making the query via {@link NewspaperList} or
      *   use ALL.
-     * @alias Trove.STATES
      * @readonly
      * @enum {string}
      */
-    var STATES = {
+    export var STATES = {
         /** New South Wales. */
         NSW: 'nsw',
         /** Australian Capital Territory. */
@@ -436,12 +489,15 @@
         /** All states. */
         ALL: ''
     };
-    Trove.STATES = STATES;
 
-    var SEARCH_RECORDS = {
+    /*
+     * Mapping between zone name and record list name
+     */
+    export var SEARCH_RECORDS = {
         people: 'people',
         list: 'list',
         newspaper: 'article',
+        gazette: 'article',
         article: 'work',
         collection: 'work',
         book: 'work',
@@ -449,35 +505,27 @@
         map: 'work',
         music: 'work'
     };
-    Trove.SEARCH_RECORDS = SEARCH_RECORDS;
-
-    // Mapping of zones to constructors for those zones.
-    // Mostly used by Search to create objects on receipt of results.
-    var CONSTRUCTORS = {};
-    Trove.CONSTRUCTORS = CONSTRUCTORS;
 
     // Base URL for Trove
-    var API_ADDRESS = 'http://api.trove.nla.gov.au/';
+    var API_ADDRESS = 'https://api.trove.nla.gov.au/v2/';
 
-    var RECORD_TYPE = {
+    export var RECORD_TYPE = {
         WORK: 'work/',
         NEWS: 'newspaper/',
+        GAZETTE: 'newspaper/',
         LIST: 'list/',
         CONTRIBUTOR: 'contributor',
         PEOPLE: 'people/'  // This is not supported by the Trove API.
     };
-    Trove.RECORD_TYPE = RECORD_TYPE;
 
-    var API = {
+    export var API = {
         WORK: API_ADDRESS + RECORD_TYPE.WORK,
         LIST: API_ADDRESS + RECORD_TYPE.LIST,
         NP_ARTICLE: API_ADDRESS + RECORD_TYPE.NEWS,
         NP_TITLE: API_ADDRESS + RECORD_TYPE.NEWS + 'title/',
         NP_TITLES: API_ADDRESS + RECORD_TYPE.NEWS + 'titles',
+        GAZETTE: API_ADDRESS + RECORD_TYPE.GAZETTE,
         CONTRIBUTOR: API_ADDRESS + RECORD_TYPE.CONTRIBUTOR,
         PEOPLE: API_ADDRESS + RECORD_TYPE.PEOPLE,
         QUERY: API_ADDRESS + 'result'
     };
-    Trove.API = API;
-
-}(window.Trove = window.Trove || {}, jQuery));

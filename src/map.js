@@ -1,23 +1,16 @@
+import {Work} from "./work";
+
 /**
- * @lends Trove
+ * A class to hold a map
+ * @class
+ * @augments Work
+ * @param {Object} options
  */
-(function(Trove, $, undefined) {
-    'use strict';
+export class Map extends Work {
 
-    /**
-     * A class to hold a map
-     * @class
-     * @alias Trove.Map
-     * @augments Trove.Work
-     * @param {Object} options
-     */
-    function Map(options) {
+    constructor (options) {
+        super(options);
         // console.log('Creating Map');
-        Trove.CONSTRUCTORS.work.call(this, options);
     }
-    Map.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
-    Map.prototype.constructor = Map;
-    Trove.Map = Map;
-    Trove.CONSTRUCTORS.map = Map;
 
-}(window.Trove = window.Trove || {}, jQuery));
+}

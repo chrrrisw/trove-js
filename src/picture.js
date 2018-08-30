@@ -1,23 +1,16 @@
+import {Work} from "./work";
+
 /**
- * @lends Trove
+ * A class to hold a picture
+ * @class
+ * @augments Work
+ * @param {Object} options
  */
-(function(Trove, $, undefined) {
-    'use strict';
+export class Picture extends Work {
 
-    /**
-     * A class to hold a picture
-     * @class
-     * @alias Trove.Picture
-     * @augments Trove.Work
-     * @param {Object} options
-     */
-    function Picture(options) {
+    constructor (options) {
+        super(options);
         // console.log('Creating Picture');
-        Trove.CONSTRUCTORS.work.call(this, options);
     }
-    Picture.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
-    Picture.prototype.constructor = Picture;
-    Trove.Picture = Picture;
-    Trove.CONSTRUCTORS.picture = Picture;
 
-}(window.Trove = window.Trove || {}, jQuery));
+}

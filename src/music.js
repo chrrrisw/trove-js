@@ -1,23 +1,16 @@
+import {Work} from "./work";
+
 /**
- * @lends Trove
+ * A class to hold music
+ * @class
+ * @augments Work
+ * @param {Object} options
  */
-(function(Trove, $, undefined) {
-    'use strict';
+export class Music extends Work {
 
-    /**
-     * A class to hold music
-     * @class
-     * @alias Trove.Music
-     * @augments Trove.Work
-     * @param {Object} options
-     */
-    function Music(options) {
+    constructor (options) {
+        super(options);
         // console.log('Creating Music');
-        Trove.CONSTRUCTORS.work.call(this, options);
     }
-    Music.prototype = Object.create(Trove.CONSTRUCTORS.work.prototype);
-    Music.prototype.constructor = Music;
-    Trove.Music = Music;
-    Trove.CONSTRUCTORS.music = Music;
 
-}(window.Trove = window.Trove || {}, jQuery));
+}

@@ -1,0 +1,15 @@
+{
+	"opts": {
+		"readme": "README.md",
+		"package": "package.json",
+		"destination": "./docs"
+	},
+	"plugins": [
+		"plugins/markdown"
+	],
+	"source": {
+		"include": [
+			"./src"
+		]
+	}
+}
