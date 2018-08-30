@@ -1547,7 +1547,7 @@ class Search {
             // If we don't have a cursor for this zone, seed the list with
             // the current starting position (probably *) and set the index=0
             if (this.cursors[zone_name] === undefined) {
-                console.log("Creating cursor list for", zone_name);
+                // console.log("Creating cursor list for", zone_name);
                 this.cursors[zone_name] = [this.response.zone[zone_num].records.s];
                 this.indices[zone_name] = 0;
             }
@@ -1560,7 +1560,7 @@ class Search {
                 this.cursors[zone_name].push(this.response.zone[zone_num].records.nextStart);
             }
 
-            console.log(this.cursors[zone_name]);
+            // console.log(this.cursors[zone_name]);
 
             // Access the list at work|article|list|people
             zone_items = this.response.zone[zone_num].records[Trove.SEARCH_RECORDS[zone_name]];
@@ -1775,7 +1775,7 @@ class Search {
      *   (positive or negative).
      */
     requery(zone, options) {
-        console.log("Requery called");
+        // console.log("Requery called");
 
         if (options) {
             // Override the done callback
@@ -1811,13 +1811,13 @@ class Search {
      * @param {function} options.fail The callback on failure (optional).
      */
     next(zone, options) {
-        console.log("Next called");
-        console.log(zone, "index is", this.indices[zone]);
-        console.log(zone, "cursor length is", this.cursors[zone].length);
+        // console.log("Next called");
+        // console.log(zone, "index is", this.indices[zone]);
+        // console.log(zone, "cursor length is", this.cursors[zone].length);
         if (this.indices[zone] < this.cursors[zone].length - 1) {
-            console.log("Current index", this.indices[zone]);
+            // console.log("Current index", this.indices[zone]);
             this.indices[zone]++;
-            console.log("New index", this.indices[zone]);
+            // console.log("New index", this.indices[zone]);
             this.requery(zone, options);
         }
         // if (this._last_search !== undefined) {
@@ -1838,13 +1838,13 @@ class Search {
      * @param {function} options.fail The callback on failure (optional).
      */
     previous(zone, options) {
-        console.log("Previous called");
-        console.log(zone, "index is", this.indices[zone]);
-        console.log(zone, "cursor length is", this.cursors[zone].length);
+        // console.log("Previous called");
+        // console.log(zone, "index is", this.indices[zone]);
+        // console.log(zone, "cursor length is", this.cursors[zone].length);
         if (this.indices[zone] > 0) {
-            console.log("Current index", this.indices[zone]);
+            // console.log("Current index", this.indices[zone]);
             this.indices[zone]--;
-            console.log("New index", this.indices[zone]);
+            // console.log("New index", this.indices[zone]);
             this.requery(zone, options);
         }
         // if (this._last_search !== undefined) {
